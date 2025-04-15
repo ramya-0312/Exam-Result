@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 100%; max-width: 700px;">
+    <h4 class="text-center mb-4">Result for Semester Examination, 2025</h4>
+
+  <div class="mb-3">
+    <strong>Register Number:</strong>12345 {{ regNo }}<br>
+    <strong>Name:</strong> Ramya<br>
+    <strong>Branch:</strong> CSE
+  </div>
+
+  <table class="table table-bordered text-center">
+    <thead class="table-success">
+      <tr>
+        <th>Semester</th>
+        <th>Subject Code</th>
+        <th>Grade</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of resultData">
+        <td>{{ row.sem }}</td>
+        <td>{{ row.code }}</td>
+        <td>{{ row.grade }}</td>
+        <td>{{ row.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,18 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.home-container {
+  background-image: url('https://source.unsplash.com/1600x900/?education,exam');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  border-radius: 12px;
+}
+

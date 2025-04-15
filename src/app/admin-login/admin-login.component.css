@@ -1,0 +1,26 @@
+.admin-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 15px;
+  background: white;
+  transition: transform 0.3s ease;
+}
+
+
+.login-btn {
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #004f9e;
+}

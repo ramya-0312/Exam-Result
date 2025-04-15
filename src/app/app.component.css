@@ -1,0 +1,4 @@
+.custom-navbar {
+  background-color: rgba(0, 0, 0, 0.6); /* Black with 60% transparency */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}

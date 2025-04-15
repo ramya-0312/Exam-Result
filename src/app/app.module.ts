@@ -1,18 +1,50 @@
+import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
+//import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
+import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from './app-routing.module';
+import { ViewResultComponent } from './view-result/view-result.component';
+import { StudentResultComponent } from './student-result/student-result.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    ViewResultComponent,
+    StudentResultComponent,
+    AdminLoginComponent,
+    ForgotPasswordComponent
+
+
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    FormsModule ,
+    //AdminRegistrationComponent,
+    AppRoutingModule,
+    RouterModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true
+
+    })
+
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { }

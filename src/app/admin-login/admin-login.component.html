@@ -1,0 +1,14 @@
+<div class="admin-login-container">
+  <div class="card login-card shadow">
+    <h2 class="text-center mb-4">Admin Login</h2>
+
+    <input [(ngModel)]="email" placeholder="Email" class="form-control mb-3" />
+    <input [(ngModel)]="password" type="password" placeholder="Password" class="form-control mb-3" />
+
+    <button (click)="login()" class="btn btn-primary w-100 login-btn">Login</button>
+
+    <div *ngIf="showForgotPassword" class="text-end mt-3 text-danger">
+      <a routerLink="/forgot-password">Forgot Password?</a>
+    </div>
+  </div>
+</div>
