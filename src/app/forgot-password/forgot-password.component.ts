@@ -22,22 +22,27 @@ export class ForgotPasswordComponent {
 
   checkEmail() {
       this.passwordService.verifyEmail(this.email).subscribe(
-        (res) => {
+        (res:any) => {
           if (res.exists) {
             this.emailVerified = true;
-            this.toastr.success('Email found. You can reset your password.');
+            this.toastr.success(res.message);
           } else {
-            this.toastr.error('Email not found. Please try again.');
+            this.toastr.error(res.message);
           }
         },
         (error) => {
-          this.toastr.error('Email not found');
+          this.toastr.error(error.error.message);
         }
       );
     }
 
 
   resetPassword() {
+
+    if (!this.emailVerified){
+      this.toastr.error('please verify your email first.');
+      return;
+    }
     if (this.newPassword !== this.confirmPassword) {
       this.toastr.error('Passwords do not match. Please re-enter.');
       return;
@@ -49,8 +54,8 @@ export class ForgotPasswordComponent {
     };
 
     this.passwordService.resetPassword(data).subscribe({
-      next: (res) => {
-        this.toastr.success('Password reset successfully!');
+      next: (res:any) => {
+        this.toastr.success(res.message);
         this.emailVerified = false;
         this.newPassword = '';
         this.confirmPassword = '';
@@ -60,7 +65,7 @@ export class ForgotPasswordComponent {
         }, 1500); // 1.5 sec delay before redirecting
       },
       error: (err) => {
-        this.toastr.error('Error resetting password: ' + err.error);
+        this.toastr.error(err.error.message);
       }
     });
   }
