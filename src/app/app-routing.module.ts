@@ -1,3 +1,4 @@
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,6 +10,9 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { PostResultComponent } from './post-result/post-result.component';
+
+
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   //{ path: 'admin-register', component: AdminRegistrationComponent },
@@ -17,7 +21,7 @@ const routes: Routes = [
   { path: 'student-result/:regNumber', component: StudentResultComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path:  'admin-dashboard',component:AdminLoginComponent},
+  { path: 'admin-dashboard',component:AdminDashboardComponent},
   { path: 'add-student',component:AddStudentComponent},
   { path: 'post-result',component:PostResultComponent}
 
