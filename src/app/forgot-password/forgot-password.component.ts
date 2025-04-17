@@ -16,15 +16,20 @@ export class ForgotPasswordComponent {
   confirmPassword: string = '';
   message: string = '';
   emailVerified:boolean=false;
+  verifiedEmail:string='';
+  successMessage:string='';
 
   constructor(private passwordService: PasswordService,private toastr:ToastrService,private router:Router) {}
 
 
   checkEmail() {
+    const data = {email:this.email};
       this.passwordService.verifyEmail(this.email).subscribe(
         (res:any) => {
           if (res.exists) {
             this.emailVerified = true;
+            this.verifiedEmail=this.email;  // store the verifiedEmail
+            this.successMessage=res.message;
             this.toastr.success(res.message);
           } else {
             this.toastr.error(res.message);
@@ -57,6 +62,8 @@ export class ForgotPasswordComponent {
       next: (res:any) => {
         this.toastr.success(res.message);
         this.emailVerified = false;
+        this.verifiedEmail='';
+        this.email='';
         this.newPassword = '';
         this.confirmPassword = '';
 

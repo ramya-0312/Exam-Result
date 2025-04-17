@@ -12,7 +12,7 @@ export class PasswordService {
   resetPassword(admin: any) {
     return this.http.post(this.apiUrl,admin);
 }
-verifyEmail(email: string) {
-  return this.http.get<{ exists: boolean }>('${this.apiUrl}/check-email?email=${email}');
+verifyEmail(data: any) {
+  return this.http.post('${this.apiUrl}/verify-email', data);
 }
 }
