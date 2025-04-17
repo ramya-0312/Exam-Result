@@ -13,6 +13,9 @@ import { StudentResultComponent } from './student-result/student-result.componen
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RouterModule } from '@angular/router';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AddStudentComponent } from './add-student/add-student.component';
+import { PostResultComponent } from './post-result/post-result.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { RouterModule } from '@angular/router';
     ViewResultComponent,
     StudentResultComponent,
     AdminLoginComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    AdminDashboardComponent,
+    AddStudentComponent,
+    PostResultComponent
 
 
   ],

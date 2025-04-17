@@ -7,6 +7,8 @@ import { ViewResultComponent } from './view-result/view-result.component';
 import { StudentResultComponent } from './student-result/student-result.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { AddStudentComponent } from './add-student/add-student.component';
+import { PostResultComponent } from './post-result/post-result.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   //{ path: 'admin-register', component: AdminRegistrationComponent },
@@ -14,7 +16,10 @@ const routes: Routes = [
   { path: 'student-result', component: StudentResultComponent },
   { path: 'student-result/:regNumber', component: StudentResultComponent },
   { path: 'admin-login', component: AdminLoginComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent }
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path:  'admin-dashboard',component:AdminLoginComponent},
+  { path: 'add-student',component:AddStudentComponent},
+  { path: 'post-result',component:PostResultComponent}
 
 
 ];

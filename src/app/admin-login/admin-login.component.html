@@ -1,13 +1,44 @@
-<div class="admin-login-container">
-  <div class="card login-card shadow">
-    <h2 class="text-center mb-4">Admin Login</h2>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h3 class="text-center mb-4">Admin Login</h3>
 
-    <input [(ngModel)]="email" placeholder="Email" class="form-control mb-3" />
-    <input [(ngModel)]="password" type="password" placeholder="Password" class="form-control mb-3" />
+    <div class="form-group mb-3">
+      <label>Email</label>
+      <input
+        type="email"
+        [(ngModel)]="email"
+        (ngModelChange)="updateFormValid()"
+        class="form-control"
+        placeholder="Enter email"
+      />
+    </div>
 
-    <button (click)="login()" class="btn btn-primary w-100 login-btn">Login</button>
+    <div class="form-group mb-3">
+      <label>Password</label>
+      <input
+        type="password"
+        [(ngModel)]="password"
+        (ngModelChange)="updateFormValid()"
+        class="form-control"
+        placeholder="Enter password"
+      />
+    </div>
+    <small class="text-muted">
+      Password must be at least 8 characters and include one uppercase letter, one number, and one special character.
+    </small><br>
 
-    <div *ngIf="showForgotPassword" class="text-end mt-3 text-danger">
+
+    <button
+      class="btn btn-success w-100"
+      [disabled]="!formValid"
+
+      [ngClass]="{'not-allowed':!formValid}"
+      (click)="login()">
+
+      Login
+    </button>
+
+    <div *ngIf="showForgotPassword" class="text-center mt-3">
       <a routerLink="/forgot-password">Forgot Password?</a>
     </div>
   </div>
