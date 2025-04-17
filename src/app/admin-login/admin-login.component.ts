@@ -26,6 +26,7 @@ export class AdminLoginComponent {
       password: this.password
     };
 
+
     this.authService.loginAdmin(credentials).subscribe({
       next: (res: any) => {
         this.toastr.success(res.response);
@@ -40,18 +41,12 @@ export class AdminLoginComponent {
       }
     });
   }
-
-  updateFormValid() {
+  isEmailValid(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const pwd = this.password;
+    return emailRegex.test(this.email);
+  }
 
-    const emailValid = emailRegex.test(this.email);
-    const passwordValid =
-      pwd.length >= 8 &&
-      /[A-Z]/.test(pwd) &&
-      /[0-9]/.test(pwd) &&
-      /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
-
-    this.formValid = emailValid && passwordValid;
+  isFormValid(): boolean {
+    return this.isEmailValid() && this.password.length > 0;
   }
 }

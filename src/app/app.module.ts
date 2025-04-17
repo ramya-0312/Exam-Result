@@ -16,6 +16,8 @@ import { RouterModule } from '@angular/router';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { PostResultComponent } from './post-result/post-result.component';
+import { AdminRegisterComponent } from './admin-register/admin-register.component';
+import { RegistrationSuccessComponent } from './registration-success/registration-success.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { PostResultComponent } from './post-result/post-result.component';
     ForgotPasswordComponent,
     AdminDashboardComponent,
     AddStudentComponent,
-    PostResultComponent
+    PostResultComponent,
+    AdminRegisterComponent,
+    RegistrationSuccessComponent
 
 
   ],

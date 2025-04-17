@@ -7,7 +7,6 @@
       <input
         type="email"
         [(ngModel)]="email"
-        (ngModelChange)="updateFormValid()"
         class="form-control"
         placeholder="Enter email"
       />
@@ -18,25 +17,19 @@
       <input
         type="password"
         [(ngModel)]="password"
-        (ngModelChange)="updateFormValid()"
         class="form-control"
         placeholder="Enter password"
       />
     </div>
-    <small class="text-muted">
-      Password must be at least 8 characters and include one uppercase letter, one number, and one special character.
-    </small><br>
 
 
-    <button
-      class="btn btn-success w-100"
-      [disabled]="!formValid"
 
-      [ngClass]="{'not-allowed':!formValid}"
-      (click)="login()">
-
-      Login
-    </button>
+    <button [disabled]="!isFormValid()" (click)="login()" class="btn btn-success">
+       Login
+     </button>
+    <div class="text-center mt-3">
+      <a routerLink="/admin-register" class="text-primary">New user? Sign up here</a>
+    </div>
 
     <div *ngIf="showForgotPassword" class="text-center mt-3">
       <a routerLink="/forgot-password">Forgot Password?</a>
