@@ -1,1 +1,72 @@
-<p>post-result works!</p>
+<div class="container-fluid vh-100">
+  <nav class="navbar navbar-expand-lg navbar-expand-lg bg-light px-2">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-person-circle fs-4 me-2"></i>
+      <span class="fw-bold">Admin</span>
+    </div>
+    <div class="ms-auto">
+      <button class="btn btn-outline-danger fw-bold">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2 class="mb-4 text-center fw-bold text-success">STUDENT RESULT</h2>
+    <form (ngSubmit)="onSubmit()" #resultForm="ngForm"><br><br>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="registerNumber" class="form-label fw-bold">Register Number</label>
+          <input type="number" class="form-control" id="registerNumber" required [(ngModel)]="registerNumber" name="registerNumber">
+        </div>
+        <div class="col-md-4">
+          <label for="semester" class="form-label fw-bold">Semester</label>
+          <select class="form-select" id="semester" required [(ngModel)]="semester" name="semester">
+            <option value="" disabled selected>Select Semester</option>
+            <option *ngFor="let sem of semesters" [value]="sem">{{ sem }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="collegeName" class="form-label fw-bold">College Name</label>
+          <input type="text" class="form-control" id="collegeName" required [(ngModel)]="collegeName" name="collegeName">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label for="tamil" class="form-label fw-bold">Tamil</label>
+          <input type="number" class="form-control" id="tamil" [(ngModel)]="tamil" name="tamil" (input)="calculateResult()" required>
+        </div>
+        <div class="col-md-2">
+          <label for="english" class="form-label fw-bold">English</label>
+          <input type="number" class="form-control" id="english" [(ngModel)]="english" name="english" (input)="calculateResult()" required>
+        </div>
+        <div class="col-md-2">
+          <label for="maths" class="form-label fw-bold">Mathematics</label>
+          <input type="number" class="form-control" id="maths" [(ngModel)]="maths" name="maths" (input)="calculateResult()" required>
+        </div>
+        <div class="col-md-2">
+          <label for="science" class="form-label fw-bold">Science</label>
+          <input type="number" class="form-control" id="science" [(ngModel)]="science" name="science" (input)="calculateResult()" required>
+        </div>
+        <div class="col-md-2">
+          <label for="social" class="form-label fw-bold">Social Science</label>
+          <input type="number" class="form-control" id="social" [(ngModel)]="social" name="social" (input)="calculateResult()" required>
+        </div>
+      </div>
+
+
+    </form>
+
+    <div class="card mt-4 mx-auto" style="max-width: 400px;" *ngIf="totalMarks >= 0">
+      <div class="card-body text-center">
+        <h5 class="card-title fw-bold">Total Marks: {{ totalMarks }}</h5>
+        <p class="card-text fw-bold" [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
+          Result: {{ result }}
+        </p>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary">Post Result</button>
+    </div>
+  </div>
+</div>
