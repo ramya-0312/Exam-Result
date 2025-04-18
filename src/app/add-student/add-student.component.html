@@ -1,1 +1,46 @@
-<p>add-student works!</p>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <div class="d-flex align-items-center">
+    <i class="bi bi-person-circle text-white me-2" style="font-size: 1.5rem;"></i>
+    <span class="navbar-brand mb-0 h5">Admin</span>
+  </div>
+  <div class="ms-auto">
+    <button class="btn btn-outline-light" (click)="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Toastr message appears via Angular logic, not manual HTML -->
+
+<!-- Full Screen Form -->
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <form class="w-50" (ngSubmit)="addStudent()" #studentForm="ngForm">
+    <div class="mb-3">
+      <label for="registerNo" class="form-label">Register Number</label>
+      <input type="text" id="registerNo" class="form-control" [(ngModel)]="student.registerNo" name="registerNo" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Student Name</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="student.name" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date of Birth</label>
+      <input type="date" id="dob" class="form-control" [(ngModel)]="student.dob" name="dob" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="college" class="form-label">College Name</label>
+      <input type="text" id="college" class="form-control" [(ngModel)]="student.college" name="college" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="semester" class="form-label">Semester</label>
+      <input type="number" id="semester" class="form-control" [(ngModel)]="student.semester" name="semester" required>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-success" type="submit">Add Student</button>
+    </div>
+  </form>
+</div>

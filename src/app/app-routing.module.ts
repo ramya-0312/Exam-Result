@@ -16,11 +16,11 @@ import { AdminRegisterComponent } from './admin-register/admin-register.componen
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'view-result', component: ViewResultComponent },
-  { path: 'student-result', component: StudentResultComponent },
-  { path: 'student-result/:regNumber', component: StudentResultComponent },
+  { path: 'view-result', component: ViewResultComponent},
+  { path: 'student-result', component: StudentResultComponent},
+  { path: 'student-result/:regNumber', component: StudentResultComponent},
   { path: 'admin-login', component: AdminLoginComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: 'admin-dashboard',component:AdminDashboardComponent},
   { path: 'add-student',component:AddStudentComponent},
   { path: 'post-result',component:PostResultComponent},
