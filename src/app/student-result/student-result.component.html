@@ -1,29 +1,47 @@
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-  <div class="card shadow p-4" style="width: 100%; max-width: 700px;">
-    <h4 class="text-center mb-4">Result for Semester Examination, 2025</h4>
-
+<!-- student-result.component.html --><div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center bg-light">
+  <div class="col-md-6 p-4 shadow rounded bg-white">
+    <h3 class="text-center mb-4">Student Result Portal</h3><form (ngSubmit)="getResult()" #resultForm="ngForm">
   <div class="mb-3">
-    <strong>Register Number:</strong>12345 {{ regNo }}<br>
-    <strong>Name:</strong> Ramya<br>
-    <strong>Branch:</strong> CSE
+    <label for="regNo" class="form-label">Register Number</label>
+    <input type="text" id="regNo" name="regNo" class="form-control" [(ngModel)]="regNo" required>
   </div>
 
+  <div class="mb-3">
+    <label for="dob" class="form-label">Date of Birth</label>
+    <input type="date" id="dob" name="dob" class="form-control" [(ngModel)]="dob" required>
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="resultForm.invalid">View Result</button>
+  </div>
+</form>
+
+<div *ngIf="resultFetched" class="mt-5">
+  <h5 class="text-center mb-3">Result for Register No: {{ regNo }}</h5>
   <table class="table table-bordered text-center">
-    <thead class="table-success">
+    <thead class="table-secondary">
       <tr>
-        <th>Semester</th>
-        <th>Subject Code</th>
-        <th>Grade</th>
-        <th>Result</th>
+        <th>Subject</th>
+        <th>Marks</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of resultData">
-        <td>{{ row.sem }}</td>
-        <td>{{ row.code }}</td>
-        <td>{{ row.grade }}</td>
-        <td>{{ row.status }}</td>
+      <tr *ngFor="let subject of subjects">
+        <td>{{ subject.name }}</td>
+        <td>{{ subject.marks }}</td>
       </tr>
     </tbody>
-  </table>
+  </table>
+
+  <div class="text-center mt-4">
+    <div class="alert" [ngClass]="{
+          'alert-success': resultStatus === 'Pass',
+          'alert-danger': resultStatus === 'Fail'
+        }">
+      <strong>Total: {{ totalMarks }}</strong> - {{ resultStatus }}
+    </div>
+  </div>
+</div>
+
+  </div>
 </div>
