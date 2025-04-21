@@ -26,14 +26,12 @@ export class ForgotPasswordComponent {
     const data = {email:this.email}; // send as body
       this.passwordService.verifyEmail(data).subscribe(
         (res:any) => {
-          if (res.exists) {
+          this.toastr.success(res.message);
             this.emailVerified = true;
             this.verifiedEmail=this.email;  // store the verifiedEmail
             this.successMessage=res.message;
-            this.toastr.success(res.message);
-          } else {
-            this.toastr.error(res.message);
-          }
+            // this.toastr.success(res.successMessage);
+          
         },
         (error) => {
           this.toastr.error(error.error.message);
