@@ -8,14 +8,14 @@
     <button class="btn btn-outline-light" (click)="logout()">Logout</button>
   </div>
 </nav>
-<br>
+<br><br>
 <h2 class="mb-0 text-center fw-bold text-success">ADD STUDENT</h2>
 <!-- Toastr message appears via Angular logic, not manual HTML -->
 <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 90vh;">
   <form class="w-50" (ngSubmit)="addStudent()" #studentForm="ngForm">
     <div class="mb-3">
       <label for="registerNo" class="form-label">Register Number</label>
-      <input type="text" id="registerNo" class="form-control" [(ngModel)]="student.registerNo" name="registerNo" required>
+      <input type="text" id="registerNo" class="form-control" [(ngModel)]="student.registered" name="registerNo" required>
     </div>
 
     <div class="mb-3">
@@ -29,14 +29,18 @@
     </div>
 
     <div class="mb-3">
-      <label for="college" class="form-label">College Name</label>
-      <input type="text" id="college" class="form-control" [(ngModel)]="student.college" name="college" required>
+      <label for="department" class="form-label">Department</label>
+      <select id="department" class="form-control" [(ngModel)]="department" name="department" required>
+        <option value="" disabled selected>Select Department</option>
+        <option value="CSE">Computer Science</option>
+        <option value="ECE">Electronics</option>
+        <option value="EEE">Electrical</option>
+        <option value="MECH">Mechanical</option>
+        <option value="CIVIL">Civil</option>
+        <!-- Add more if needed -->
+      </select>
     </div>
 
-    <div class="mb-3">
-      <label for="semester" class="form-label">Semester</label>
-      <input type="number" id="semester" class="form-control" [(ngModel)]="student.semester" name="semester" required>
-    </div>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-success" type="submit">Add Student</button>

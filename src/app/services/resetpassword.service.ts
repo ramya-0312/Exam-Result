@@ -10,10 +10,8 @@ export class ResetPasswordService {
 
   constructor(private http: HttpClient) {}
 
-  resetPassword(data: any) {
-    // return this.http.post('${this.baseUrl}/reset-password', data);
-    return this.http.post(`${this.baseUrl}`, data); // Since your backend endpoint is already /updatepassword
-
+  resetPassword(data:any) {
+    return this.http.post(`${this.baseUrl}`, data);
   }
 }
 // export class AuthService {
