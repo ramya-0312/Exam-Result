@@ -1,33 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ResetPasswordService } from '../services/resetpassword.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone:false,
   selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+  templateUrl: './reset-password.component.html'
 })
-export class ResetPasswordComponent implements OnInit {
-  email: string = '';
+export class ResetPasswordComponent {
+  email: string = ''; // Set this from previous step (can use state or localStorage)
   newPassword: string = '';
   confirmPassword: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
-
-  ngOnInit(): void {
-    const savedEmail = localStorage.getItem('resetEmail');
-    if (savedEmail) {
-      this.email = savedEmail;
-    } else {
-      alert('No email found. Redirecting to Forgot Password page.');
-      this.router.navigate(['/forgot-password']);
-    }
-  }
+  constructor(private resetService: ResetPasswordService, private router: Router) {}
 
   resetPassword() {
     if (this.newPassword !== this.confirmPassword) {
-      alert("Passwords do not match.");
+      alert("Passwords do not match!");
       return;
     }
 
@@ -36,14 +25,14 @@ export class ResetPasswordComponent implements OnInit {
       newPassword: this.newPassword
     };
 
-    this.http.post('http://localhost:8080/api/reset-password', payload).subscribe({
-      next: (res) => {
-        alert("Password reset successful!");
-        localStorage.removeItem('resetEmail');
-        this.router.navigate(['/admin-login']);
+    this.resetService.resetPassword(payload).subscribe({
+      next: () => {
+        alert('Password reset successful!');
+        this.router.navigate(['/login']);
       },
       error: (err) => {
-        alert("Password reset failed.");
+        console.error(err);
+        alert('Failed to reset password');
       }
     });
   }
