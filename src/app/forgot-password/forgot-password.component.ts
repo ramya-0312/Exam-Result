@@ -24,7 +24,7 @@ export class ForgotPasswordComponent {
 
   checkEmail() {
     const data = {email:this.email}; // send as body
-      this.passwordService.verifyEmail(this.email).subscribe(
+      this.passwordService.verifyEmail(data).subscribe(
         (res:any) => {
           if (res.exists) {
             this.emailVerified = true;

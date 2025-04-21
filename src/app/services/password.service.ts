@@ -5,14 +5,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class PasswordService {
-  private apiUrl = 'http://localhost:8080/reset-password'; // Backend endpoint
+  private apiUrl = 'http://localhost:8080/adminregister/checkmail'; 
+  private apiUrlreset = 'http://localhost:8080/adminregister/updatepassword';// Backend endpoint
 
   constructor(private http: HttpClient) { }
 
-  resetPassword(admin: any) {
-    return this.http.post(this.apiUrl,admin);
-}
-verifyEmail(data: any) {
-  return this.http.post('${this.apiUrl}/verify-email', data);
-}
+  verifyEmail(data: any) {
+    return this.http.post(this.apiUrl, data); // /checkmain
+  }
+  
+  resetPassword(data: any) {
+    return this.http.post(this.apiUrlreset, data);
+  }
+  
 }
