@@ -1,1 +1,43 @@
-<p>view-result works!</p>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h3 class="fw-bold text-uppercase">Student Examination Results</h3>
+  </div>
+
+  <!-- Student Info -->
+  <div class="border p-4 rounded mb-4 bg-light shadow-sm">
+    <div class="row">
+      <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>
+      <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
+      <div class="col-md-6"><strong>College:</strong> {{ student?.college }}</div>
+      <div class="col-md-6"><strong>Semester:</strong> {{ student?.semester }}</div>
+    </div>
+  </div>
+
+  <!-- Marks Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered text-center align-middle shadow-sm">
+      <thead class="table-dark">
+        <tr>
+          <th>Subject</th>
+          <th>Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subject of student?.marks">
+          <td>{{ subject.subject }}</td>
+          <td>{{ subject.mark }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Total & Result -->
+  <div class="mt-4 p-4 rounded text-center shadow-sm"
+       [ngClass]="{
+         'bg-success text-white': student?.result === 'Pass',
+         'bg-danger text-white': student?.result === 'Fail'
+       }">
+    <h5>Total Marks: {{ student?.total }}</h5>
+    <h5>Result: {{ student?.result }}</h5>
+  </div>
+</div>

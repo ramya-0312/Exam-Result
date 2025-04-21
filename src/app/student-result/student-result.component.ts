@@ -1,76 +1,43 @@
-
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ResultService } from '../services/result.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone:false,
   selector: 'app-student-result',
   templateUrl: './student-result.component.html',
-  styleUrls: ['./student-result.component.css']
 })
 export class StudentResultComponent {
-  resultForm: FormGroup;
-  resultData: any;
-  isResultVisible = false;
-  isLoading = false;
-  regNo:string='';
-  dob:string='';
+  registerNumber = '';
+  dob = '';
+  errorMessage = '';
+  regNo ='';
+  totalMarks ='';
+  resultStatus ='';
+  subjects:{name:string,marks:number}[]=[];
   resultFetched:boolean=false;
-  subjects:{name:string;marks:number}[]=[];
-  totalMarks:number=0;
-  resultStatus:string='';
 
 
-  getResult() {
-    // Dummy test data
-    this.subjects = [
-      { name: 'Tamil', marks: 80 },
-      { name: 'English', marks: 75 },
-      { name: 'Maths', marks: 90 },
-      { name: 'Science', marks: 85 },
-      { name: 'Social Science', marks: 70 },
-    ];
+  getResult(){
 
-    this.totalMarks = this.subjects.reduce((sum, sub) => sum + sub.marks, 0);
-    const maxMarks = this.subjects.length * 100;
-    const percentage = (this.totalMarks / maxMarks) * 100;
-    this.resultStatus = percentage >= 50 ? 'Pass' : 'Fail';
-    this.resultFetched = true;
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private resultService: ResultService,
-    private toastr: ToastrService
-  ) {
-    this.resultForm = this.fb.group({
-      registerNumber: ['', [Validators.required, Validators.pattern('^[0-9]{6,12}$')]],
-      dob: ['', Validators.required]
-    });
-  }
+  constructor(private router: Router, private resultService: ResultService) {}
 
-  onSubmit() {
-    if (this.resultForm.invalid) {
-      this.toastr.error('Please fill out all fields correctly');
+  submit() {
+    if (!this.registerNumber || !this.dob) {
+      this.errorMessage = 'Please fill both fields.';
       return;
     }
 
-    const { registerNumber, dob } = this.resultForm.value;
-    this.isLoading = true;
-
-    this.resultService.getResult(registerNumber, dob).subscribe(
-      (res: any) => {
-        this.isLoading = false;
-        this.resultData = res;
-        this.isResultVisible = true;
+    this.resultService.getResult(this.registerNumber, this.dob).subscribe({
+      next: (data) => {
+        localStorage.setItem('studentResult', JSON.stringify(data));
+        this.router.navigate(['/view-result']);
       },
-      (err) => {
-        this.isLoading = false;
-        this.toastr.error(err.error.message || 'No result found or invalid details');
-        this.isResultVisible = false;
-      }
-    );
+      error: () => {
+        this.errorMessage = 'Invalid Register Number or DOB.';
+      }
+    });
   }
 }

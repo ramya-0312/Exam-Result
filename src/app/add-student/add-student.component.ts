@@ -28,6 +28,7 @@ export class AddStudentComponent {
     this.studentService.addStudent(this.student).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message || 'Student added successfully!');
+        this.router.navigate(['/admin-dashboard'])
         // Optionally, reset the form
         this.student = {
           registerNo: '',

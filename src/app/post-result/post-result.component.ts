@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone:false,
@@ -22,6 +24,12 @@ export class PostResultComponent {
   result: string = '';
 
   semesters = [1, 2, 3, 4];
+
+  constructor(
+      private toastr: ToastrService,
+      private router: Router
+    ) {}
+
 
   calculateResult(): void {
     this.totalMarks = this.tamil + this.english + this.maths + this.science + this.social;
@@ -49,4 +57,10 @@ export class PostResultComponent {
       result: this.result
     });
   }
+logout() {
+  this.router.navigate(['/admin-login']);
+  }
+postResult(){
+  this.router.navigate(['/admin-dashboard'])
+}
 }

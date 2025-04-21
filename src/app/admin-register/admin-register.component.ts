@@ -15,6 +15,7 @@ export class AdminRegisterComponent {
   password = '';
   confirmPassword = '';
   isPasswordValid = false;
+  department:string='';
 
   constructor(
     private adminService: AdminService,
