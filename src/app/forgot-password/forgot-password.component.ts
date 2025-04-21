@@ -17,8 +17,9 @@ export class ForgotPasswordComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   checkEmail() {
-    this.http.post('http://localhost:8080/api/verify-email', { email: this.email }).subscribe({
+    this.http.post('http://localhost:8080/adminregister/checkmail', { email: this.email }).subscribe({
       next: (res) => {
+        
         localStorage.setItem('resetEmail', this.email); // Store email
         this.router.navigate(['/reset-password']);      // Navigate to reset page
       },

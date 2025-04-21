@@ -22,8 +22,10 @@ export class ResetPasswordComponent {
 
     const payload = {
       email: this.email,
-      newPassword: this.newPassword
+      password: this.confirmPassword
     };
+    
+  console.log("Sending payload:", payload);
 
     this.resetService.resetPassword(payload).subscribe({
       next: () => {
