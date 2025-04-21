@@ -20,7 +20,8 @@ import { PostResultComponent } from './post-result/post-result.component';
 import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegistrationSuccessComponent } from './registration-success/registration-success.component';
 import { StudentResultComponent } from './student-result/student-result.component';
-import { ViewResultComponent } from './view-result/view-result.component';
+import { ResultViewComponent } from './view-result/view-result.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { ViewResultComponent } from './view-result/view-result.component';
     AdminRegisterComponent,
     RegistrationSuccessComponent,
     StudentResultComponent,
-    ViewResultComponent
+    ResultViewComponent,
+    ResetPasswordComponent
+
 
 
   ],

@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-view-result',
-  standalone: false,
+  standalone:false,
+  selector: 'app-result-view',
   templateUrl: './view-result.component.html',
-  styleUrl: './view-result.component.css'
 })
-export class ViewResultComponent {
+export class ResultViewComponent implements OnInit {
+  student: any;
 
+  ngOnInit() {
+    const data = localStorage.getItem('studentResult');
+    if (data) {
+      this.student = JSON.parse(data);
+    }
+  }
 }

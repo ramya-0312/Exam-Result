@@ -1,37 +1,33 @@
-import { PasswordService } from './../services/password.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone:false,
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
-
 })
 export class ForgotPasswordComponent {
   email: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
-  message: string = '';
-  emailVerified:boolean=false;
-  verifiedEmail:string='';
-  successMessage:string='';
+  newPassword:string='';
+  emailverified=true;
+  
 
-  constructor(private passwordService: PasswordService,private toastr:ToastrService,private router:Router) {}
-
+  constructor(private http: HttpClient, private router: Router) {}
 
   checkEmail() {
     const data = {email:this.email}; // send as body
-      this.passwordService.verifyEmail(data).subscribe(
+      this.passwordService.verifyEmail(this.email).subscribe(
         (res:any) => {
-          this.toastr.success(res.message);
+          if (res.exists) {
             this.emailVerified = true;
             this.verifiedEmail=this.email;  // store the verifiedEmail
             this.successMessage=res.message;
-            // this.toastr.success(res.successMessage);
-          
+            this.toastr.success(res.message);
+          } else {
+            this.toastr.error(res.message);
+          }
         },
         (error) => {
           this.toastr.error(error.error.message);
@@ -70,10 +66,8 @@ export class ForgotPasswordComponent {
         }, 1500); // 1.5 sec delay before redirecting
       },
       error: (err) => {
-        this.toastr.error(err.error.message);
+        alert('Email verification failed!');
       }
     });
   }
 }
-
-
