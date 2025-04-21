@@ -34,9 +34,10 @@ export class AdminRegisterComponent {
 
   register() {
     const data = {
-      fullName: this.fullName,
+      name: this.fullName,
       email: this.email,
       password: this.password,
+      department:this.department
     };
 
     this.adminService.registerAdmin(data).subscribe({
