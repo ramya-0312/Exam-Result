@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminService {
 
-  private baseUrl = 'http://localhost:8080/api/admin'; // Change this if your backend URL is different
+  private baseUrl = 'http://localhost:8080/adminregister/admin_register'; // Change this if your backend URL is different
 
   constructor(private http: HttpClient) {}
 
