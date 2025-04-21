@@ -34,29 +34,25 @@
       <div class="row mb-3">
         <div class="col-md-2">
           <label for="tamil" class="form-label fw-bold">Tamil</label>
-          <input type="number" class="form-control" id="tamil" [(ngModel)]="tamil" name="tamil" (input)="calculateResult()" required>
+          <input type="number" class="form-control" id="tamil" [(ngModel)]="tamil" name="tamil" (input)="calculateResult()" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="english" class="form-label fw-bold">English</label>
-          <input type="number" class="form-control" id="english" [(ngModel)]="english" name="english" (input)="calculateResult()" required>
+          <input type="number" class="form-control" id="english" [(ngModel)]="english" name="english" (input)="calculateResult()" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="maths" class="form-label fw-bold">Mathematics</label>
-          <input type="number" class="form-control" id="maths" [(ngModel)]="maths" name="maths" (input)="calculateResult()" required>
+          <input type="number" class="form-control" id="maths" [(ngModel)]="maths" name="maths" (input)="calculateResult()" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="science" class="form-label fw-bold">Science</label>
-          <input type="number" class="form-control" id="science" [(ngModel)]="science" name="science" (input)="calculateResult()" required>
+          <input type="number" class="form-control" id="science" [(ngModel)]="science" name="science" (input)="calculateResult()" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="social" class="form-label fw-bold">Social Science</label>
-          <input type="number" class="form-control" id="social" [(ngModel)]="social" name="social" (input)="calculateResult()" required>
-        </div>
+          <input type="number" class="form-control" id="social" [(ngModel)]="social" name="social" (input)="calculateResult()" required min="0" max="100">
+        </div>
       </div>
-
-
-    </form>
-
     <div class="card mt-4 mx-auto" style="max-width: 400px;" *ngIf="totalMarks >= 0">
       <div class="card-body text-center">
         <h5 class="card-title fw-bold">Total Marks: {{ totalMarks }}</h5>
@@ -68,5 +64,6 @@
     <div class="text-center mt-4">
       <button type="submit" class="btn btn-primary">Post Result</button>
     </div>
+  </form>
   </div>
 </div>

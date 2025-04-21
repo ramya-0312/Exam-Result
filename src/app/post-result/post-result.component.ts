@@ -9,15 +9,15 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./post-result.component.css']
 })
 export class PostResultComponent {
-  registerNumber: number = 0;
+  registerNumber: number | null = null;
   semester: number | null = null;
   collegeName: string = '';
 
-  tamil: number = 0;
-  english: number = 0;
-  maths: number = 0;
-  science: number = 0;
-  social: number = 0;
+  tamil!: number;
+  english!: number;
+  maths!: number;
+  science!: number;
+  social!: number;
   marks:number=0
 
   totalMarks: number = 0;

@@ -1,22 +1,27 @@
 import { Component } from '@angular/core';
 import { ResetPasswordService } from '../services/resetpassword.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  standalone:false,
+  standalone: false,
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent {
-  email=''; // Set this from previous step (can use state or localStorage)
+  email = ''; 
   Password = '';
-  confirmPassword= '';
+  confirmPassword = '';
 
-  constructor(private resetService: ResetPasswordService, private router: Router) {}
+  constructor(
+    private resetService: ResetPasswordService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   resetPassword() {
     if (this.Password !== this.confirmPassword) {
-      alert("Passwords do not match!");
+      this.toastr.error('Passwords do not match!', 'Error');
       return;
     }
 
@@ -26,13 +31,17 @@ export class ResetPasswordComponent {
     };
 
     this.resetService.resetPassword(payload).subscribe({
-      next: () => {
-        alert('Password reset successful!');
-        this.router.navigate(['/login']);
+      next: (response: any) => {
+        const message = response?.message || 'Password reset successful!';
+        this.toastr.success(message, 'Success');
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1000);
       },
-      error: (err) => {
-        console.error(err);
-        alert('Failed to reset password');
+      error: (error) => {
+        const errorMessage = error?.error?.message || 'Failed to reset password';
+        this.toastr.error(errorMessage, 'Error');
+        console.error(error);
       }
     });
   }

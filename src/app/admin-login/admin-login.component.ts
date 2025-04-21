@@ -14,18 +14,15 @@ export class AdminLoginComponent {
   password = '';
   wrongAttempts = 0;
   showForgotPassword = false;
-  errorMessage='';
-  formValid=false;
-
 
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
-  login() {
+  login(){
+
     const credentials = {
       email: this.email,
       password: this.password
     };
-
 
     this.authService.loginAdmin(credentials).subscribe({
       next: (res: any) => {
@@ -41,12 +38,17 @@ export class AdminLoginComponent {
       }
     });
   }
+
+  isGmailAddress(): boolean {
+    return this.email.toLowerCase().endsWith('@gmail.com');
+  }
+
   isEmailValid(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(this.email);
   }
 
   isFormValid(): boolean {
-    return this.isEmailValid() && this.password.length > 0;
-  }
+    return this.isEmailValid() && this.password.length > 0 && this.isGmailAddress();
+  }
 }
