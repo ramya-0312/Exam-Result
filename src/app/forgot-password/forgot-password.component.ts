@@ -9,8 +9,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent {
-  email: string = '';
-  newPassword:string='';
+  email= '';
+  Password='';
   emailverified=true;
 
 

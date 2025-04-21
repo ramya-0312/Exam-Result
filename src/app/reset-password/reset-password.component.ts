@@ -8,21 +8,21 @@ import { Router } from '@angular/router';
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent {
-  email: string = ''; // Set this from previous step (can use state or localStorage)
-  newPassword: string = '';
-  confirmPassword: string = '';
+  email=''; // Set this from previous step (can use state or localStorage)
+  Password = '';
+  confirmPassword= '';
 
   constructor(private resetService: ResetPasswordService, private router: Router) {}
 
   resetPassword() {
-    if (this.newPassword !== this.confirmPassword) {
+    if (this.Password !== this.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
     const payload = {
       email: this.email,
-      newPassword: this.newPassword
+      newPassword: this.Password
     };
 
     this.resetService.resetPassword(payload).subscribe({
