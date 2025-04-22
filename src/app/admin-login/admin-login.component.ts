@@ -15,10 +15,13 @@ export class AdminLoginComponent {
   wrongAttempts = 0;
   showForgotPassword = false;
 
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
-  login(){
-
+  login() {
     const credentials = {
       email: this.email,
       password: this.password
@@ -26,8 +29,14 @@ export class AdminLoginComponent {
 
     this.authService.loginAdmin(credentials).subscribe({
       next: (res: any) => {
-        this.toastr.success(res.response);
-        this.router.navigate(['/admin-dashboard']);
+        if (res && res.response === 'login Successfully') {
+          // On successful login, store email and password in localStorage
+          this.authService.setAdminCredentials(this.email, this.password);
+          this.toastr.success(res.response);
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.toastr.error('Invalid login response');
+        }
       },
       error: (err) => {
         this.wrongAttempts++;
@@ -49,6 +58,6 @@ export class AdminLoginComponent {
   }
 
   isFormValid(): boolean {
-    return this.isEmailValid() && this.password.length > 0 && this.isGmailAddress();
-  }
+    return this.isEmailValid() && this.password.length > 0 && this.isGmailAddress();
+  }
 }

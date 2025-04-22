@@ -15,6 +15,7 @@ import { RegistrationSuccessComponent } from './registration-success/registratio
 import { StudentResultComponent } from './student-result/student-result.component';
 import { ResultViewComponent } from './view-result/view-result.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
@@ -30,7 +31,10 @@ const routes: Routes = [
   { path: 'admin-register',component:AdminRegisterComponent},
   { path: 'registration-success',component:RegistrationSuccessComponent},
   { path: 'student-result',component:StudentResultComponent},
-  { path: 'reset-password',component:ResetPasswordComponent}
+  { path: 'reset-password',component:ResetPasswordComponent},
+  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] }, // Protect the dashboard route with the guard
+  { path: '', redirectTo: '/admin-login', pathMatch: 'full' }
 ];
 
 @NgModule({

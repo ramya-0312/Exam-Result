@@ -31,12 +31,13 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     ForgotPasswordComponent,
     AdminDashboardComponent,
     AddStudentComponent,
-    PostResultComponent,
     AdminRegisterComponent,
     RegistrationSuccessComponent,
     StudentResultComponent,
     ResultViewComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    PostResultComponent
+
 
 
 

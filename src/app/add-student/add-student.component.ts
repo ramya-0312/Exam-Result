@@ -24,6 +24,8 @@ export class AddStudentComponent {
     private router: Router
   ) {}
 
+  
+
   private formatDOB(): string {
     const date = new Date(this.student.dob);
     const year = date.getFullYear();
@@ -42,6 +44,8 @@ export class AddStudentComponent {
       ...this.student,
       dob: this.formatDOB(),
       department: this.department,
+      semester:'0'
+
     };
 
     this.studentService.addStudent(formattedStudent).subscribe({
@@ -57,7 +61,10 @@ export class AddStudentComponent {
     });
   }
 
-  logout() {
+  logout() {}
+
+  confirmLogout(){
     this.router.navigate(['/admin-login']);
   }
-}
+  }
+
