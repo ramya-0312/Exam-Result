@@ -33,7 +33,7 @@ export class AdminLoginComponent {
           // On successful login, store email and password in localStorage
           this.authService.setAdminCredentials(this.email, this.password);
           this.toastr.success(res.response);
-          this.router.navigate(['/admin-dashboard']);
+          this.router.navigate(['/admin-dashboard'],{replaceUrl:true});
         } else {
           this.toastr.error('Invalid login response');
         }
@@ -47,6 +47,7 @@ export class AdminLoginComponent {
       }
     });
   }
+
 
   isGmailAddress(): boolean {
     return this.email.toLowerCase().endsWith('@gmail.com');
