@@ -21,7 +21,7 @@ export class ForgotPasswordComponent {
     this.http.post('http://localhost:8080/adminregister/checkmail', { email: this.email }).subscribe({
       next: (res:any) => {
         localStorage.setItem('resetEmail', this.email);// Store email
-        this.toastr.success(res?.message);
+        this.toastr.success(res.response);
         this.router.navigate(['/reset-password']);      // Navigate to reset page
       },
       error: (err) => {
@@ -31,3 +31,9 @@ export class ForgotPasswordComponent {
     });
   }
 }
+// this.toastr.success(res.response || 'Registration successful!');
+//         this.router.navigate(['/resgistration-success']);
+//       },
+//       error: (err) => {
+//         this.toastr.error(err.error.message || 'Something went wrong');
+//       }

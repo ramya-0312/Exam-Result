@@ -22,7 +22,7 @@ export class AdminRegisterComponent {
     private router: Router,
     private toastr: ToastrService
   ) {}
-
+                
   validatePassword() {
     const pwd = this.password;
     this.isPasswordValid =

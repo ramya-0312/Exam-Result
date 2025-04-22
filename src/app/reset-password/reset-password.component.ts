@@ -12,6 +12,7 @@ export class ResetPasswordComponent {
   email = ''; 
   Password = '';
   confirmPassword = '';
+ 
 
   constructor(
     private resetService: ResetPasswordService,
@@ -19,6 +20,7 @@ export class ResetPasswordComponent {
     private toastr: ToastrService
   ) {}
 
+  
   resetPassword() {
     if (this.Password !== this.confirmPassword) {
       this.toastr.error('Passwords do not match!', 'Error');

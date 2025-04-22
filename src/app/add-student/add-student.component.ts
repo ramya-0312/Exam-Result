@@ -14,7 +14,7 @@ export class AddStudentComponent {
   registered: '',
     name: '',
     dob: '',
-    semester:'0'
+    
   };
   department = '';
 
@@ -42,15 +42,13 @@ export class AddStudentComponent {
       ...this.student,
       dob: this.formatDOB(),
       department: this.department,
-      semester:'0'
-      
     };
 
     this.studentService.addStudent(formattedStudent).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message || 'Student added successfully!');
         this.router.navigate(['/admin-dashboard']);
-        this.student = { registered: '', name: '', dob: '' ,semester:'0'};
+        this.student = { registered: '', name: '', dob: '' };
         this.department = '';
       },
       error: (err) => {
