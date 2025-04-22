@@ -21,12 +21,12 @@ export class ForgotPasswordComponent {
     this.http.post('http://localhost:8080/adminregister/checkmail', { email: this.email }).subscribe({
       next: (res:any) => {
         localStorage.setItem('resetEmail', this.email);// Store email
-        this.toastr.success(res?.message);
+        this.toastr.success(res.message);
         this.router.navigate(['/reset-password']);      // Navigate to reset page
       },
       error: (err) => {
-        const errorMessage = err?.error?.message;
-        this.toastr.error(errorMessage);
+       // const errorMessage = err?.error?.message;
+        this.toastr.error(err.error.message);
       }
     });
   }

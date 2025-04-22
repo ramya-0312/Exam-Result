@@ -12,6 +12,9 @@ export class AdminDashboardComponent {
   constructor(private router:Router){}
 
   logout(){
+
+  }
+  confirmLogout(){
     this.router.navigate(['/admin-login'])
   }
 

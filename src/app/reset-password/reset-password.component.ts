@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  standalone: false,
+  standalone:false,
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent {
-  email = ''; 
+  email = localStorage.getItem('resetEmail') || ''; // auto-fill from verified email
   Password = '';
   confirmPassword = '';
 
@@ -19,9 +19,23 @@ export class ResetPasswordComponent {
     private toastr: ToastrService
   ) {}
 
+  get isValidPassword(): boolean {
+    const hasUppercase = /[A-Z]/.test(this.Password);
+    const hasSymbol = /[^A-Za-z0-9]/.test(this.Password);
+    return hasUppercase && hasSymbol;
+  }
+
+  get isPasswordMatch(): boolean {
+    return this.Password === this.confirmPassword;
+  }
+
+  get isFormValid(): boolean {
+    return this.email !== '' && this.isValidPassword && this.isPasswordMatch;
+  }
+
   resetPassword() {
-    if (this.Password !== this.confirmPassword) {
-      this.toastr.error('Passwords do not match!', 'Error');
+    if (!this.isFormValid) {
+      this.toastr.error('Please check password requirements!');
       return;
     }
 
@@ -29,21 +43,14 @@ export class ResetPasswordComponent {
       email: this.email,
       password: this.confirmPassword
     };
-    
-  console.log("Sending payload:", payload);
 
     this.resetService.resetPassword(payload).subscribe({
-      next: (response: any) => {
-        const message = response?.message || 'Password reset successful!';
-        this.toastr.success(message, 'Success');
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1000);
+      next: (res: any) => {
+        this.toastr.success(res.response);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
-        const errorMessage = error?.error?.message || 'Failed to reset password';
-        this.toastr.error(errorMessage, 'Error');
-        console.error(error);
+        this.toastr.error(error.error.message);
       }
     });
   }

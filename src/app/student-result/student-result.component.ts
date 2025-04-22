@@ -43,16 +43,14 @@ export class StudentResultComponent {
       next: (data: any) => {
         if (data && data.message) {
           this.toastr.success(data.message, 'Success');
-        } else {
-          this.toastr.success('Result fetched successfully!', 'Success');
         }
 
         localStorage.setItem('studentResult', JSON.stringify(data));
         this.router.navigate(['/view-result']);
       },
       error: (err) => {
-        const backendMessage = err?.error?.message || 'Invalid Register Number or DOB.';
-        this.toastr.error(backendMessage, 'Error');
+        //const backendMessage = err?.error?.message || 'Invalid Register Number or DOB.';
+        this.toastr.error(err.error.message);
       }
     });
   }

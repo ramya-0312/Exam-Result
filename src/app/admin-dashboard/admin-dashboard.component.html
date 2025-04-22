@@ -11,7 +11,7 @@
     <span class="navbar-brand mb-0 h5">Admin</span>
   </div>
   <div class="ms-auto">
-      <button class="btn btn-outline-light"(click)="logout()">Logout</button>
+    <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
     </div>
   </nav>  <!-- Centered Card -->  <div class="d-flex justify-content-center align-items-center" style="height: 90vh;">
     <div class="card shadow-lg p-4" style="width: 400px;">
@@ -23,3 +23,24 @@
     </div>
   </div>  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </html>
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;"> <!-- smaller width -->
+    <div class="modal-content border-0 shadow-lg rounded-4" style="padding: 10px;">
+      <div class="modal-header bg-danger text-white py-2 px-3 rounded-top-4">
+        <h6 class="modal-title mb-0" id="logoutModalLabel">Confirm Logout</h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.8rem;"></button>
+      </div>
+      <div class="modal-body text-center py-3 px-2">
+        <i class="bi bi-exclamation-triangle-fill text-warning mb-2" style="font-size: 1.5rem;"></i>
+        <p class="mb-1 fw-semibold" style="font-size: 0.95rem;">Are you sure you want to logout?</p>
+        <p class="text-muted small mb-0" style="font-size: 0.8rem;">You’ll be redirected to login page.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pt-1 pb-3">
+        <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-sm btn-danger px-3" (click)="confirmLogout()" data-bs-dismiss="modal">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
