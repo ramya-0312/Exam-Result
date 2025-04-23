@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>
       <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
-      <div class="col-md-6"><strong>College:</strong> {{ student?.college }}</div>
+      <div class="col-md-6"><strong>Department:</strong> {{ student?.department }}</div>
       <div class="col-md-6"><strong>Semester:</strong> {{ student?.semester }}</div>
     </div>
   </div>
@@ -31,13 +31,20 @@
     </table>
   </div>
 
-  <!-- Total & Result -->
+  <!-- Total, Percentage & Result -->
   <div class="mt-4 p-4 rounded text-center shadow-sm"
        [ngClass]="{
          'bg-success text-white': student?.result === 'Pass',
          'bg-danger text-white': student?.result === 'Fail'
        }">
     <h5>Total Marks: {{ student?.total }}</h5>
+    <h5>Percentage: {{ getPercentage() }}%</h5>
     <h5>Result: {{ student?.result }}</h5>
+  </div>
+
+  <!-- Buttons -->
+  <div class="text-center mt-4">
+    <button class="btn btn-secondary me-2" (click)="goHome()">Back to Home</button>
+    <button class="btn btn-primary" (click)="printPage()">Print</button>
   </div>
 </div>
