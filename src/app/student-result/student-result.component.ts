@@ -1,3 +1,4 @@
+import { SelectSemesterComponent } from './../select-semester/select-semester.component';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResultService } from '../services/result.service';
@@ -11,11 +12,13 @@ import { ToastrService } from 'ngx-toastr';
 export class StudentResultComponent {
   registerNumber = '';
   dob = '';
+  selectedSemester = ''; // New field for semester
   errorMessage = '';
   totalMarks = '';
   resultStatus = '';
   subjects: { name: string; marks: number }[] = [];
   resultFetched: boolean = false;
+
 
   constructor(
     private router: Router,
@@ -32,25 +35,26 @@ export class StudentResultComponent {
   }
 
   submit() {
-    if (!this.registerNumber || !this.dob) {
-      this.toastr.error('Please fill both fields.', 'Error');
+    if (!this.registerNumber || !this.dob || !this.selectedSemester) {
+      this.toastr.error('Please fill all fields including semester.', 'Error');
       return;
     }
 
     const formattedDob = this.getFormattedDOB();
 
-    this.resultService.getResult(this.registerNumber, formattedDob).subscribe({
+    this.resultService.getResult(this.registerNumber, formattedDob, this.selectedSemester).subscribe({
       next: (data: any) => {
         if (data && data.message) {
           this.toastr.success(data.message, 'Success');
         }
 
         localStorage.setItem('studentResult', JSON.stringify(data));
-        this.router.navigate(['/view-result']);
+        localStorage.setItem('semester', this.selectedSemester); // Store semester if needed
+        localStorage.setItem('studentAuth', 'true'); // After successful result fetch
+        this.router.navigate(['/select-semester']);
       },
       error: (err) => {
-        //const backendMessage = err?.error?.message || 'Invalid Register Number or DOB.';
-        this.toastr.error(err.error.message);
+        this.toastr.error(err.error.message || 'Invalid details');
       }
     });
   }

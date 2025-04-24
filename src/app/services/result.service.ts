@@ -12,10 +12,12 @@ export class ResultService {
 
   constructor(private http: HttpClient) {}
 
-  getResult(registerNumber: string, dob: string): Observable<any> {
+  getResult(registerNumber: string, dob: string,semester:string): Observable<any> {
     const body = {
       registerNumber: registerNumber,
-      dob: dob
+      dob: dob,
+      semester:semester
+
     };
 
     return this.http.post('${this.baseUrl}/view', body);

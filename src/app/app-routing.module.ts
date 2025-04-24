@@ -16,12 +16,14 @@ import { StudentResultComponent } from './student-result/student-result.componen
 import { ViewResultComponent } from './view-result/view-result.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SelectSemesterComponent } from './select-semester/select-semester.component';
+import { StudentAuthGuard } from './guards/student-auth.guard';
 
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo:'home',pathMatch:'full'},
-  { path: 'view-result', component: ViewResultComponent},
+  //{ path: 'view-result', component: ViewResultComponent},
   //{ path: 'student-result', component: StudentResultComponent},
   //{ path: 'student-result/:regNumber', component: StudentResultComponent},
   { path: 'admin-login', component: AdminLoginComponent },
@@ -41,7 +43,19 @@ const routes: Routes = [
     path: 'post-result',
     component: PostResultComponent,
     canActivate: [AuthGuard]
+  },
+  //{ path: 'select-semester', component:SelectSemesterComponent},
+  {
+    path: 'select-semester',
+    component: SelectSemesterComponent,
+    canActivate: [StudentAuthGuard]
+  },
+  {
+    path: 'view-result',
+    component: ViewResultComponent,
+    canActivate: [StudentAuthGuard]
   }
+
 ];
 
 @NgModule({

@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  loginWithGoogleToken(googleToken: string) {
+    throw new Error('Method not implemented.');
+  }
   private baseUrl = 'http://localhost:8080/adminregister/login'; // Your login API
 
   constructor(private http: HttpClient) {}
@@ -29,5 +32,6 @@ export class AuthService {
   // Check if admin is logged in by checking the presence of credentials
   isAdminLoggedIn(): boolean {
     return !!localStorage.getItem('adminEmail') && !!localStorage.getItem('adminPassword');
-  }
+  }
+ 
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../services/admin.service';
 
+
 @Component({
   standalone:false,
   selector: 'app-admin-register',
@@ -22,7 +23,11 @@ export class AdminRegisterComponent {
     private router: Router,
     private toastr: ToastrService
   ) {}
-                
+
+
+
+
+
   validatePassword() {
     const pwd = this.password;
     this.isPasswordValid =
@@ -31,6 +36,7 @@ export class AdminRegisterComponent {
       /[0-9]/.test(pwd) &&
       /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
   }
+
 
   register() {
     const data = {

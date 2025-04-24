@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 //import { ViewResultComponent } from './view-result/view-result.component';
 //import { StudentResultComponent } from './student-result/student-result.component';
+//import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RouterModule } from '@angular/router';
@@ -22,6 +23,10 @@ import { RegistrationSuccessComponent } from './registration-success/registratio
 import { StudentResultComponent } from './student-result/student-result.component';
 import { ViewResultComponent } from './view-result/view-result.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { SelectSemesterComponent } from './select-semester/select-semester.component';
+import { GoogleLoginProvider,GoogleSigninButtonModule,SocialAuthServiceConfig,SocialLoginModule } from '@abacritt/angularx-social-login';
+import { StudentAuthGuard } from './guards/student-auth.guard';
+
 
 @NgModule({
   declarations: [
@@ -37,16 +42,16 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     ViewResultComponent,
     ResetPasswordComponent,
     PostResultComponent,
-    
+    SelectSemesterComponent
 
-
-
-
-  ],
+],
   imports: [
     BrowserModule,
     CommonModule,
     FormsModule ,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
+
     //AdminRegistrationComponent,
     AppRoutingModule,
     RouterModule,
@@ -63,7 +68,22 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 
   ],
-  providers: [],
+
+  providers: [{
+    provide:'SocialAuthServiceConfig',
+    useValue:{
+      autologin:false,
+      providers:[
+        {
+          id:GoogleLoginProvider.PROVIDER_ID,
+          provider:new GoogleLoginProvider('1002182901459-ssdh7u0injaeesd2kindckpmqk1aia82.apps.googleusercontent.com')
+        }
+      ],onError:(err)=>{
+        console.log(err);
+      }
+    }as SocialAuthServiceConfig
+  }
+,[StudentAuthGuard]],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

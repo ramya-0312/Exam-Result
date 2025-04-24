@@ -27,6 +27,12 @@ export class ViewResultComponent implements OnInit {
   goHome() {
     this.router.navigate(['/home']); // Replace with your home route
   }
+  viewResult() {
+    // Check for valid register number & DOB, then:
+    localStorage.setItem('studentAuth', 'true'); // SET here
+
+    this.router.navigate(['/select-semester']);
+  }
 
   printPage() {
     window.print();
