@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
+  adminEmail:string='';
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -16,6 +17,11 @@ export class AdminDashboardComponent implements OnInit {
     if (!this.authService.isAdminLoggedIn()) {
       this.router.navigate(['/admin-login']);
     }
+    const storedEmail=localStorage.getItem('adminEmail');
+    if(storedEmail){
+      this.adminEmail=storedEmail;
+    }
+
   }
 
   logout() {

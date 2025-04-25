@@ -10,11 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-student.component.css']
 })
 export class AddStudentComponent {
+  adminEmail:string='';
   student = {
   registered: '',
     name: '',
     dob: '',
-    
+
   };
   department = '';
 
@@ -24,7 +25,7 @@ export class AddStudentComponent {
     private router: Router
   ) {}
 
-  
+
 
   private formatDOB(): string {
     const date = new Date(this.student.dob);
@@ -52,9 +53,16 @@ export class AddStudentComponent {
       next: (res: any) => {
         this.toastr.success(res.message || 'Student added successfully!');
         this.router.navigate(['/admin-dashboard']);
+        const storedEmail=localStorage.getItem('adminEmail');
+    if(storedEmail){
+      this.adminEmail=storedEmail;
+    }
+
         this.student = { registered: '', name: '', dob: '' };
         this.department = '';
       },
+
+
       error: (err) => {
         this.toastr.error(err.error.message || 'Something went wrong');
       }

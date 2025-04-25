@@ -12,6 +12,7 @@ type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
   styleUrls: ['./post-result.component.css']
 })
 export class PostResultComponent {
+  adminEmail:string='';
   registerNumber: number | null = null;
   semester: number | null = null;
   collegeName: string = '';
@@ -72,6 +73,11 @@ export class PostResultComponent {
     if (count === Object.keys(this.marks).length) {
       const percentage = (sum / 500) * 100;
       this.result = percentage >= 50 ? 'Pass' : 'Fail';
+      const storedEmail=localStorage.getItem('adminEmail');
+    if(storedEmail){
+      this.adminEmail=storedEmail;
+    }
+
     } else {
       this.result = '';
     }

@@ -22,6 +22,7 @@ export class AuthService {
     localStorage.setItem('adminEmail', email);
     localStorage.setItem('adminPassword', password);
   }
+  
 
   // Clear credentials on logout
   clearAdminCredentials(): void {

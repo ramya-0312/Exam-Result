@@ -16,3 +16,10 @@ body, html {
   border-radius: 12px;
 }
 
+body {
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff; /* for light text */
+}

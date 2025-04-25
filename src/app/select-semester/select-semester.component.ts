@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  standalone:false,
+  standalone: false,
   selector: 'app-select-semester',
   templateUrl: './select-semester.component.html',
   styleUrls: ['./select-semester.component.css']
 })
-export class SelectSemesterComponent {
+export class SelectSemesterComponent implements OnInit {
+  selectedSemester: string = '';
   semesters = [
     { name: 'Semester 1', value: 'sem1' },
     { name: 'Semester 2', value: 'sem2' },
@@ -18,7 +19,13 @@ export class SelectSemesterComponent {
   constructor(private router: Router) {}
 
   viewResult(semester: string) {
-    localStorage.setItem('studentAuth','true');
-    this.router.navigate(['/student-result', semester]);  // Adjust route as needed
+    this.router.navigate(['/view-result']);
+  }
+
+  ngOnInit(): void {
+    const storedSemester = localStorage.getItem('semester');
+    if (storedSemester) {
+      this.selectedSemester = storedSemester;
+    }
   }
 }

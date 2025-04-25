@@ -42,6 +42,7 @@ export class AdminLoginComponent {
         if (res && res.response === 'login Successfully') {
           // On successful login, store email and password in localStorage
           this.authService.setAdminCredentials(this.email, this.password);
+          localStorage.setItem('adminEmail',this.email)
           this.toastr.success(res.response);
           this.router.navigate(['/admin-dashboard'],{replaceUrl:true});
         } else {
@@ -98,6 +99,7 @@ export class AdminLoginComponent {
     //     console.error(err);
     //   }
     // });
+    localStorage.setItem('adminEmail',user.email);
     this.router.navigate(['/admin-dashboard']);
 
   }
