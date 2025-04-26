@@ -1,12 +1,16 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <div class="d-flex align-items-center">
-    <i class="bi bi-person-circle text-white me-2" style="font-size: 1.5rem;"></i>
-    <span class="navbar-brand mb-0 h5">{{adminEmail}}</span>
+<nav class="navbar navbar-expand-lg bg- px-2">
+  <div class="d-flex align-items-center position-relative">
+    <i class="bi bi-person-circle fs-4 me-2"
+       data-bs-toggle="tooltip"
+       data-bs-placement="bottom"
+       title="Welcome Admin&#10;{{adminEmail}}"
+       style="cursor: pointer;">
+    </i>
   </div>
   <div class="ms-auto">
-    <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
-  </div>
+    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
+  </div>
 </nav>
 <br><br>
 <h2 class="mb-0 text-center fw-bold text-success">ADD STUDENT</h2>
