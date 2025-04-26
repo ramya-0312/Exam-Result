@@ -68,7 +68,7 @@ export class PostResultComponent implements OnInit{
     for (const subject in this.marks) {
       const mark = this.marks[subject as SubjectName];
       if (mark !== null && !isNaN(mark)) {
-        sum += mark;
+        sum += Number(mark);
         count++;
       }
     }
