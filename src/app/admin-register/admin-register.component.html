@@ -1,65 +1,103 @@
 <div class="background">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow rounded-4" style="width: 400px;">
+      <h3 class="text-center mb-3">Admin Registration</h3>
 
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card p-4 shadow rounded-4" style="width: 400px;">
-    <h3 class="text-center mb-3">Admin Registration</h3>
+      <form (ngSubmit)="register()" novalidate>
 
-    <form (ngSubmit)="register()" #form="ngForm" novalidate>
-
-      <div class="mb-3">
-        <label for="fullName" class="form-label">Full Name</label>
-        <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName"
-               class="form-control" required />
-      </div>
-
-      <div class="mb-3">
-        <label for="department" class="form-label">Department</label>
-        <select id="department" class="form-control" [(ngModel)]="department" name="department" required>
-          <option value="" disabled selected>Select Department</option>
-          <option value="CSE">Computer Science</option>
-          <option value="ECE">Electronics</option>
-          <option value="EEE">Electrical</option>
-          <option value="MECH">Mechanical</option>
-          <option value="CIVIL">Civil</option>
-          <!-- Add more if needed -->
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email"
-               class="form-control" required email />
-      </div>
-
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password"
-               class="form-control" required (ngModelChange)="validatePassword()" />
-        <div class="form-text text-danger" *ngIf="!isPasswordValid && password">
-          Password must be at least 8 characters, include 1 uppercase letter, 1 number, and 1 special character.
+        <!-- Full Name -->
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <div class="input-group">
+            <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName"
+              class="form-control" (blur)="validateName()" (ngModelChange)="validateName()" required />
+            <span class="input-group-text">
+              <i *ngIf="nameTouched" class="bi" [ngClass]="nameValid ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+            </span>
+          </div>
+          <div *ngIf="nameTouched && !nameValid" class="form-text text-danger">
+            Full Name must be at least 3 characters.
+          </div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="confirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword"
-               name="confirmPassword" class="form-control" required />
-        <div class="form-text text-danger" *ngIf="password && confirmPassword && password !== confirmPassword">
-          Passwords do not match.
+        <!-- Department -->
+        <div class="mb-3">
+          <label for="department" class="form-label">Department</label>
+          <div class="input-group">
+            <select id="department" class="form-control" [(ngModel)]="department" name="department"
+              (blur)="validateDepartment()" (ngModelChange)="validateDepartment()" required>
+              <option value="" disabled selected>Select Department</option>
+              <option value="CSE">Computer Science</option>
+              <option value="ECE">Electronics</option>
+              <option value="EEE">Electrical</option>
+              <option value="MECH">Mechanical</option>
+              <option value="CIVIL">Civil</option>
+            </select>
+            <span class="input-group-text">
+              <i *ngIf="departmentTouched" class="bi" [ngClass]="departmentValid ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+            </span>
+          </div>
+          <div *ngIf="departmentTouched && !departmentValid" class="form-text text-danger">
+            Please select a department.
+          </div>
         </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-group">
+            <input type="email" id="email" [(ngModel)]="email" name="email"
+              class="form-control" (blur)="validateEmail()" (ngModelChange)="validateEmail()" required />
+            <span class="input-group-text">
+              <i *ngIf="emailTouched" class="bi" [ngClass]="emailValid ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+            </span>
+          </div>
+          <div *ngIf="emailTouched && !emailValid" class="form-text text-danger">
+            Enter a valid Gmail address.
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <input type="password" id="password" [(ngModel)]="password" name="password"
+              class="form-control" (blur)="validatePassword()" (ngModelChange)="validatePassword()" required />
+            <span class="input-group-text">
+              <i *ngIf="passwordTouched" class="bi" [ngClass]="passwordValid ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+            </span>
+          </div>
+          <div *ngIf="passwordTouched && !passwordValid" class="form-text text-danger">
+            Minimum 8 characters, 1 uppercase, 1 number, 1 special character.
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <div class="input-group">
+            <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword"
+              name="confirmPassword" class="form-control" (blur)="validateConfirmPassword()" (ngModelChange)="validateConfirmPassword()" required />
+            <span class="input-group-text">
+              <i *ngIf="confirmPasswordTouched" class="bi" [ngClass]="confirmPasswordValid ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+            </span>
+          </div>
+          <div *ngIf="confirmPasswordTouched && !confirmPasswordValid" class="form-text text-danger">
+            Passwords do not match.
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="btn btn-primary w-100" type="submit" [disabled]="!isFormValid()">
+          Register
+        </button>
+      </form>
+
+      <!-- Link -->
+      <div class="text-center mt-3">
+        <a routerLink="/admin-login">Already have an account? Login</a>
       </div>
 
-      <button class="btn btn-primary w-100" type="submit"
-              [disabled]="!form.valid || !isPasswordValid || password !== confirmPassword">
-        Register
-      </button>
-    </form>
-
-
-
-    <div class="text-center mt-3">
-      <a routerLink="/admin-login">Already have an account? Login</a>
     </div>
   </div>
-</div>
 </div>

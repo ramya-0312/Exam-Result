@@ -110,9 +110,12 @@ export class PostResultComponent implements OnInit {
     const payload = {
       registerNumber: this.registerNumber,
       semester: this.semester,
-      collegeName: this.collegeName,
-      marks: this.marks,
-      total: this.totalMarks,
+      tamil:this.marks.tamil,
+      english:this.marks.english,
+      maths:this.marks.maths,
+      science:this.marks.science,
+      social:this.marks.social,
+      grade: this.totalMarks,
       result: this.result
     };
 

@@ -16,6 +16,10 @@ export class AdminLoginComponent {
   password = '';
   wrongAttempts = 0;
   showForgotPassword = false;
+  emailTouched=false;
+  passwordTouched=false;
+  emailValid=false;
+  passwordValid=false;
   // socialAuthService: any;
 
   constructor(
@@ -122,4 +126,14 @@ export class AdminLoginComponent {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
   
+validateEmail() {
+  this.emailTouched = true;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  this.emailValid = emailPattern.test(this.email) && this.isGmailAddress();
+}
+
+validatePassword() {
+  this.passwordTouched = true;
+  this.passwordValid = this.password.length >= 6; // Example rule: 6 characters
+}
 }
