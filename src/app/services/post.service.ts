@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'
 })
-export class ResultService {
+export class PostService {
 
   private baseUrl = 'http://localhost:8080/student/postresult';
   constructor(private http: HttpClient) {}
