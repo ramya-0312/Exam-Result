@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from '../services/student.service';
 import { Router } from '@angular/router';
@@ -9,13 +9,12 @@ import { Router } from '@angular/router';
   templateUrl: './add-student.component.html',
   styleUrls: ['./add-student.component.css']
 })
-export class AddStudentComponent {
-  adminEmail:string='';
+export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
+  adminEmail: string = '';
   student = {
-  registered: '',
+    registered: '',
     name: '',
     dob: '',
-
   };
   department = '';
 
@@ -25,11 +24,16 @@ export class AddStudentComponent {
     private router: Router
   ) {}
 
-
+  ngOnInit(): void {
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
+  }
 
   private formatDOB(): string {
     const date = new Date(this.student.dob);
-    const year = date.getFullYear();
+    const year = date.getFullYear().toString(); // Only year
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
@@ -45,34 +49,29 @@ export class AddStudentComponent {
       ...this.student,
       dob: this.formatDOB(),
       department: this.department,
-      semester:'0'
-
+      semester: '0'
     };
 
     this.studentService.addStudent(formattedStudent).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message || 'Student added successfully!');
         this.router.navigate(['/admin-dashboard']);
-        const storedEmail=localStorage.getItem('adminEmail');
-    if(storedEmail){
-      this.adminEmail=storedEmail;
-    }
 
+        // After adding, reset form
         this.student = { registered: '', name: '', dob: '' };
         this.department = '';
       },
-
-
       error: (err) => {
         this.toastr.error(err.error.message || 'Something went wrong');
       }
     });
   }
 
-  logout() {}
-
-  confirmLogout(){
-    this.router.navigate(['/admin-login']);
-  }
+  logout() {
+    // optional: clear localStorage or any other logout logic
   }
 
+  confirmLogout() {
+    this.router.navigate(['/admin-login']);
+  }
+}

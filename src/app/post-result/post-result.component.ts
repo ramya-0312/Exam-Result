@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
@@ -11,8 +11,8 @@ type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
   templateUrl: './post-result.component.html',
   styleUrls: ['./post-result.component.css']
 })
-export class PostResultComponent {
-  adminEmail:string='';
+export class PostResultComponent implements OnInit{
+  adminEmail: string = '';
   registerNumber: number | null = null;
   semester: number | null = null;
   collegeName: string = '';
@@ -27,19 +27,27 @@ export class PostResultComponent {
 
   totalMarks: number = 0;
   result: string = '';
+  calculated: boolean = false;
   semesters = [1, 2, 3, 4];
 
   constructor(
     private toastr: ToastrService,
     private router: Router,
-    private http:HttpClient
+    private http: HttpClient
   ) {}
+
+  ngOnInit(): void {
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
+  }
 
   blockInvalidMarks(event: KeyboardEvent) {
     const inputChar = String.fromCharCode(event.keyCode);
     const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     if (!allowedKeys.includes(inputChar)) {
-      event.preventDefault(); // block non-numeric
+      event.preventDefault();
     }
   }
 
@@ -47,12 +55,10 @@ export class PostResultComponent {
     let value = this.marks[subject];
     if (value === null || isNaN(value)) return;
 
-    // Bound the marks between 0 and 100
     if (value > 100) this.marks[subject] = 100;
     else if (value < 0) this.marks[subject] = 0;
 
-    // Immediately recalculate when any mark is changed
-    this.calculateResult();
+    this.calculated = false; // Re-calculate needed if values change
   }
 
   calculateResult() {
@@ -69,30 +75,30 @@ export class PostResultComponent {
 
     this.totalMarks = sum;
 
-    // Only show Pass/Fail if all subjects have marks
     if (count === Object.keys(this.marks).length) {
       const percentage = (sum / 500) * 100;
       this.result = percentage >= 50 ? 'Pass' : 'Fail';
-      const storedEmail=localStorage.getItem('adminEmail');
-    if(storedEmail){
-      this.adminEmail=storedEmail;
-    }
+      this.calculated = true;
+
 
     } else {
-      this.result = '';
-    }
+      this.result = '';
+      this.calculated = false;
+    }
   }
 
   onSubmit(): void {
-    this.calculateResult();
+    if (!this.calculated) {
+      this.toastr.warning('Please click "Calculate" before submitting.');
+      return;
+    }
 
     if (Object.values(this.marks).includes(null)) {
       this.toastr.error('Please enter all marks.');
       return;
     }
 
-    // Optional: Post result to backend here
-    const payload= {
+    const payload = {
       registerNumber: this.registerNumber,
       semester: this.semester,
       collegeName: this.collegeName,
@@ -104,19 +110,18 @@ export class PostResultComponent {
     this.http.post<any>('http://localhost:8080/api/post-result', payload).subscribe({
       next: (res) => {
         this.toastr.success(res.response);
-        //console.log('Response:', response);
       },
       error: (err) => {
         this.toastr.error(err.error.message);
-        //console.error('Error:', error);
-      }
-    });
+      }
+    });
   }
 
   logout() {
-
+    
   }
-  confirmLogout(){
+
+  confirmLogout() {
     this.router.navigate(['/admin-login']);
   }
 

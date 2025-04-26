@@ -16,7 +16,7 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="registerNumber" class="form-label fw-bold">Register Number</label>
-          <input type="number" class="form-control" id="registerNumber" required [(ngModel)]="registerNumber" name="registerNumber">
+          <input type="text" class="form-control" id="registerNumber" required [(ngModel)]="registerNumber" name="registerNumber">
         </div>
         <br><br>
         <div class="col-md-4">
@@ -31,27 +31,27 @@
       <div class="row mb-3">
         <div class="col-md-2">
           <label for="tamil" class="form-label fw-bold">Tamil</label>
-          <input type="number" class="form-control" id="tamil" [(ngModel)]="marks['tamil']" name="tamil"
+          <input type="text" class="form-control" id="tamil" [(ngModel)]="marks['tamil']" name="tamil"
                  (input)="validateMarks('tamil')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="english" class="form-label fw-bold">English</label>
-          <input type="number" class="form-control" id="english" [(ngModel)]="marks['english']" name="english"
+          <input type="text" class="form-control" id="english" [(ngModel)]="marks['english']" name="english"
                  (input)="validateMarks('english')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="maths" class="form-label fw-bold">Mathematics</label>
-          <input type="number" class="form-control" id="maths" [(ngModel)]="marks['maths']" name="maths"
+          <input type="text" class="form-control" id="maths" [(ngModel)]="marks['maths']" name="maths"
                  (input)="validateMarks('maths')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="science" class="form-label fw-bold">Science</label>
-          <input type="number" class="form-control" id="science" [(ngModel)]="marks['science']" name="science"
+          <input type="text" class="form-control" id="science" [(ngModel)]="marks['science']" name="science"
                  (input)="validateMarks('science')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
         </div>
         <div class="col-md-2">
           <label for="social" class="form-label fw-bold">Social Science</label>
-          <input type="number" class="form-control" id="social" [(ngModel)]="marks['social']" name="social"
+          <input type="text" class="form-control" id="social" [(ngModel)]="marks['social']" name="social"
                  (input)="validateMarks('social')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
         </div>
       </div>
@@ -62,11 +62,12 @@
           <p class="card-text fw-bold" [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
             Result: {{ result }}
           </p>
+          <button class="btn btn-primary" (click)="calculateResult()">Calculate</button>
         </div>
       </div>
 
       <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary">Post Result</button>
+        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit()">Post Result</button>
       </div>
     </form>
     <!-- Logout Confirmation Modal -->

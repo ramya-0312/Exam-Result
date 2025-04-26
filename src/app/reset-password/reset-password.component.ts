@@ -9,10 +9,9 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './reset-password.component.html'
 })
 export class ResetPasswordComponent {
-  email = localStorage.getItem('resetEmail') || ''; // auto-fill from verified email
+  email = localStorage.getItem('resetEmail') || '';
   Password = '';
   confirmPassword = '';
- 
 
   constructor(
     private resetService: ResetPasswordService,
@@ -48,6 +47,8 @@ export class ResetPasswordComponent {
     this.resetService.resetPassword(payload).subscribe({
       next: (res: any) => {
         this.toastr.success(res.response);
+        localStorage.removeItem('emailVerified');
+        localStorage.removeItem('resetEmail');
         this.router.navigate(['/login']);
       },
       error: (error) => {

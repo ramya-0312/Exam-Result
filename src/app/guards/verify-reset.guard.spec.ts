@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { StudentAuthGuard } from './student-auth.guard';
+import { VerifyResetGuard } from './verify-reset.guard';
 
-describe('StudentAuthGuard', () => {
-  let guard: StudentAuthGuard;
+describe('VerifyResetGuard', () => {
+  let guard: VerifyResetGuard;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
@@ -11,12 +11,12 @@ describe('StudentAuthGuard', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        StudentAuthGuard,
+        VerifyResetGuard,
         { provide: Router, useValue: spy }
       ]
     });
 
-    guard = TestBed.inject(StudentAuthGuard);
+    guard = TestBed.inject(VerifyResetGuard);
     routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });
 

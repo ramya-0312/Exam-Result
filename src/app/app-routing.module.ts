@@ -18,6 +18,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { AuthGuard } from './guards/auth.guard';
 import { SelectSemesterComponent } from './select-semester/select-semester.component';
 import { StudentAuthGuard } from './guards/student-auth.guard';
+import { VerifyResetGuard } from './guards/verify-reset.guard';
 
 
 const routes: Routes = [
@@ -28,14 +29,14 @@ const routes: Routes = [
   //{ path: 'student-result/:regNumber', component: StudentResultComponent},
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent},
-  { path: 'admin-dashboard',component:AdminDashboardComponent},
+  //{ path: 'admin-dashboard',component:AdminDashboardComponent},
   //{ path: 'add-student',component:AddStudentComponent},
   //{ path: 'post-result',component:PostResultComponent},
   { path: 'admin-register',component:AdminRegisterComponent},
   { path: 'registration-success',component:RegistrationSuccessComponent},
   { path: 'student-result',component:StudentResultComponent},
-  { path: 'reset-password',component:ResetPasswordComponent},
-  { path: 'admin-login', component: AdminLoginComponent },
+  //{ path: 'reset-password',component:ResetPasswordComponent},
+  //{ path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] }, // Protect the dashboard route with the guard
   { path: '', redirectTo: '/admin-login', pathMatch: 'full' },
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
@@ -54,6 +55,11 @@ const routes: Routes = [
     path: 'view-result',
     component: ViewResultComponent,
     canActivate: [StudentAuthGuard]
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+    canActivate: [VerifyResetGuard]
   }
 
 ];

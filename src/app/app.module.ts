@@ -28,6 +28,7 @@ import { GoogleLoginProvider,GoogleSigninButtonModule,SocialAuthServiceConfig,So
 import { StudentAuthGuard } from './guards/student-auth.guard';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +43,8 @@ import { StudentAuthGuard } from './guards/student-auth.guard';
     ViewResultComponent,
     ResetPasswordComponent,
     PostResultComponent,
-    SelectSemesterComponent
+    SelectSemesterComponent,
+
 
 ],
   imports: [
