@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
   templateUrl: './post-result.component.html',
   styleUrls: ['./post-result.component.css']
 })
-export class PostResultComponent implements OnInit{
+export class PostResultComponent implements OnInit {
   adminEmail: string = '';
   registerNumber: number | null = null;
   semester: number | null = null;
@@ -43,10 +43,21 @@ export class PostResultComponent implements OnInit{
     }
   }
 
-  blockInvalidMarks(event: KeyboardEvent) {
+
+  blockInvalidMarks(event: KeyboardEvent, subject: SubjectName) {
     const inputChar = String.fromCharCode(event.keyCode);
     const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
     if (!allowedKeys.includes(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Check if after adding the new digit, value crosses 100
+    const currentVal = this.marks[subject]?.toString() || '';
+    const newVal = currentVal + inputChar;
+    const numericVal = parseInt(newVal, 10);
+
+    if (!isNaN(numericVal) && numericVal > 100) {
       event.preventDefault();
     }
   }
@@ -58,7 +69,7 @@ export class PostResultComponent implements OnInit{
     if (value > 100) this.marks[subject] = 100;
     else if (value < 0) this.marks[subject] = 0;
 
-    this.calculated = false; // Re-calculate needed if values change
+    this.calculated = false;
   }
 
   calculateResult() {
@@ -68,7 +79,7 @@ export class PostResultComponent implements OnInit{
     for (const subject in this.marks) {
       const mark = this.marks[subject as SubjectName];
       if (mark !== null && !isNaN(mark)) {
-        sum += mark;
+        sum += Number(mark);
         count++;
       }
     }
@@ -79,8 +90,6 @@ export class PostResultComponent implements OnInit{
       const percentage = (sum / 500) * 100;
       this.result = percentage >= 50 ? 'Pass' : 'Fail';
       this.calculated = true;
-
-
     } else {
       this.result = '';
       this.calculated = false;
@@ -117,9 +126,7 @@ export class PostResultComponent implements OnInit{
     });
   }
 
-  logout() {
-    
-  }
+  logout() {}
 
   confirmLogout() {
     this.router.navigate(['/admin-login']);

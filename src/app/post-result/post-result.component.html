@@ -1,27 +1,34 @@
 <div class="container-fluid vh-100">
   <nav class="navbar navbar-expand-lg bg- px-2">
-    <div class="d-flex align-items-center">
-      <i class="bi bi-person-circle fs-4 me-2"></i>
-      <span class="fw-bold">{{adminEmail}}</span>
+    <div class="d-flex align-items-center position-relative">
+      <i class="bi bi-person-circle fs-4 me-2"
+         data-bs-toggle="tooltip"
+         data-bs-placement="bottom"
+         title="Welcome Admin&#10;{{adminEmail}}"
+         style="cursor: pointer;">
+      </i>
     </div>
     <div class="ms-auto">
       <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
-    </div>
+    </div>
   </nav>
 
   <div class="container mt-4">
     <h2 class="mb-4 text-center fw-bold text-success">STUDENT RESULT</h2>
+
     <form (ngSubmit)="onSubmit()" #resultForm="ngForm"><br><br>
 
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="registerNumber" class="form-label fw-bold">Register Number</label>
-          <input type="text" class="form-control" id="registerNumber" required [(ngModel)]="registerNumber" name="registerNumber">
+          <input type="text" class="form-control" id="registerNumber" required
+                 [(ngModel)]="registerNumber" name="registerNumber">
         </div>
         <br><br>
         <div class="col-md-4">
           <label for="semester" class="form-label fw-bold">Semester</label>
-          <select class="form-select" id="semester" required [(ngModel)]="semester" name="semester">
+          <select class="form-select" id="semester" required
+                  [(ngModel)]="semester" name="semester">
             <option value="" disabled selected>Select Semester</option>
             <option *ngFor="let sem of semesters" [value]="sem">{{ sem }}</option>
           </select>
@@ -32,34 +39,35 @@
         <div class="col-md-2">
           <label for="tamil" class="form-label fw-bold">Tamil</label>
           <input type="text" class="form-control" id="tamil" [(ngModel)]="marks['tamil']" name="tamil"
-                 (input)="validateMarks('tamil')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
+                 (input)="validateMarks('tamil')" (keypress)="blockInvalidMarks($event, 'tamil')" required>
         </div>
         <div class="col-md-2">
           <label for="english" class="form-label fw-bold">English</label>
           <input type="text" class="form-control" id="english" [(ngModel)]="marks['english']" name="english"
-                 (input)="validateMarks('english')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
+                 (input)="validateMarks('english')" (keypress)="blockInvalidMarks($event, 'english')" required>
         </div>
         <div class="col-md-2">
           <label for="maths" class="form-label fw-bold">Mathematics</label>
           <input type="text" class="form-control" id="maths" [(ngModel)]="marks['maths']" name="maths"
-                 (input)="validateMarks('maths')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
+                 (input)="validateMarks('maths')" (keypress)="blockInvalidMarks($event, 'maths')" required>
         </div>
         <div class="col-md-2">
           <label for="science" class="form-label fw-bold">Science</label>
           <input type="text" class="form-control" id="science" [(ngModel)]="marks['science']" name="science"
-                 (input)="validateMarks('science')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
+                 (input)="validateMarks('science')" (keypress)="blockInvalidMarks($event, 'science')" required>
         </div>
         <div class="col-md-2">
           <label for="social" class="form-label fw-bold">Social Science</label>
           <input type="text" class="form-control" id="social" [(ngModel)]="marks['social']" name="social"
-                 (input)="validateMarks('social')" (keypress)="blockInvalidMarks($event)" required min="0" max="100">
+                 (input)="validateMarks('social')" (keypress)="blockInvalidMarks($event, 'social')" required>
         </div>
       </div>
 
       <div class="card mt-4 mx-auto" style="max-width: 400px;" *ngIf="totalMarks >= 0">
         <div class="card-body text-center">
           <h5 class="card-title fw-bold">Total Marks: {{ totalMarks }}</h5>
-          <p class="card-text fw-bold" [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
+          <p class="card-text fw-bold"
+             [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
             Result: {{ result }}
           </p>
           <button class="btn btn-primary" (click)="calculateResult()">Calculate</button>
@@ -67,29 +75,31 @@
       </div>
 
       <div class="text-center mt-4">
-        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit()">Post Result</button>
+        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit()">Post Result</button>
       </div>
     </form>
+
     <!-- Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;"> <!-- smaller width -->
-    <div class="modal-content border-0 shadow-lg rounded-4" style="padding: 10px;">
-      <div class="modal-header bg-danger text-white py-2 px-3 rounded-top-4">
-        <h6 class="modal-title mb-0" id="logoutModalLabel">Confirm Logout</h6>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.8rem;"></button>
-      </div>
-      <div class="modal-body text-center py-3 px-2">
-        <i class="bi bi-exclamation-triangle-fill text-warning mb-2" style="font-size: 1.5rem;"></i>
-        <p class="mb-1 fw-semibold" style="font-size: 0.95rem;">Are you sure you want to logout?</p>
-        <p class="text-muted small mb-0" style="font-size: 0.8rem;">You’ll be redirected to login page.</p>
-      </div>
-      <div class="modal-footer justify-content-center border-0 pt-1 pb-3">
-        <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-sm btn-danger px-3" (click)="confirmLogout()" data-bs-dismiss="modal">Yes</button>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
+        <div class="modal-content border-0 shadow-lg rounded-4" style="padding: 10px;">
+          <div class="modal-header bg-danger text-white py-2 px-3 rounded-top-4">
+            <h6 class="modal-title mb-0" id="logoutModalLabel">Confirm Logout</h6>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    style="font-size: 0.8rem;"></button>
+          </div>
+          <div class="modal-body text-center py-3 px-2">
+            <i class="bi bi-exclamation-triangle-fill text-warning mb-2" style="font-size: 1.5rem;"></i>
+            <p class="mb-1 fw-semibold" style="font-size: 0.95rem;">Are you sure you want to logout?</p>
+            <p class="text-muted small mb-0" style="font-size: 0.8rem;">You’ll be redirected to login page.</p>
+          </div>
+          <div class="modal-footer justify-content-center border-0 pt-1 pb-3">
+            <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal">No</button>
+            <button type="button" class="btn btn-sm btn-danger px-3" (click)="confirmLogout()" data-bs-dismiss="modal">Yes</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
   </div>
 </div>
