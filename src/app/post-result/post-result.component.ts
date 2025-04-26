@@ -130,13 +130,16 @@ grade:String ="";
     });
   }
 
-  logout() {}
+  logout() {
+   
+  }
 
   confirmLogout() {
+    localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
 
   postResult() {
-    this.router.navigate(['/postresult']);
+    this.router.navigate(['/post.service']);
   }
 }
