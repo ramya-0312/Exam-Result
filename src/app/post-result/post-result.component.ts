@@ -24,7 +24,7 @@ export class PostResultComponent implements OnInit {
     science: null,
     social: null
   };
-
+grade:String ="";
   totalMarks: number = 0;
   result: string = '';
   calculated: boolean = false;
@@ -85,6 +85,7 @@ export class PostResultComponent implements OnInit {
     }
 
     this.totalMarks = sum;
+    this.grade=sum.toString();
 
     if (count === Object.keys(this.marks).length) {
       const percentage = (sum / 500) * 100;
@@ -108,7 +109,7 @@ export class PostResultComponent implements OnInit {
     }
 
     const payload = {
-      registerNumber: this.registerNumber,
+     registered: this.registerNumber,
       semester: this.semester,
       tamil:this.marks.tamil,
       english:this.marks.english,
@@ -119,7 +120,7 @@ export class PostResultComponent implements OnInit {
       result: this.result
     };
 
-    this.http.post<any>('http://localhost:8080/api/post-result', payload).subscribe({
+    this.http.post<any>('http://localhost:8080/student/postresult', payload).subscribe({
       next: (res) => {
         this.toastr.success(res.response);
       },
@@ -136,6 +137,6 @@ export class PostResultComponent implements OnInit {
   }
 
   postResult() {
-    this.router.navigate(['/admin-dashboard']);
+    this.router.navigate(['/postresult']);
   }
 }
