@@ -72,6 +72,7 @@ export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
   }
 
   confirmLogout() {
+    localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
 }

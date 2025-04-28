@@ -15,7 +15,7 @@ export class PostResultComponent implements OnInit {
   adminEmail: string = '';
   registerNumber: number | null = null;
   semester: number | null = null;
-  collegeName: string = '';
+
 
   marks: Record<SubjectName, number | null> = {
     tamil: null,
@@ -89,7 +89,7 @@ grade:String ="";
 
     if (count === Object.keys(this.marks).length) {
       const percentage = (sum / 500) * 100;
-      this.result = percentage >= 50 ? 'Pass' : 'Fail';
+      this.result = percentage >= 35 ? 'Pass' : 'Fail';
       this.calculated = true;
     } else {
       this.result = '';

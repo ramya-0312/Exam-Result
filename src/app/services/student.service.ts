@@ -11,5 +11,5 @@ export class StudentService {
 
   addStudent(student: any) {
     return this.http.post(`${this.baseUrl}`, student);
-  }
+}
 }
