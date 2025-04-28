@@ -24,7 +24,7 @@ import { VerifyResetGuard } from './guards/verify-reset.guard';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo:'home',pathMatch:'full'},
-  //{ path: 'view-result', component: ViewResultComponent},
+ //{ path: 'view-result', component: ViewResultComponent},
   //{ path: 'student-result', component: StudentResultComponent},
   //{ path: 'student-result/:regNumber', component: StudentResultComponent},
   { path: 'admin-login', component: AdminLoginComponent },

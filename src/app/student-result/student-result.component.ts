@@ -1,8 +1,9 @@
-import { SelectSemesterComponent } from './../select-semester/select-semester.component';
+//import { SelectSemesterComponent } from './../select-semester/select-semester.component';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResultService } from '../services/result.service';
 import { ToastrService } from 'ngx-toastr';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   standalone: false,
@@ -23,7 +24,9 @@ export class StudentResultComponent {
   constructor(
     private router: Router,
     private resultService: ResultService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private themeService:ThemeService
+
   ) {}
 
   private getFormattedDOB(): string {
@@ -38,9 +41,11 @@ export class StudentResultComponent {
     if (!this.registerNumber || !this.dob || !this.selectedSemester) {
       this.toastr.error('Please fill all fields including semester.', 'Error');
       return;
+
     }
 
     const formattedDob = this.getFormattedDOB();
+
 
     this.resultService.getResult(this.registerNumber, formattedDob, this.selectedSemester).subscribe({
       next: (data: any) => {
@@ -52,6 +57,7 @@ export class StudentResultComponent {
         localStorage.setItem('semester', this.selectedSemester); // Store semester if needed
         localStorage.setItem('studentAuth', 'true'); // After successful result fetch
         this.router.navigate(['/select-semester']);
+
       },
       error: (err) => {
         this.toastr.error(err.error.message || 'Invalid details');

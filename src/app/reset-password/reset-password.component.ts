@@ -49,7 +49,7 @@ export class ResetPasswordComponent {
         this.toastr.success(res.response);
         localStorage.removeItem('emailVerified');
         localStorage.removeItem('resetEmail');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/admin-login']);
       },
       error: (error) => {
         this.toastr.error(error.error.message);

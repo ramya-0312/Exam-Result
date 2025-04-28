@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <div class="text-center mb-4">
     <h3 class="fw-bold text-uppercase">Welcome to Office of the Controller of Examination</h3>
-    <h5 class="text-center">Pre-Examination Monitoring System</h5>
+    <h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
   </div>
 
   <!-- Tabs -->
@@ -13,15 +13,15 @@
     </button>
 
     <button class="btn"
-      [ngClass]="{'btn-primary': activeTab === 'result', 'btn-outline-primary': activeTab !== 'result'}"
-      (click)="loadResults()">
+      [ngClass]="{'btn-success': activeTab === 'result', 'btn-outline-success': activeTab !== 'result'}"
+      (click)="switchTab('result')">
       Exam Result
     </button>
   </div>
 
   <!-- Profile View -->
   <div *ngIf="activeTab === 'profile'" class="border p-4 rounded mb-4 bg-light shadow-sm">
-    <h5 class="mb-3 fw-bold text-center">Student Profile</h5>
+    <h5 class="mb-3 fw-bold text-center text-muted">Student Profile</h5>
     <div><strong>Name:</strong> {{ student?.name }}</div>
     <div><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
     <div><strong>Department:</strong> {{ student?.department }}</div>
@@ -31,14 +31,17 @@
   <!-- Exam Result View -->
   <div *ngIf="activeTab === 'result'">
 
-    <!-- Loading Spinner (visible when isLoading is true) -->
-    <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-      <div class="spinner"></div>
-      <p class="ms-3">Loading your results...</p>
+   <!-- Spinner -->
+  <div *ngIf="loadingResult" class="text-center my-5">
+    <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Loading...</span>
     </div>
+    <h5 class="mt-3">Loading your results...</h5>
+  </div>
+
 
     <!-- Result Content (visible after 5 seconds) -->
-    <div *ngIf="!isLoading">
+    <div *ngIf="!loadingResult">
       <div class="border p-4 rounded mb-4 bg-light shadow-sm">
         <div class="row">
           <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>

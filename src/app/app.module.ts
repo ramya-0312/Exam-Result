@@ -26,6 +26,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SelectSemesterComponent } from './select-semester/select-semester.component';
 import { GoogleLoginProvider,GoogleSigninButtonModule,SocialAuthServiceConfig,SocialLoginModule } from '@abacritt/angularx-social-login';
 import { StudentAuthGuard } from './guards/student-auth.guard';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+import { ThemeService } from './services/theme.service';
 
 
 
@@ -44,6 +46,8 @@ import { StudentAuthGuard } from './guards/student-auth.guard';
     ResetPasswordComponent,
     PostResultComponent,
     SelectSemesterComponent,
+    ThemeToggleComponent,
+
 
 
 ],
@@ -71,21 +75,22 @@ import { StudentAuthGuard } from './guards/student-auth.guard';
 
   ],
 
-  providers: [{
+  providers:[{
     provide:'SocialAuthServiceConfig',
     useValue:{
       autologin:false,
       providers:[
         {
           id:GoogleLoginProvider.PROVIDER_ID,
-          provider:new GoogleLoginProvider('1002182901459-ssdh7u0injaeesd2kindckpmqk1aia82.apps.googleusercontent.com')
+          provider:new GoogleLoginProvider('344375912053-c3iuhsb6oi2gdkis3drhnoosbd9q788p.apps.googleusercontent.com')
         }
       ],onError:(err)=>{
         console.log(err);
       }
     }as SocialAuthServiceConfig
   }
-,[StudentAuthGuard]],
+,[StudentAuthGuard],[ThemeService]],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

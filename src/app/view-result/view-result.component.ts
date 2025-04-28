@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class ViewResultComponent implements OnInit {
   student: any;
   activeTab: string = 'profile'; // Default profile view
-  isLoading: boolean = false;  // Spinner state
+  loadingResult: boolean = false;  // Spinner state
 
   constructor(private router: Router) {}
 
@@ -18,17 +18,10 @@ export class ViewResultComponent implements OnInit {
     if (data) {
       this.student = JSON.parse(data);
     }
+    
   }
 
-  loadResults() {
-    this.isLoading = true; // Start loading state
 
-    // Simulate the loading process for 3 seconds (using setTimeout)
-    setTimeout(() => {
-      this.isLoading = false;  // Stop the loading state
-      this.activeTab = 'result';  // Switch to results tab
-    }, 3000); // 3 seconds delay
-  }
 
   getPercentage(): number {
     if (!this.student?.marks) return 0;
@@ -44,4 +37,17 @@ export class ViewResultComponent implements OnInit {
   printPage() {
     window.print();
   }
+switchTab(tab: 'profile'|'result') {
+  this.activeTab=tab;
+  if (tab === 'result') {
+    this.loadingResult = true;
+    setTimeout(() => {
+      this.loadingResult = false;
+     // this.activeTab = 'result';
+    }, 3000); // 3 seconds delay
+  } else {
+    this.activeTab = tab;
+    }
+  }
+
 }

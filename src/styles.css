@@ -1,20 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
 body.light-theme {
-  background-color: white;
-  color: black;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --card-bg: #f8f9fa;
+  --table-bg: #ffffff;
+  --navbar-bg: #e9ecef;
 }
 
 body.dark-theme {
-  background-color: #121212;
-  color: white;
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --card-bg: #1e1e1e;
+  --table-bg: #1f1f1f;
+  --navbar-bg: #1e1e1e;
 }
 
-/* Optional - Card, Button, Navbar styling if needed */
-.card {
-  background-color: inherit;
-  color: inherit;
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Reuse everywhere */
+.card, .border, .navbar, .table {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.table {
+  background-color: var(--table-bg) !important;
 }
 
 .navbar {
-  background-color: inherit;
+  background-color: var(--navbar-bg) !important;
+}
+
+/* Primary Button Colors */
+.btn-primary {
+  background-color: #0d6efd;
+ border:none;
 }

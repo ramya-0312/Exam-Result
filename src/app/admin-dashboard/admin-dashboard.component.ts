@@ -31,6 +31,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   confirmLogout() {
+    localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
 }

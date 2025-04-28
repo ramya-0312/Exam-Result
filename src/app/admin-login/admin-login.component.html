@@ -6,13 +6,19 @@
       <div class="form-group mb-3 position-relative">
         <label>Email</label>
         <input
-          type="email"
-          [(ngModel)]="email"
-          (input)="validateEmail()"
-          class="form-control"
-          [ngClass]="{'is-valid': emailValid, 'is-invalid': emailTouched && !emailValid}"
-          placeholder="Enter email"
-        />
+  type="email"
+  [(ngModel)]="email"
+  name="email"
+  (input)="validateEmail()"
+  class="form-control"
+  required
+  autocomplete="off"
+  [ngClass]="{
+    'is-valid': emailTouched && emailValid,
+    'is-invalid': emailTouched && !emailValid
+  }"
+  placeholder="Enter email"
+/>
         <div *ngIf="emailValid" class="valid-feedback position-absolute end-0 me-3"></div>
         <div *ngIf="emailTouched && !emailValid" class="invalid-feedback position-absolute end-0 me-3"></div>
       </div>
@@ -24,6 +30,8 @@
           [(ngModel)]="password"
           (input)="validatePassword()"
           class="form-control"
+          required
+          autocomplete="off"
           [ngClass]="{'is-valid': passwordValid, 'is-invalid': passwordTouched && !passwordValid}"
           placeholder="Enter password"
         />
