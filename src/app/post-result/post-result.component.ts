@@ -15,7 +15,7 @@ export class PostResultComponent implements OnInit {
   adminEmail: string = '';
   registerNumber: number | null = null;
   semester: number | null = null;
-  collegeName: string = '';
+
 
   marks: Record<SubjectName, number | null> = {
     tamil: null,

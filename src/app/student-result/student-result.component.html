@@ -7,7 +7,7 @@
     <form (ngSubmit)="getResult()" #resultForm="ngForm">
       <div class="mb-3">
         <label for="regNo" class="form-label">Register Number</label>
-        <input type="text" id="regNo" name="regNo" class="form-control" [(ngModel)]="registerNumber" required>
+        <input type="text" id="regNo" name="regNo" class="form-control" [(ngModel)]="registered" required>
       </div>
 
       <div class="mb-3">
@@ -15,7 +15,7 @@
         <input type="date" id="dob" name="dob" class="form-control" [(ngModel)]="dob" required />
       </div>
 
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label for="semester" class="form-label">Select Semester</label>
         <select id="semester" name="semester" class="form-select" [(ngModel)]="selectedSemester" required>
           <option value="" disabled selected>Select Semester</option>
@@ -24,7 +24,7 @@
           <option value="3">Semester 3</option>
           <option value="4">Semester 4</option>
         </select>
-      </div>
+      </div> -->
 
       <div class="text-center">
         <button type="submit" class="btn btn-primary" [disabled]="resultForm.invalid">View Result</button>

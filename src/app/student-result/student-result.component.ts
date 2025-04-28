@@ -11,7 +11,7 @@ import { ThemeService } from '../services/theme.service';
   templateUrl: './student-result.component.html',
 })
 export class StudentResultComponent {
-  registerNumber = '';
+  registered = '';
   dob = '';
   selectedSemester = ''; // New field for semester
   errorMessage = '';
@@ -37,8 +37,8 @@ export class StudentResultComponent {
     return `${year}-${month}-${day}`;
   }
 
-  submit() {
-    if (!this.registerNumber || !this.dob || !this.selectedSemester) {
+  getResult() {
+    if (!this.registered || !this.dob ) {
       this.toastr.error('Please fill all fields including semester.', 'Error');
       return;
 
@@ -46,8 +46,7 @@ export class StudentResultComponent {
 
     const formattedDob = this.getFormattedDOB();
 
-
-    this.resultService.getResult(this.registerNumber, formattedDob, this.selectedSemester).subscribe({
+    this.resultService.getResult(this.registered, formattedDob).subscribe({
       next: (data: any) => {
         if (data && data.message) {
           this.toastr.success(data.message, 'Success');
@@ -64,5 +63,5 @@ export class StudentResultComponent {
       }
     });
   }
-getResult(){}
+// getResult(){}
 }
