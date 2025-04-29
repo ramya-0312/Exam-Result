@@ -19,11 +19,13 @@ import { AuthGuard } from './guards/auth.guard';
 import { SelectSemesterComponent } from './select-semester/select-semester.component';
 import { StudentAuthGuard } from './guards/student-auth.guard';
 import { VerifyResetGuard } from './guards/verify-reset.guard';
+import { StudentProfileComponent } from './student-profile/student-profile.component';
 
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo:'home',pathMatch:'full'},
+  {path:'student-profile',component:StudentProfileComponent},
  //{ path: 'view-result', component: ViewResultComponent},
   //{ path: 'student-result', component: StudentResultComponent},
   //{ path: 'student-result/:regNumber', component: StudentResultComponent},

@@ -25,7 +25,7 @@ export class StudentResultComponent {
     private router: Router,
     private resultService: ResultService,
     private toastr: ToastrService,
-    private themeService:ThemeService
+    //private themeService:ThemeService
 
   ) {}
 
@@ -35,6 +35,14 @@ export class StudentResultComponent {
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
+  }
+  viewSemesters() {
+    const studentData = {
+      registerNumber: this.registered,
+      dob: this.dob
+    };
+
+    this.router.navigate(['/student-profile'], { state: studentData });
   }
 
   getResult() {
@@ -55,7 +63,7 @@ export class StudentResultComponent {
         localStorage.setItem('studentResult', JSON.stringify(data));
         localStorage.setItem('semester', this.selectedSemester); // Store semester if needed
         localStorage.setItem('studentAuth', 'true'); // After successful result fetch
-        this.router.navigate(['/select-semester']);
+        this.router.navigate(['/student-profile']);
 
       },
       error: (err) => {

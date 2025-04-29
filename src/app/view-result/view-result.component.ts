@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone:false,
@@ -10,17 +11,38 @@ export class ViewResultComponent implements OnInit {
   student: any;
   activeTab: string = 'profile'; // Default profile view
   loadingResult: boolean = false;  // Spinner state
+ //selectedSemester:string='';
+ registered='';
+ dob='';
+ semester='';
+ resultData=''
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private http:HttpClient) {}
 
   ngOnInit() {
-    const data = localStorage.getItem('studentResult');
-    if (data) {
-      this.student = JSON.parse(data);
+    const data = history.state;
+    console.log('Recieved in viewresultcomponent:',data)
+    if (!data||!data.registerNumber || !data.dob || !data.semester) {
+      this.router.navigate(['/student-result']); // fallback
+      return;
     }
-    
-  }
 
+    this.registered = data.registerNumber;
+    this.dob = data.dob;
+    this.semester = data.semester;
+
+    const requestBody = {
+      registerNumber: this.registered,
+      dob: this.dob,
+      semester: this.semester
+    };
+
+    this.http.post('http://your-backend-url/student/result', requestBody).subscribe((res: any) => {
+      this.student = res.studentDetails;
+      this.resultData = res.result;
+      console.log('navigation state:', history.state);
+    });
+  }
 
 
   getPercentage(): number {
@@ -36,18 +58,6 @@ export class ViewResultComponent implements OnInit {
 
   printPage() {
     window.print();
-  }
-switchTab(tab: 'profile'|'result') {
-  this.activeTab=tab;
-  if (tab === 'result') {
-    this.loadingResult = true;
-    setTimeout(() => {
-      this.loadingResult = false;
-     // this.activeTab = 'result';
-    }, 3000); // 3 seconds delay
-  } else {
-    this.activeTab = tab;
-    }
-  }
+  }
 
 }

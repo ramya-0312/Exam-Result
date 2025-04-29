@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from '../services/student.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   standalone: false,
@@ -39,7 +40,7 @@ export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
     return `${year}-${month}-${day}`;
   }
 
-  addStudent() {
+  addStudent(form:NgForm) {
     if (!this.student.registered || !this.student.name || !this.student.dob || !this.department) {
       this.toastr.warning('Please fill all the fields');
       return;
@@ -55,7 +56,7 @@ export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
     this.studentService.addStudent(formattedStudent).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message || 'Student added successfully!');
-        this.router.navigate(['/admin-dashboard']);
+        form.resetForm();
 
         // After adding, reset form
         this.student = { registered: '', name: '', dob: '' };

@@ -1,44 +1,10 @@
+
+<div class = "background">
 <div class="container mt-5">
   <div class="text-center mb-4">
     <h3 class="fw-bold text-uppercase">Welcome to Office of the Controller of Examination</h3>
     <h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
   </div>
-
-  <!-- Tabs -->
-  <div class="d-flex justify-content-center mb-0">
-    <button class="btn me-2"
-      [ngClass]="{'btn-primary': activeTab === 'profile', 'btn-outline-primary': activeTab !== 'profile'}"
-      (click)="activeTab = 'profile'">
-      Profile
-    </button>
-
-    <button class="btn"
-      [ngClass]="{'btn-success': activeTab === 'result', 'btn-outline-success': activeTab !== 'result'}"
-      (click)="switchTab('result')">
-      Exam Result
-    </button>
-  </div>
-
-  <!-- Profile View -->
-  <div *ngIf="activeTab === 'profile'" class="border p-4 rounded mb-4 bg-light shadow-sm">
-    <h5 class="mb-3 fw-bold text-center text-muted">Student Profile</h5>
-    <div><strong>Name:</strong> {{ student?.name }}</div>
-    <div><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
-    <div><strong>Department:</strong> {{ student?.department }}</div>
-    <div><strong>Semester:</strong> {{ student?.semester }}</div>
-  </div>
-
-  <!-- Exam Result View -->
-  <div *ngIf="activeTab === 'result'">
-
-   <!-- Spinner -->
-  <div *ngIf="loadingResult" class="text-center my-5">
-    <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <h5 class="mt-3">Loading your results...</h5>
-  </div>
-
 
     <!-- Result Content (visible after 5 seconds) -->
     <div *ngIf="!loadingResult">
@@ -47,7 +13,7 @@
           <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>
           <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
           <div class="col-md-6"><strong>Department:</strong> {{ student?.department }}</div>
-          <div class="col-md-6"><strong>Semester:</strong> {{ student?.semester }}</div>
+          <div class="col-md-6"><strong>Semester:</strong> {{ semester }}</div>
         </div>
       </div>
 
@@ -88,18 +54,3 @@
 
 </div>
 
-<style>
-  /* Add a spinner animation */
-  .spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg);}
-  }
-</style>

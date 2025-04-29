@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 })
 export class SelectSemesterComponent implements OnInit {
   selectedSemester: string = '';
+  registered='';
+  dob=''
+  loading=false;
   semesters = [
     { name: 'Semester 1', value: 'sem1' },
     { name: 'Semester 2', value: 'sem2' },
@@ -18,14 +21,45 @@ export class SelectSemesterComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  viewResult(semester: string) {
-    this.router.navigate(['/view-result']);
+  ngOnInit() {
+    const nav = history.state;
+    this.registered = nav.registerNumber;
+    this.dob = nav.dob;
+
+   //this.router.navigate(['/view-result'])
   }
 
-  ngOnInit(): void {
-    const storedSemester = localStorage.getItem('semester');
-    if (storedSemester) {
-      this.selectedSemester = storedSemester;
-    }
-  }
+  viewResult(semValue: string) {
+    console.log('Clicked View for semester:', semValue);
+
+    const stateData = history.state;
+    console.log('Received state:', stateData);
+
+    if (!stateData.registerNumber || !stateData.dob) {
+      alert('Missing data, redirecting...');
+      this.router.navigate(['/student-result']);
+      return;
+    }
+
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      this.router.navigate(['/view-result'], {
+        state: {
+          registerNumber: stateData.registerNumber,
+          dob: stateData.dob,
+          semester: semValue
+        }
+      });
+    }, 3000);
+
+
+    this.router.navigate(['/view-result'], {
+      state: {
+        registerNumber: stateData.registerNumber,
+        dob: stateData.dob,
+        semester: semValue
+      }
+    });
+  }
 }

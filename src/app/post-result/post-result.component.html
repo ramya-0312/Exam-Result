@@ -16,7 +16,7 @@
   <div class="container mt-4">
     <h2 class="mb-4 text-center fw-bold text-success">STUDENT RESULT</h2>
 
-    <form (ngSubmit)="onSubmit()" #resultForm="ngForm"><br><br>
+    <form #resultForm="ngForm" (ngSubmit)="postResult()"><br><br>
 
       <div class="row mb-3">
         <div class="col-md-4">
@@ -75,7 +75,7 @@
       </div>
 
       <div class="text-center mt-4">
-        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit()">Post Result</button>
+        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit(resultForm)">Post Result</button>
       </div>
     </form>
 

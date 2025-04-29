@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
@@ -97,7 +98,7 @@ grade:String ="";
     }
   }
 
-  onSubmit(): void {
+  onSubmit(form:NgForm): void {
     if (!this.calculated) {
       this.toastr.warning('Please click "Calculate" before submitting.');
       return;
@@ -123,6 +124,7 @@ grade:String ="";
     this.http.post<any>('http://localhost:8080/student/postresult', payload).subscribe({
       next: (res) => {
         this.toastr.success(res.response);
+        form.resetForm();
       },
       error: (err) => {
         this.toastr.error(err.error.message);

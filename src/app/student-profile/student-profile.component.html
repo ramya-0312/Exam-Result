@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="width: 400px;">
+    <h4 class="text-center mb-3">Student Profile</h4>
+
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && student">
+      <p><strong>Name:</strong> {{ student.name }}</p>
+      <p><strong>Register Number:</strong> {{ student.registered }}</p>
+      <p><strong>DOB:</strong> {{ student.dob }}</p>
+      <p><strong>Department:</strong> {{ student.department }}</p>
+
+      <button class="btn btn-primary w-100 mt-3" (click)="goToSemesterSelection()">View</button>
+    </div>
+  </div>
+</div>

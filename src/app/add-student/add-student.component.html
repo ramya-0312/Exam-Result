@@ -16,7 +16,8 @@
 <h2 class="mb-0 text-center fw-bold text-success">ADD STUDENT</h2>
 <!-- Toastr message appears via Angular logic, not manual HTML -->
 <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-  <form class="w-50" (ngSubmit)="addStudent()" #studentForm="ngForm">
+  <form #addStudentForm="ngForm" (ngSubmit)="addStudent(addStudentForm)">
+    <!-- form fields here -->
     <div class="mb-3">
       <label for="registerNo" class="form-label">Register Number</label>
       <input type="text" id="registerNo" class="form-control" [(ngModel)]="student.registered" name="registerNo" required>

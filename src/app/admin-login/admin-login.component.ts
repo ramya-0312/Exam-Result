@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/an
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.css']
 })
-export class AdminLoginComponent {
+export class AdminLoginComponent implements OnInit{
 
   email = '';
   password = '';
@@ -103,9 +103,11 @@ export class AdminLoginComponent {
     //     console.error(err);
     //   }
     // });
+    if(user &&user.email){
+
     localStorage.setItem('adminEmail',user.email);
     this.router.navigate(['/admin-dashboard']);
-
+    }
   }
 
 
@@ -123,7 +125,9 @@ export class AdminLoginComponent {
   }
 
   signInWithGoogle(): void {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user=>{
+      console.log("Google user:",user)
+    });
   }
   
 validateEmail() {
@@ -133,7 +137,10 @@ validateEmail() {
 }
 
 validatePassword() {
-  this.passwordTouched = true;
-  this.passwordValid = this.password.length >= 6; // Example rule: 6 characters
+ // this.passwordTouched = true;
+  //this.passwordValid = this.password.length >= 6; // Example rule: 6 characters
+}
+backToHome() {
+  this.router.navigate(['/home']);
 }
 }
