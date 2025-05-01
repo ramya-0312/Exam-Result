@@ -26,9 +26,13 @@ export class ResultService {
     // });
     return this.http.get(this.baseUrl, { params: { registered, dob } });
   }
-  
+
 
     // return this.http.get(this.baseUrl);
     // return this.http.post(this.baseUrl, body);
+
+    viewSemester(registered: string, dob: string): Observable<any>{
+      return this.http.get(this.baseUrl, { params: { registered, dob } });
+    }
   }
 

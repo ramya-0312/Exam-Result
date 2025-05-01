@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResultService } from '../services/result.service';
 import { ToastrService } from 'ngx-toastr';
-import { ThemeService } from '../services/theme.service';
+//import { ThemeService } from '../services/theme.service';
 
 @Component({
   standalone: false,
@@ -37,39 +37,65 @@ export class StudentResultComponent {
     return `${year}-${month}-${day}`;
   }
   viewSemesters() {
-    const studentData = {
-      registerNumber: this.registered,
-      dob: this.dob
-    };
+    if (!this.registered || !this.dob) {
+      this.toastr.error('Please enter Register Number and DOB.', 'Error');
+      return;
+    }
 
-    this.router.navigate(['/student-profile'], { state: studentData });
+    const formattedDob = this.getFormattedDOB();
+
+    // Backend validation check
+    this.resultService.getResult(this.registered, formattedDob).subscribe({
+      next: (data: any) => {
+        if (data && data.student) {
+          // Navigate only if valid
+          this.router.navigate(['/student-profile'], {
+            state: {
+              registerNumber: this.registered,
+              dob: formattedDob
+            }
+          });
+        } else {
+          this.toastr.error('Student not found.', 'Error');
+        }
+      },
+      error: () => {
+        this.toastr.error('Invalid details or server error.', 'Error');
+      }
+    });
   }
 
   getResult() {
-    if (!this.registered || !this.dob ) {
-      this.toastr.error('Please fill all fields including semester.', 'Error');
+    if (!this.registered || !this.dob) {
+      this.toastr.error('Please fill all fields.', 'Error');
       return;
-
     }
 
     const formattedDob = this.getFormattedDOB();
 
     this.resultService.getResult(this.registered, formattedDob).subscribe({
       next: (data: any) => {
-        if (data && data.message) {
-          this.toastr.success(data.message, 'Success');
+        if (data && data.student) {
+          // Store necessary data
+          localStorage.setItem('studentResult', JSON.stringify(data));
+          localStorage.setItem('semester', this.selectedSemester);
+          localStorage.setItem('studentAuth', 'true');
+
+          // Navigate with state
+          this.router.navigate(['/student-profile'], {
+            state: {
+              registerNumber: this.registered,
+              dob: formattedDob
+            }
+          });
+        } else {
+          this.toastr.error('Student not found.', 'Error');
         }
-
-        localStorage.setItem('studentResult', JSON.stringify(data));
-        localStorage.setItem('semester', this.selectedSemester); // Store semester if needed
-        localStorage.setItem('studentAuth', 'true'); // After successful result fetch
-        this.router.navigate(['/student-profile']);
-
       },
       error: (err) => {
-        this.toastr.error(err.error.message || 'Invalid details');
-      }
-    });
-  }
+        this.toastr.error(err.error.message || 'Invalid details', 'Error');
+      }
+    });
+  }
 // getResult(){}
 }

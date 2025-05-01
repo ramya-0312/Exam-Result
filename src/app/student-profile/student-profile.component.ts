@@ -19,13 +19,13 @@ export class StudentProfileComponent implements OnInit {
   ngOnInit(): void {
     const state = history.state;
 
-    if (!state.registerNumber || !state.dob) {
+    if (!state.registered || !state.dob) {
       this.router.navigate(['/student-result']);
       return;
     }
 
     const params = new HttpParams()
-  .set('registerNumber', state.registerNumber)
+  .set('registerNumber', state.registered)
   .set('dob', state.dob);
 
 this.http.get('http://your-backend-url/student/profile', { params }).subscribe({
@@ -35,7 +35,7 @@ this.http.get('http://your-backend-url/student/profile', { params }).subscribe({
   },
   error: (err) => {
     this.error = 'Student not found or invalid details';
-    this.loading = false;
+    this.loading =false;
   }
 });
   }
@@ -43,7 +43,7 @@ this.http.get('http://your-backend-url/student/profile', { params }).subscribe({
   goToSemesterSelection() {
     this.router.navigate(['/select-semester'], {
       state: {
-        registerNumber: this.student.registerNumber,
+        registered: this.student.registered,
         dob: this.student.dob
       }
     });
