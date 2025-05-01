@@ -4,19 +4,24 @@ import { Router } from '@angular/router';
 import { ResultService } from '../services/result.service';
 import { ToastrService } from 'ngx-toastr';
 import { ThemeService } from '../services/theme.service';
-
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 @Component({
   standalone: false,
   selector: 'app-student-result',
   templateUrl: './student-result.component.html',
 })
 export class StudentResultComponent {
-  registered = '';
+  registered= '';
   dob = '';
   selectedSemester = ''; // New field for semester
   errorMessage = '';
   totalMarks = '';
   resultStatus = '';
+  student=''
+  loading=false
+  error=''
+  
   subjects: { name: string; marks: number }[] = [];
   resultFetched: boolean = false;
 
@@ -25,6 +30,8 @@ export class StudentResultComponent {
     private router: Router,
     private resultService: ResultService,
     private toastr: ToastrService,
+    private route:ActivatedRoute,
+    private http:HttpClient
     //private themeService:ThemeService
 
   ) {}
@@ -36,40 +43,52 @@ export class StudentResultComponent {
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
+  
   viewSemesters() {
+    this.getResult
+    if (!this.registered || !this.dob) {
+      this.toastr.error('Please fill all fields including semester.', 'Error');
+      return;
+    }
+  
     const studentData = {
       registerNumber: this.registered,
       dob: this.dob
     };
+  
+    this.router.navigate(['/student-profile'], {
+      queryParams: studentData  // Use queryParams to send as URL params
+    });
+}
 
-    this.router.navigate(['/student-profile'], { state: studentData });
-  }
+   // this.router.navigate(['/student-profile'], { state: studentData })
 
-  getResult() {
-    if (!this.registered || !this.dob ) {
+   getResult() {
+    if (!this.registered?.trim() || !this.dob?.trim()) {
       this.toastr.error('Please fill all fields including semester.', 'Error');
       return;
-
     }
-
+  
     const formattedDob = this.getFormattedDOB();
-
+  
     this.resultService.getResult(this.registered, formattedDob).subscribe({
       next: (data: any) => {
-        if (data && data.message) {
-          this.toastr.success(data.message, 'Success');
+        if (data?.status==='OK'|| data?.status===200) {
+          const studentData = data.response; 
+         
+          console.log(data);
+          this.toastr.success( 'Success');
+          localStorage.setItem('studentResult', JSON.stringify(studentData));
+          localStorage.setItem('semester', this.selectedSemester);
+          localStorage.setItem('studentAuth', 'true');
+          this.router.navigate(['/student-profile']);
+         
         }
-
-        localStorage.setItem('studentResult', JSON.stringify(data));
-        localStorage.setItem('semester', this.selectedSemester); // Store semester if needed
-        localStorage.setItem('studentAuth', 'true'); // After successful result fetch
-        this.router.navigate(['/student-profile']);
-
       },
-      error: (err) => {
-        this.toastr.error(err.error.message || 'Invalid details');
-      }
-    });
-  }
+      error: (err:any) => {
+        this.toastr.error(err?.error?.message || 'Invalid details');
+      }
+    });
+  }
 // getResult(){}
 }

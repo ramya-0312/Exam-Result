@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ResultService {
 
-  private baseUrl = 'http://localhost:8080/student/viewresult'; // Adjust URL as per your backend
+  private baseUrl = 'http://localhost:8080/student/viewstudentinfo'; // Adjust URL as per your backend
 
   constructor(private http: HttpClient) {}
 
