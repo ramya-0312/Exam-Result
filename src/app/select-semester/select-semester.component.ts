@@ -10,21 +10,21 @@ import { HttpClient ,HttpParams} from '@angular/common/http';
 })
 export class SelectSemesterComponent implements OnInit {
   selectedSemester: string = '';
-  registered='';
-  dob=''
+  registered:string ='';
+  dob :string=''
   loading=false;
   semesters = [
-    { name: 'Semester 1', value: 'sem1' },
-    { name: 'Semester 2', value: 'sem2' },
-    { name: 'Semester 3', value: 'sem3' },
-    { name: 'Semester 4', value: 'sem4' }
+    { name: 'Semester 1', value: '1' },
+    { name: 'Semester 2', value: '2' },
+    { name: 'Semester 3', value: '3' },
+    { name: 'Semester 4', value: '4' }
   ];
 
   constructor(private router: Router,private http:HttpClient) {}
 
   ngOnInit() {
     const nav = history.state;
-    this.registered = nav.registerNumber;
+    this.registered = nav.registered;
     this.dob = nav.dob;
 
    //this.router.navigate(['/view-result'])
@@ -32,23 +32,23 @@ export class SelectSemesterComponent implements OnInit {
 
   viewResult(semValue: string) {
     const params = new HttpParams()
-      .set('registerNumber', this.registered)
+      .set('registered', this.registered)
       .set('dob', this.dob)
-      .set('semester', semValue);
+      .set('sem', semValue);
 
     this.loading = true;
 
 
-    this.http.get('http://your-backend-url/api/get-result', { params }).subscribe({
+    this.http.get('http://localhost:8080/student/viewresult', { params }).subscribe({
       next: (response) => {
         this.loading = false;
 
 
         this.router.navigate(['/view-result'], {
           state: {
-            registerNumber: this.registered,
+            registered: this.registered,
             dob: this.dob,
-            semester: semValue,
+            sem: semValue,
             resultData: response
           }
         });

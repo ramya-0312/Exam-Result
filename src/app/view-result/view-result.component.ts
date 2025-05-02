@@ -37,7 +37,7 @@ export class ViewResultComponent implements OnInit {
       semester: this.semester
     };
 
-    this.http.post('http://your-backend-url/student/result', requestBody).subscribe((res: any) => {
+    this.http.post('http://localhost:8080/student/viewresult', requestBody).subscribe((res: any) => {
       this.student = res.studentDetails;
       this.resultData = res.result;
       console.log('navigation state:', history.state);
