@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient ,HttpParams} from '@angular/common/http';
 
 @Component({
   standalone: false,
@@ -19,7 +20,7 @@ export class SelectSemesterComponent implements OnInit {
     { name: 'Semester 4', value: 'sem4' }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private http:HttpClient) {}
 
   ngOnInit() {
     const nav = history.state;
@@ -30,37 +31,34 @@ export class SelectSemesterComponent implements OnInit {
   }
 
   viewResult(semValue: string) {
-    console.log('Clicked View for semester:', semValue);
-
-    const stateData = history.state;
-    console.log('Received state:', stateData);
-
-    if (!stateData.registerNumber || !stateData.dob) {
-      alert('Missing data, redirecting...');
-      this.router.navigate(['/student-result']);
-      return;
-    }
+    const params = new HttpParams()
+      .set('registerNumber', this.registered)
+      .set('dob', this.dob)
+      .set('semester', semValue);
 
     this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-      this.router.navigate(['/view-result'], {
-        state: {
-          registerNumber: stateData.registerNumber,
-          dob: stateData.dob,
-          semester: semValue
-        }
-      });
-    }, 3000);
 
 
-    this.router.navigate(['/view-result'], {
-      state: {
-        registerNumber: stateData.registerNumber,
-        dob: stateData.dob,
-        semester: semValue
-      }
-    });
+    this.http.get('http://your-backend-url/api/get-result', { params }).subscribe({
+      next: (response) => {
+        this.loading = false;
+
+
+        this.router.navigate(['/view-result'], {
+          state: {
+            registerNumber: this.registered,
+            dob: this.dob,
+            semester: semValue,
+            resultData: response
+          }
+        });
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Error:', err);
+        alert('Unable to fetch result. Try again later.');
+      }
+    });
   }
   logout(){
    // this.router.navigate(['/home'])

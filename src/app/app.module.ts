@@ -31,6 +31,7 @@ import { StudentAuthGuard } from './guards/student-auth.guard';
 import { ThemeService } from './services/theme.service';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
 
 
 
@@ -52,6 +53,7 @@ import { NgChartsModule } from 'ng2-charts';
     SelectSemesterComponent,
 
     StudentProfileComponent,
+      AdminAnalyticsComponent,
 
 
 

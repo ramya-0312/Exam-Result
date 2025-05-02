@@ -9,11 +9,11 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    if (this.authService.isAdminLoggedIn()) {
-      return true;
-    } else {
+    const isLoggedIn = !!localStorage.getItem('adminEmail');
+    if (!isLoggedIn) {
       this.router.navigate(['/admin-login']);
       return false;
     }
+    return true;
   }
 }

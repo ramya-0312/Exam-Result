@@ -43,23 +43,36 @@
 
     <form #resultForm="ngForm" (ngSubmit)="postResult()"><br><br>
 
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="registerNumber" class="form-label fw-bold">Register Number</label>
-          <input type="text" class="form-control" id="registerNumber" required
-                 [(ngModel)]="registerNumber" name="registerNumber">
-        </div>
-        <br><br>
-        <div class="col-md-4">
-          <label for="semester" class="form-label fw-bold">Semester</label>
-          <select class="form-select" id="semester" required
-                  [(ngModel)]="semester" name="semester">
-            <option value="" disabled selected>Select Semester</option>
-            <option *ngFor="let sem of semesters" [value]="sem">{{ sem }}</option>
-          </select>
-        </div>
-      </div>
+      <!-- ...keep all previous code above -->
 
+<div class="row mb-3">
+  <div class="col-md-4">
+    <label for="registerNumber" class="form-label fw-bold">
+      Register Number <span class="text-danger">*</span>
+    </label>
+    <input type="text" class="form-control" id="registerNumber" required
+           [(ngModel)]="registerNumber" name="registerNumber">
+    <div *ngIf="resultForm.submitted && !registerNumber" class="text-danger small">
+      Register Number is required
+    </div>
+  </div>
+  <br><br>
+  <div class="col-md-4">
+    <label for="semester" class="form-label fw-bold">
+      Semester <span class="text-danger">*</span>
+    </label>
+    <select class="form-select" id="semester" required
+            [(ngModel)]="semester" name="semester">
+      <option value="" disabled selected>Select Semester</option>
+      <option *ngFor="let sem of semesters" [value]="sem">{{ sem }}</option>
+    </select>
+    <div *ngIf="resultForm.submitted && !semester" class="text-danger small">
+      Semester is required
+    </div>
+  </div>
+</div>
+
+<!-- ...keep rest of the form as-is below -->
       <div class="row mb-3">
         <div class="col-md-2">
           <label for="tamil" class="form-label fw-bold">Tamil</label>

@@ -91,5 +91,8 @@ export class StudentResultComponent {
     });
   }
 // getResult(){
+  backToHome() {
+    this.router.navigate(['/home']);
+  }
 
 }

@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Graphical Analytics</h2>
+
+  <!-- Pass % per Subject -->
+  <div class="card mb-4 p-3 shadow">
+    <h5 class="mb-3">Pass % per Subject</h5>
+    <canvas baseChart
+      [data]="{ labels: passPercentLabels, datasets: [{ data: passPercentData, label: 'Pass %', backgroundColor: '#4CAF50' }] }"
+      [type]="'bar'">
+    </canvas>
+  </div>
+
+  <!-- Semester-wise Performance -->
+  <div class="card mb-4 p-3 shadow">
+    <h5 class="mb-3">Semester-wise Performance</h5>
+    <canvas baseChart
+      [data]="{ labels: semesterLabels, datasets: [{ data: semesterData, label: 'Average Marks', backgroundColor: '#2196F3' }] }"
+      [type]="'line'">
+    </canvas>
+  </div>
+
+  <!-- Top 5 Performing Students -->
+  <div class="card mb-4 p-3 shadow">
+    <h5 class="mb-3">Top 5 Performing Students</h5>
+    <canvas baseChart
+      [data]="{ labels: topStudentLabels, datasets: [{ data: topStudentData, label: 'Total Marks', backgroundColor: '#FFC107' }] }"
+      [type]="'bar'">
+    </canvas>
+  </div>
+</div>
