@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 @Table(name = "admin_register")
 public class adminregister_model {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	
 	@Column(name = "email")
 	private String email;
 	@Column(name = "name")

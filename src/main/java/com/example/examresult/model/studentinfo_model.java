@@ -1,67 +1,45 @@
 package com.example.examresult.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "studentinfo")
-public class studentinfo {
+public class studentinfo_model {
 
-	@EmbeddedId
-	private StudentInfoId id;
+	@Id
+	@Column(name = "registered")
+	private String registered;
 
-	public StudentInfoId getId() {
-		return id;
+	public String getRegistered() {
+		return registered;
 	}
 
-	public void setId(StudentInfoId id) {
-		this.id = id;
+	public void setRegistered(String registered) {
+		this.registered = registered;
 	}
 
-	@Column(name = "name")
-	private String name;
-	@Column(name = "degree")
-	private String degree;
-	@Column(name = "tamil")
+	public String getSemester() {
+		return semester;
+	}
+
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+
+	private String semester;
+
 	private String tamil;
-	@Column(name = "english")
 	private String english;
-	@Column(name = "maths")
 	private String maths;
-	@Column(name = "science")
 	private String science;
-	@Column(name = "social")
 	private String social;
-	@Column(name = "grade")
 	private String grade;
-	@Column(name = "result")
 	private String result;
 
-//	public long getRegistered() {
-//		return registered;
-//	}
-//
-//	public void setRegistered(long registered) {
-//		this.registered = registered;
-//	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDegree() {
-		return degree;
-	}
-
-	public void setDegree(String degree) {
-		this.degree = degree;
-	}
+	// ✅ Getters & Setters
 
 	public String getTamil() {
 		return tamil;
@@ -118,5 +96,4 @@ public class studentinfo {
 	public void setResult(String result) {
 		this.result = result;
 	}
-
 }

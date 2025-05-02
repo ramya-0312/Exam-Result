@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.examresult.model.adminregister_model;
 import com.example.examresult.service.adminregisterservice;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/adminregister")
 public class adminregister {
@@ -49,12 +48,12 @@ public class adminregister {
 			res.put("Status", HttpStatus.BAD_REQUEST);
 			res.put("message", e.getMessage());
 		}
-//		}return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("status"));
+
 		return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("Status"));
-//		return new ResponseEntity<Map<String,Object>>(res, res.getClass("status"));
+
 	}
 
-	@PutMapping("/updatepassword")
+	@PostMapping("/updatepassword")
 	public ResponseEntity<Map<String, Object>> updatepassword(@RequestBody adminregister_model mod) {
 		Map<String, Object> res = new HashMap<String, Object>();
 		try {
@@ -69,21 +68,6 @@ public class adminregister {
 		return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("status"));
 	}
 
-//	@PostMapping("/upmail")
-//	public ResponseEntity<Map<String, Object>> upmail(@Param("email") String email) {
-//		Map<String, Object> res = new HashMap<String, Object>();
-//		try {
-//			String response = adminregisterservice;
-//			res.put("Status", HttpStatus.OK);
-//			res.put("response", response);
-//		} catch (Exception e) {
-//			res.put("Status", HttpStatus.BAD_REQUEST);
-//			res.put("message", e.getMessage());
-//		}
-////		}return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("status"));
-//		return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("Status"));
-////		return new ResponseEntity<Map<String,Object>>(res, res.getClass("status"));
-//	}
 	@PostMapping("/checkmail")
 	public ResponseEntity<Map<String, Object>> checkmain(@RequestBody adminregister_model add) {
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -97,4 +81,5 @@ public class adminregister {
 		}
 		return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("status"));
 	}
+
 }
