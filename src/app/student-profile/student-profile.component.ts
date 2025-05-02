@@ -16,36 +16,43 @@ export class StudentProfileComponent implements OnInit {
 
   constructor(private router: Router, private http: HttpClient) {}
 
+  // ngOnInit(): void {
+  //   const state = history.state;
+
+  //   if (!state.registered || !state.dob) {
+  //     this.router.navigate(['/student-result']);
+  //     return;
+  //   }
+  // }
   ngOnInit(): void {
-    const state = history.state;
 
-    if (!state.registered || !state.dob) {
+    const storedStudent = localStorage.getItem('studentResult');
+
+    if (storedStudent) {
+      this.student = JSON.parse(storedStudent);
+      this.loading = false;
+    } else {
       this.router.navigate(['/student-result']);
-      return;
     }
-
-    const params = new HttpParams()
-  .set('registerNumber', state.registered)
-  .set('dob', state.dob);
-
-this.http.get('http://your-backend-url/student/profile', { params }).subscribe({
-  next: (res: any) => {
-    this.student = res;
-    this.loading = false;
-  },
-  error: (err) => {
-    this.error = 'Student not found or invalid details';
-    this.loading =false;
-  }
-});
   }
 
+
+  // goToSemesterSelection() {
+
+  //   this.router.navigate(['/select-semester'], {
+  //     state: {
+  //       registerNumber: this.student.registerNumber,
+  //       dob: this.student.dob
+  //     }
+  //   });
+  // }
   goToSemesterSelection() {
     this.router.navigate(['/select-semester'], {
       state: {
-        registered: this.student.registered,
+        registerNumber: this.student.registerNumber, // fixed property name
         dob: this.student.dob
       }
     });
   }
+
 }
