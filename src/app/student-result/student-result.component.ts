@@ -90,5 +90,6 @@ export class StudentResultComponent {
       }
     });
   }
-// getResult(){}
+// getResult(){
+
 }

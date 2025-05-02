@@ -143,4 +143,7 @@ validatePassword() {
 backToHome() {
   this.router.navigate(['/home']);
 }
+logout(){
+
+}
 }

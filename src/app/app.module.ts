@@ -1,3 +1,4 @@
+//import { NgChartsConfiguration } from './../../node_modules/ng2-charts/lib/ng-charts.provider.d';
 import {HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -26,9 +27,11 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SelectSemesterComponent } from './select-semester/select-semester.component';
 import { GoogleLoginProvider,GoogleSigninButtonModule,SocialAuthServiceConfig,SocialLoginModule,SocialAuthService,SocialUser } from '@abacritt/angularx-social-login';
 import { StudentAuthGuard } from './guards/student-auth.guard';
-import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+//import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { ThemeService } from './services/theme.service';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
+import { NgChartsModule } from 'ng2-charts';
+
 
 
 
@@ -47,7 +50,7 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
     ResetPasswordComponent,
     PostResultComponent,
     SelectSemesterComponent,
-    ThemeToggleComponent,
+
     StudentProfileComponent,
 
 
@@ -55,6 +58,7 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
 ],
   imports: [
     BrowserModule,
+   NgChartsModule,
     CommonModule,
     FormsModule ,
     SocialLoginModule,

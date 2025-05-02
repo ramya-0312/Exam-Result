@@ -62,4 +62,11 @@ export class SelectSemesterComponent implements OnInit {
       }
     });
   }
+  logout(){
+   // this.router.navigate(['/home'])
+  }
+  confirmLogout() {
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http';
+//import { HttpParams } from '@angular/common/http';
 
 @Component({
   standalone:false,
@@ -13,6 +13,7 @@ export class StudentProfileComponent implements OnInit {
   student: any;
   loading = true;
   error = '';
+
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -54,5 +55,10 @@ export class StudentProfileComponent implements OnInit {
       }
     });
   }
+
+  confirmLogout() {
+   localStorage.clear();
+    this.router.navigate(['/home']);
+  }
 
 }

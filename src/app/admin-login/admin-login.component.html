@@ -1,3 +1,42 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<!-- Updated Navbar with Offcanvas -->
+<nav class="navbar navbar-light bg-dark px-3">
+  <div class="container-fluid justify-content-between w-100">
+    <div class="d-flex align-items-center">
+      <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-controls="adminSidebar">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+    <h3 class="text-white text-center text-uppercase  flex-grow-1 mb-0">Welcome to Office of the Controller of Examination</h3>
+  </div>
+</nav>
+<h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
+
+<!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="adminSidebar" aria-labelledby="adminSidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="adminSidebarLabel">Admin Panel</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column justify-content-between">
+    <div>
+      <a routerLink="/admin-dashboard" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+      <a routerLink="/add-student" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-person-plus-fill me-2"></i>Add Student</a>
+      <a routerLink="/post-result" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-journal-check me-2"></i>Post Result</a>
+    </div>
+    <div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Login Card -->
 <div class="background">
   <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
     <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
@@ -6,19 +45,19 @@
       <div class="form-group mb-3 position-relative">
         <label>Email</label>
         <input
-  type="email"
-  [(ngModel)]="email"
-  name="email"
-  (input)="validateEmail()"
-  class="form-control"
-  required
-  autocomplete="off"
-  [ngClass]="{
-    'is-valid': emailTouched && emailValid,
-    'is-invalid': emailTouched && !emailValid
-  }"
-  placeholder="Enter email"
-/>
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          (input)="validateEmail()"
+          class="form-control"
+          required
+          autocomplete="off"
+          [ngClass]="{
+            'is-valid': emailTouched && emailValid,
+            'is-invalid': emailTouched && !emailValid
+          }"
+          placeholder="Enter email"
+        />
         <div *ngIf="emailValid" class="valid-feedback position-absolute end-0 me-3"></div>
         <div *ngIf="emailTouched && !emailValid" class="invalid-feedback position-absolute end-0 me-3"></div>
       </div>
@@ -32,14 +71,21 @@
           class="form-control"
           required
           autocomplete="off"
-          [ngClass]="{'is-valid': passwordValid, 'is-invalid': passwordTouched && !passwordValid}"
+          [ngClass]="{
+            'is-valid': passwordValid,
+            'is-invalid': passwordTouched && !passwordValid
+          }"
           placeholder="Enter password"
         />
         <div *ngIf="passwordValid" class="valid-feedback position-absolute end-0 me-3"></div>
         <div *ngIf="passwordTouched && !passwordValid" class="invalid-feedback position-absolute end-0 me-3"></div>
       </div>
 
-      <button [disabled]="!isFormValid()" (click)="login()" class="btn btn-success w-100 mb-2">
+      <button
+        [disabled]="!isFormValid()"
+        (click)="login()"
+        class="btn btn-success w-100 mb-2"
+      >
         Login
       </button>
 
@@ -47,23 +93,27 @@
         <asl-google-signin-button
           style="height: 40px; width: 100%; border: none; border-radius: 4px; background-color: #4285F4; color: white; font-weight: 500; display: flex; align-items: center; justify-content: center;"
         >
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width="20" class="me-2">
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google Logo"
+            width="20"
+            class="me-2"
+          />
           Sign in with Google
         </asl-google-signin-button>
       </div>
 
       <div class="text-center mt-3">
-        <a routerLink="/admin-register" class="text-primary">New user? Sign up here</a>
+        <a routerLink="/admin-register" class="text-primary">New user? Sign up here</a>
       </div>
 
       <div *ngIf="showForgotPassword" class="text-center mt-3">
         <a routerLink="/forgot-password">Forgot Password?</a>
       </div>
+
       <div class="text-center mt-3">
         <button class="btn btn-outline-secondary" (click)="backToHome()">Back to Home</button>
       </div>
-
-
     </div>
-  </div>
+  </div>
 </div>

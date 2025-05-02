@@ -59,5 +59,9 @@ export class ViewResultComponent implements OnInit {
   printPage() {
     window.print();
   }
+  confirmLogout() {
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
 
 }
