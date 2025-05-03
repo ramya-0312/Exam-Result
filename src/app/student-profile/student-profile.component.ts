@@ -50,7 +50,7 @@ export class StudentProfileComponent implements OnInit {
   goToSemesterSelection() {
     this.router.navigate(['/select-semester'], {
       state: {
-        registerNumber: this.student.registerNumber, // fixed property name
+        registerNumber: this.student.registered, // fixed property name
         dob: this.student.dob
       }
     });

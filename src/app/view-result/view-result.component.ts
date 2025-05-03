@@ -1,55 +1,56 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone:false,
-  selector: 'app-result-view',
+  selector: 'app-view-result',
   templateUrl: './view-result.component.html',
+  styleUrls: ['./view-result.component.css']
 })
 export class ViewResultComponent implements OnInit {
   student: any;
-  activeTab: string = 'profile'; // Default profile view
-  loadingResult: boolean = false;  // Spinner state
- //selectedSemester:string='';
- registered='';
- dob='';
- semester='';
- resultData=''
+  semester: string = '';
+  loadingResult = false;
+  resultData:any
 
-  constructor(private router: Router,private http:HttpClient) {}
+  constructor(private router: Router) {}
 
-  ngOnInit() {
-    const data = history.state;
-    console.log('Recieved in viewresultcomponent:',data)
-    if (!data||!data.registerNumber || !data.dob || !data.semester) {
-      this.router.navigate(['/student-result']); // fallback
+  ngOnInit(): void {
+    this.resultData = JSON.parse(localStorage.getItem('resultData') || '{}');
+    const resultRaw = localStorage.getItem('resultData');
+    const semester = localStorage.getItem('selectedSemester');
+    const registerNumber = localStorage.getItem('registerNumber');
+    const dob = localStorage.getItem('dob');
+
+    if (!resultRaw || !semester || !registerNumber || !dob) {
+      alert('Incomplete data. Please start again.');
+      this.router.navigate(['/student-result']);
       return;
     }
 
-    this.registered = data.registerNumber;
-    this.dob = data.dob;
-    this.semester = data.semester;
+    const resultParsed = JSON.parse(resultRaw);
 
-    const requestBody = {
-      registerNumber: this.registered,
-      dob: this.dob,
-      semester: this.semester
+    this.semester = semester;
+    const data = resultParsed.response[0];
+
+    this.student = {
+      name: resultParsed.studentName,
+      registerNumber: registerNumber,
+      department: 'N/A', // You can update if you get this from backend
+      marks: [
+        { subject: 'English', mark: data.english },
+        { subject: 'Mathematics', mark: data.maths },
+        { subject: 'Science', mark: data.science },
+        { subject: 'Social', mark: data.social }
+      ],
+      total: data.grade,
+      result: data.result
     };
-
-    this.http.post('http://localhost:8080/student/viewresult', requestBody).subscribe((res: any) => {
-      this.student = res.studentDetails;
-      this.resultData = res.result;
-      console.log('navigation state:', history.state);
-    });
   }
 
-
   getPercentage(): number {
-    if (!this.student?.marks) return 0;
-    const totalSubjects = this.student.marks.length;
     const totalMarks = Number(this.student.total);
-    return parseFloat(((totalMarks / (totalSubjects * 100)) * 100).toFixed(2));
+    return Math.round((totalMarks / 500) * 100);
   }
 
   goHome() {
@@ -61,7 +62,6 @@ export class ViewResultComponent implements OnInit {
   }
   confirmLogout() {
     localStorage.clear();
-    this.router.navigate(['/home']);
-  }
-
+     this.router.navigate(['/home']);
+   }
 }

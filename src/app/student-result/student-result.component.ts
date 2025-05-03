@@ -79,6 +79,8 @@ export class StudentResultComponent {
           console.log(data);
           this.toastr.success( 'Success');
           localStorage.setItem('studentResult', JSON.stringify(studentData));
+          localStorage.setItem('registerNumber',studentData.registered);
+          localStorage.setItem('dob',studentData.dob);
           localStorage.setItem('semester', this.selectedSemester);
           localStorage.setItem('studentAuth', 'true');
           this.router.navigate(['/student-profile']);
@@ -91,8 +93,8 @@ export class StudentResultComponent {
     });
   }
 // getResult(){
-  backToHome() {
-    this.router.navigate(['/home']);
-  }
+backToHome() {
+  this.router.navigate(['/home']);
+}
 
 }
