@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./view-result.component.css']
 })
 export class ViewResultComponent implements OnInit {
+  
   // registered = '';
   // dob = '';
   semester = '';
@@ -23,7 +24,7 @@ export class ViewResultComponent implements OnInit {
     total: string;
     result: string;
   } | null = null;
-  loadingResult = false;
+  loadingResult = true;
   error = '';
   resultData = '';
 
@@ -62,6 +63,10 @@ export class ViewResultComponent implements OnInit {
   //   };
   // }
   ngOnInit(): void {
+    setTimeout(() => {
+      this.loadingResult=false;
+
+    },2000);
     const resultRaw = localStorage.getItem('resultData');
     const semester = localStorage.getItem('selectedSemester');
     const registered = localStorage.getItem('registerNumber');
@@ -86,6 +91,7 @@ export class ViewResultComponent implements OnInit {
       total: data.totalMarks,
       result: data.resultStatus
     };
+   
   }
   
 
@@ -96,7 +102,7 @@ export class ViewResultComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/select-semester']);
   }
 
   printPage() {
