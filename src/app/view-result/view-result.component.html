@@ -5,6 +5,13 @@
     <h3 class="fw-bold text-uppercase">Welcome to Office of the Controller of Examination</h3>
     <h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
   </div>
+  <!-- Spinner Section -->
+<div *ngIf="loadingResult" class="text-center mt-5">
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="mt-2 fw-semibold">Fetching Result...</p>
+</div>
 
     <!-- Result Content (visible after 5 seconds) -->
     <div *ngIf="!loadingResult">

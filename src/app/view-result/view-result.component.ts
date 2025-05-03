@@ -30,7 +30,7 @@ export class ViewResultComponent implements OnInit {
   constructor(private router: Router) {}
 
   // ngOnInit(): void {
-  //   this.resultData = JSON.parse(localStorage.getItem('resultData') || '{}');
+  //   this.resultData = JSON.parse(localStorage.getItem('resultData') || '{}');
   //   const resultRaw = localStorage.getItem('resultData');
   //   const semester = localStorage.getItem('selectedSemester');
   //   const registered = localStorage.getItem('registerNumber');
@@ -66,16 +66,16 @@ export class ViewResultComponent implements OnInit {
     const semester = localStorage.getItem('selectedSemester');
     const registered = localStorage.getItem('registerNumber');
     const dob = localStorage.getItem('dob');
-  
+
     if (!resultRaw || !semester || !registered || !dob) {
       alert('Incomplete data. Please start again.');
       this.router.navigate(['/student-result']);
       return;
     }
-  
+
     const resultParsed = JSON.parse(resultRaw);
     const data = resultParsed.response;
-  
+
     // Set the values properly
     this.semester = semester;
     this.student = {
@@ -86,10 +86,15 @@ export class ViewResultComponent implements OnInit {
       total: data.totalMarks,
       result: data.resultStatus
     };
-  }
-  
+    setTimeout(() => {
+      this.loadingResult=false;
 
-  // 
+    },3000);
+  }
+
+
+
+  //
   getPercentage(): number {
     const total = Number(this.student?.total);
     return Math.round((total / 500) * 100);
@@ -105,5 +110,5 @@ export class ViewResultComponent implements OnInit {
   confirmLogout() {
     localStorage.clear();
      this.router.navigate(['/home']);
-   }
+   }
 }
