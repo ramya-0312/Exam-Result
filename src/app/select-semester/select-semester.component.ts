@@ -24,15 +24,14 @@ export class SelectSemesterComponent implements OnInit {
   constructor(private router: Router,private http:HttpClient) {}
 
   ngOnInit() {
-    const studentData = localStorage.getItem('studentResult');
-    console.log(studentData)
-    const nav = history.state;
-    this.registered = nav.registered;
-    this.dob = nav.dob;
+    this.registered = localStorage.getItem('registerNumber') || '';
+    this.dob = localStorage.getItem('dob') || '';
 
-   //this.router.navigate(['/view-result'])
+    if (!this.registered || !this.dob) {
+      alert('Session expired. Please login again.');
+      this.router.navigate(['/student-result']);
+    }
   }
-  
   viewResult(semValue: string) {
     
     const params = new HttpParams()
@@ -42,20 +41,17 @@ export class SelectSemesterComponent implements OnInit {
      
     this.loading = true;
 
-
     this.http.get('http://localhost:8080/student/viewresult', { params }).subscribe({
       next: (response) => {
         this.loading = false;
+        localStorage.setItem('resultData', JSON.stringify(response));
+        // localStorage.setItem('resultData', JSON.stringify(data));
+        // Store in localStorage for view-result page to use
+        localStorage.setItem('selectedSemester', semValue);
+       
 
-
-        this.router.navigate(['/view-result'], {
-          state: {
-            registered: this.registered,
-            dob: this.dob,
-            sem: semValue,
-            resultData: response
-          }
-        });
+        this.router.navigate(['/view-result']);
+        
       },
       error: (err) => {
         this.loading = false;

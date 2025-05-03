@@ -15,19 +15,8 @@ export class StudentResultComponent {
   registered:string='';
  dob:string ='';
  semester:string='';
- resultData:Object=''
-  // registered= '';
-  // dob = '';
-  // selectedSemester = ''; // New field for semester
-  // errorMessage = '';
-  // totalMarks = '';
-  // resultStatus = '';
-  // student=''
-  // loading=false
-  // error=''
-
-  // subjects: { name: string; marks: number }[] = [];
-  // resultFetched: boolean = false;
+ resultData=''
+  
 
 
   constructor(
@@ -83,6 +72,8 @@ export class StudentResultComponent {
           console.log(data);
           this.toastr.success( 'Success');
           localStorage.setItem('studentResult', JSON.stringify(studentData));
+          localStorage.setItem('registerNumber',studentData.registered);
+          localStorage.setItem('dob',studentData.dob);
           // localStorage.setItem('semester', this.selectedSemester);
           localStorage.setItem('studentAuth', 'true');
           this.router.navigate(['/student-profile']);
@@ -95,8 +86,8 @@ export class StudentResultComponent {
     });
   }
 // getResult(){
-  backToHome() {
-    this.router.navigate(['/home']);
-  }
+backToHome() {
+  this.router.navigate(['/home']);
+}
 
 }
