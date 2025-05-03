@@ -12,18 +12,11 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './student-result.component.html',
 })
 export class StudentResultComponent {
-  registered= '';
-  dob = '';
-  selectedSemester = ''; // New field for semester
-  errorMessage = '';
-  totalMarks = '';
-  resultStatus = '';
-  student=''
-  loading=false
-  error=''
-
-  subjects: { name: string; marks: number }[] = [];
-  resultFetched: boolean = false;
+  registered:string='';
+ dob:string ='';
+ semester:string='';
+ resultData=''
+  
 
 
   constructor(
@@ -81,7 +74,7 @@ export class StudentResultComponent {
           localStorage.setItem('studentResult', JSON.stringify(studentData));
           localStorage.setItem('registerNumber',studentData.registered);
           localStorage.setItem('dob',studentData.dob);
-          localStorage.setItem('semester', this.selectedSemester);
+          // localStorage.setItem('semester', this.selectedSemester);
           localStorage.setItem('studentAuth', 'true');
           this.router.navigate(['/student-profile']);
 

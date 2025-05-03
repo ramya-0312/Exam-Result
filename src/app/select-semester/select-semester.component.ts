@@ -9,6 +9,7 @@ import { HttpClient ,HttpParams} from '@angular/common/http';
   styleUrls: ['./select-semester.component.css']
 })
 export class SelectSemesterComponent implements OnInit {
+  
   selectedSemester: string = '';
   registered:string ='';
   dob :string=''
@@ -32,20 +33,22 @@ export class SelectSemesterComponent implements OnInit {
     }
   }
   viewResult(semValue: string) {
+    
     const params = new HttpParams()
       .set('registered', this.registered)
       .set('dob', this.dob)
       .set('sem', semValue);
-
+     
     this.loading = true;
 
     this.http.get('http://localhost:8080/student/viewresult', { params }).subscribe({
       next: (response) => {
         this.loading = false;
-
+        localStorage.setItem('resultData', JSON.stringify(response));
+        // localStorage.setItem('resultData', JSON.stringify(data));
         // Store in localStorage for view-result page to use
         localStorage.setItem('selectedSemester', semValue);
-        localStorage.setItem('resultData', JSON.stringify(response));
+       
 
         this.router.navigate(['/view-result']);
         

@@ -11,7 +11,7 @@
       <div class="border p-4 rounded mb-4 bg-light shadow-sm">
         <div class="row">
           <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>
-          <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registerNumber }}</div>
+          <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registered }}</div>
           <div class="col-md-6"><strong>Department:</strong> {{ student?.department }}</div>
           <div class="col-md-6"><strong>Semester:</strong> {{ semester }}</div>
         </div>
@@ -27,8 +27,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let subject of student?.marks">
-              <td>{{ subject.subject }}</td>
-              <td>{{ subject.mark }}</td>
+              <td>{{ subject.name }}</td>
+              <td>{{ subject.marks }}</td>
             </tr>
           </tbody>
         </table>
@@ -39,7 +39,7 @@
             'bg-success text-white': student?.result === 'Pass',
             'bg-danger text-white': student?.result === 'Fail'
           }">
-        <h5>Total Marks: {{ student?.total }}</h5>
+        <h5>Grade: {{ student?.total }}</h5>
         <h5>Percentage: {{ getPercentage() }}%</h5>
         <h5>Result: {{ student?.result }}</h5>
       </div>
