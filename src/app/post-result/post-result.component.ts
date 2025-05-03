@@ -76,21 +76,29 @@ grade:String ="";
   calculateResult() {
     let sum = 0;
     let count = 0;
+    let hasFailedSubject = false;
 
     for (const subject in this.marks) {
       const mark = this.marks[subject as SubjectName];
-      if (mark !== null && !isNaN(mark)) {
-        sum += Number(mark);
+      const numericMark = Number(mark);
+      console.log(`Subject: ${subject}, Mark: ${numericMark}`);
+
+      if (!isNaN(numericMark)) {
+        sum += numericMark;
         count++;
+
+        if (numericMark < 35) {
+          hasFailedSubject = true;
+        }
       }
     }
 
     this.totalMarks = sum;
-    this.grade=sum.toString();
+    this.grade = sum.toString();
 
     if (count === Object.keys(this.marks).length) {
       const percentage = (sum / 500) * 100;
-      this.result = percentage >= 35 ? 'Pass' : 'Fail';
+      this.result = hasFailedSubject ? 'Fail' : (percentage >= 35 ? 'Pass' : 'Fail');
       this.calculated = true;
     } else {
       this.result = '';

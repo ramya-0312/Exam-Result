@@ -20,6 +20,7 @@ import { SelectSemesterComponent } from './select-semester/select-semester.compo
 import { StudentAuthGuard } from './guards/student-auth.guard';
 import { VerifyResetGuard } from './guards/verify-reset.guard';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
+import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,11 @@ const routes: Routes = [
   },
   //{ path: 'select-semester', component:SelectSemesterComponent},
   {
+    path: 'admin-analytics',
+    component:AdminAnalyticsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'select-semester',
     component: SelectSemesterComponent,
     canActivate: [StudentAuthGuard]
@@ -63,6 +69,7 @@ const routes: Routes = [
     component: ResetPasswordComponent,
     canActivate: [VerifyResetGuard]
   }
+
 
 ];
 

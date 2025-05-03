@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+//import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-admin-analytics',
@@ -8,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './admin-analytics.component.css'
 })
 export class AdminAnalyticsComponent {
+  adminEmail: string = '';
   passPercentLabels: string[] = [];
   passPercentData: number[] = [];
 
@@ -17,9 +21,13 @@ export class AdminAnalyticsComponent {
   topStudentLabels: string[] = [];
   topStudentData: number[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router:Router) {}
 
   ngOnInit(): void {
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
     this.getPassPercentage();
     this.getSemesterPerformance();
     this.getTopStudents();
@@ -44,6 +52,10 @@ export class AdminAnalyticsComponent {
       this.topStudentLabels = res.names;
       this.topStudentData = res.marks;
     });
+  }
+confirmLogout() {
+  localStorage.clear();
+  this.router.navigate(['/admin-login']);
   }
 
 }
