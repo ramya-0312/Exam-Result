@@ -9,6 +9,7 @@ import { HttpClient ,HttpParams} from '@angular/common/http';
   styleUrls: ['./select-semester.component.css']
 })
 export class SelectSemesterComponent implements OnInit {
+  
   selectedSemester: string = '';
   registered:string ='';
   dob :string=''
@@ -23,19 +24,22 @@ export class SelectSemesterComponent implements OnInit {
   constructor(private router: Router,private http:HttpClient) {}
 
   ngOnInit() {
+    const studentData = localStorage.getItem('studentResult');
+    console.log(studentData)
     const nav = history.state;
     this.registered = nav.registered;
     this.dob = nav.dob;
 
    //this.router.navigate(['/view-result'])
   }
-
+  
   viewResult(semValue: string) {
+    
     const params = new HttpParams()
       .set('registered', this.registered)
       .set('dob', this.dob)
       .set('sem', semValue);
-
+     
     this.loading = true;
 
 

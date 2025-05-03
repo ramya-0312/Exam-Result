@@ -12,18 +12,22 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './student-result.component.html',
 })
 export class StudentResultComponent {
-  registered= '';
-  dob = '';
-  selectedSemester = ''; // New field for semester
-  errorMessage = '';
-  totalMarks = '';
-  resultStatus = '';
-  student=''
-  loading=false
-  error=''
+  registered:string='';
+ dob:string ='';
+ semester:string='';
+ resultData:Object=''
+  // registered= '';
+  // dob = '';
+  // selectedSemester = ''; // New field for semester
+  // errorMessage = '';
+  // totalMarks = '';
+  // resultStatus = '';
+  // student=''
+  // loading=false
+  // error=''
 
-  subjects: { name: string; marks: number }[] = [];
-  resultFetched: boolean = false;
+  // subjects: { name: string; marks: number }[] = [];
+  // resultFetched: boolean = false;
 
 
   constructor(
@@ -79,7 +83,7 @@ export class StudentResultComponent {
           console.log(data);
           this.toastr.success( 'Success');
           localStorage.setItem('studentResult', JSON.stringify(studentData));
-          localStorage.setItem('semester', this.selectedSemester);
+          // localStorage.setItem('semester', this.selectedSemester);
           localStorage.setItem('studentAuth', 'true');
           this.router.navigate(['/student-profile']);
 
