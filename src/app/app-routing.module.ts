@@ -23,6 +23,7 @@ import { StudentProfileComponent } from './student-profile/student-profile.compo
 import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
 import { RevaluationComponent } from './revaluation/revaluation.component';
 import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
+import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 
 
 const routes: Routes = [
@@ -74,10 +75,16 @@ const routes: Routes = [
     canActivate: [StudentAuthGuard]
   },
   {
+    path: 'student-analytics',
+    component: StudentAnalyticsComponent,
+    canActivate: [StudentAuthGuard]
+  },
+  {
     path: 'reset-password',
     component: ResetPasswordComponent,
     canActivate: [VerifyResetGuard]
-  }
+  },
+
 
 
 ];

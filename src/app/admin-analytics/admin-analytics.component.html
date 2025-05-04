@@ -46,7 +46,7 @@
   <div class="text-center mb-4">
     <label class="fw-bold me-2">Select Semester:</label>
     <select class="form-select d-inline w-auto" [(ngModel)]="semester" (change)="fetchAnalytics()">
-      <option *ngFor="let s of [1,2,3,4,5,6,7,8]" [value]="s">Semester {{ s }}</option>
+      <option *ngFor="let s of [1,2,3,4]" [value]="s">Semester {{ s }}</option>
     </select>
   </div>
 

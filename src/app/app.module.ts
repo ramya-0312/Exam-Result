@@ -34,6 +34,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
 import { RevaluationComponent } from './revaluation/revaluation.component';
 import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
+import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 
 
 
@@ -58,6 +59,7 @@ import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation
       AdminAnalyticsComponent,
       RevaluationComponent,
       AdminRevaluationComponent,
+      StudentAnalyticsComponent,
 
 
 
