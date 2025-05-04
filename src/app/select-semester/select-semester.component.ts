@@ -52,6 +52,8 @@ export class SelectSemesterComponent implements OnInit {
 
         this.router.navigate(['/view-result']);
 
+
+
       },
       error: (err) => {
         this.loading = false;

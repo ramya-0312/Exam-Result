@@ -5,7 +5,8 @@
     <h3 class="fw-bold text-uppercase">Welcome to Office of the Controller of Examination</h3>
     <h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
   </div>
-  <!-- Spinner Section -->
+<!-- Spinner Section -->
+<!-- Spinner Section -->
 <div *ngIf="loadingResult" class="text-center mt-5">
   <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -13,9 +14,13 @@
   <p class="mt-2 fw-semibold">Fetching Result...</p>
 </div>
 
+
     <!-- Result Content (visible after 5 seconds) -->
     <div *ngIf="!loadingResult">
       <div class="border p-4 rounded mb-4 bg-light shadow-sm">
+        <div class="text-end mb-3">
+          <button class="btn btn-outline-warning" (click)="goToRevaluation()">Revaluation Request</button>
+        </div>
         <div class="row">
           <div class="col-md-6"><strong>Name:</strong> {{ student?.name }}</div>
           <div class="col-md-6"><strong>Register Number:</strong> {{ student?.registered }}</div>
@@ -52,9 +57,10 @@
       </div>
 
       <div class="text-center mt-4">
-        <button class="btn btn-secondary me-2" (click)="goHome()">Back to Home</button>
+        <button class="btn btn-secondary me-2" (click)="goHome()">Back</button>
         <button class="btn btn-primary" (click)="printPage()">Print</button>
       </div>
+
 
     </div>
   </div>

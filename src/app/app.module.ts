@@ -32,6 +32,8 @@ import { ThemeService } from './services/theme.service';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { NgChartsModule } from 'ng2-charts';
 import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
+import { RevaluationComponent } from './revaluation/revaluation.component';
+import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
 
 
 
@@ -54,6 +56,8 @@ import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.compo
 
     StudentProfileComponent,
       AdminAnalyticsComponent,
+      RevaluationComponent,
+      AdminRevaluationComponent,
 
 
 

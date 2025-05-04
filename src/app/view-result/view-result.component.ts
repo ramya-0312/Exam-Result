@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./view-result.component.css']
 })
 export class ViewResultComponent implements OnInit {
+
   // registered = '';
   // dob = '';
   semester = '';
@@ -23,7 +24,7 @@ export class ViewResultComponent implements OnInit {
     total: string;
     result: string;
   } | null = null;
-  loadingResult = false;
+  loadingResult = true;
   error = '';
   resultData = '';
 
@@ -62,6 +63,10 @@ export class ViewResultComponent implements OnInit {
   //   };
   // }
   ngOnInit(): void {
+    setTimeout(() => {
+      this.loadingResult=false;
+
+    },2000);
     const resultRaw = localStorage.getItem('resultData');
     const semester = localStorage.getItem('selectedSemester');
     const registered = localStorage.getItem('registerNumber');
@@ -86,11 +91,41 @@ export class ViewResultComponent implements OnInit {
       total: data.totalMarks,
       result: data.resultStatus
     };
-    setTimeout(() => {
-      this.loadingResult=false;
 
-    },3000);
   }
+  showRevaluation = false;
+selectedSubjects: string[] = [];
+
+toggleRevaluation() {
+  this.showRevaluation = !this.showRevaluation;
+}
+
+onSubjectToggle(event: any) {
+  const subject = event.target.value;
+  if (event.target.checked) {
+    this.selectedSubjects.push(subject);
+  } else {
+    this.selectedSubjects = this.selectedSubjects.filter(s => s !== subject);
+  }
+}
+
+applyRevaluation() {
+  if (this.selectedSubjects.length === 0) {
+    alert('Please select at least one subject.');
+    return;
+  }
+
+  const revalRequest = {
+    registerNumber: this.student?.registered,
+    semester: this.semester,
+    subjects: this.selectedSubjects
+  };
+
+  console.log('Sending Revaluation Request:', revalRequest);
+  alert('Revaluation request submitted successfully!');
+  this.showRevaluation = false;
+  this.selectedSubjects = [];
+}
 
 
 
@@ -101,7 +136,10 @@ export class ViewResultComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/select-semester']);
+  }
+  goToRevaluation() {
+    this.router.navigate(['/revaluation']);
   }
 
   printPage() {

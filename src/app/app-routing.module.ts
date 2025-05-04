@@ -21,6 +21,8 @@ import { StudentAuthGuard } from './guards/student-auth.guard';
 import { VerifyResetGuard } from './guards/verify-reset.guard';
 import { StudentProfileComponent } from './student-profile/student-profile.component';
 import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.component';
+import { RevaluationComponent } from './revaluation/revaluation.component';
+import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
 
 
 const routes: Routes = [
@@ -43,6 +45,8 @@ const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] }, // Protect the dashboard route with the guard
   { path: '', redirectTo: '/admin-login', pathMatch: 'full' },
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
+  {path:'revaluation',component:RevaluationComponent},
+  //{path:'admin-revaluation',component:AdminRevaluationComponent},
   {
     path: 'post-result',
     component: PostResultComponent,
@@ -52,6 +56,11 @@ const routes: Routes = [
   {
     path: 'admin-analytics',
     component:AdminAnalyticsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin-revaluation',
+    component:AdminRevaluationComponent,
     canActivate: [AuthGuard]
   },
   {

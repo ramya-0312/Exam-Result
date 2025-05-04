@@ -1,61 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-//import { NgForm } from '@angular/forms';
-
 
 @Component({
+  standalone:false,
   selector: 'app-admin-analytics',
-  standalone: false,
   templateUrl: './admin-analytics.component.html',
-  styleUrl: './admin-analytics.component.css'
+  styleUrls: ['./admin-analytics.component.css']
 })
 export class AdminAnalyticsComponent {
   adminEmail: string = '';
-  passPercentLabels: string[] = [];
-  passPercentData: number[] = [];
+  semester: number = 1;
+departments: string[] = [];
+analyticsData: any = {};
+isLoading = false;
 
-  semesterLabels: string[] = [];
-  semesterData: number[] = [];
+ constructor(
+    private router: Router,
+    private http:HttpClient
+  ) {}
 
-  topStudentLabels: string[] = [];
-  topStudentData: number[] = [];
-
-  constructor(private http: HttpClient,private router:Router) {}
-
-  ngOnInit(): void {
-    const storedEmail = localStorage.getItem('adminEmail');
-    if (storedEmail) {
-      this.adminEmail = storedEmail;
-    }
-    this.getPassPercentage();
-    this.getSemesterPerformance();
-    this.getTopStudents();
-  }
-
-  getPassPercentage() {
-    this.http.get<any>('http://localhost:8080/api/analytics/pass-percentage').subscribe(res => {
-      this.passPercentLabels = res.subjects;
-      this.passPercentData = res.percentages;
+fetchAnalytics() {
+  this.isLoading = true;
+  this.http.get<any>('http://localhost:8080/api/results/department-pass-fail?semester=${this.semester}')
+    .subscribe({
+      next: (data) => {
+        this.analyticsData = data;
+        this.departments = Object.keys(data);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      }
     });
-  }
+}
 
-  getSemesterPerformance() {
-    this.http.get<any>('http://localhost:8080/api/analytics/semester-performance').subscribe(res => {
-      this.semesterLabels = res.semesters;
-      this.semesterData = res.averages;
-    });
-  }
-
-  getTopStudents() {
-    this.http.get<any>('http://localhost:8080/api/analytics/top-students').subscribe(res => {
-      this.topStudentLabels = res.names;
-      this.topStudentData = res.marks;
-    });
+getPieData(dept: string) {
+  const entry = this.analyticsData[dept];
+  return {
+    labels: ['Pass', 'Fail'],
+    datasets: [{
+      data: [entry.pass, entry.fail],
+      backgroundColor: ['#28a745', '#dc3545']
+    }]
+  };
+}
+  confirmLogout() {
+    localStorage.clear();
+    this.router.navigate(['/admin-login']);
   }
-confirmLogout() {
-  localStorage.clear();
-  this.router.navigate(['/admin-login']);
-  }
-
 }
