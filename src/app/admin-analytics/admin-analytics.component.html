@@ -43,26 +43,37 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4">Graphical Analytics</h2>
 
-  <div class="text-center mb-4">
-    <label class="fw-bold me-2">Select Semester:</label>
-    <select class="form-select d-inline w-auto" [(ngModel)]="semester" (change)="fetchAnalytics()">
-      <option *ngFor="let s of [1,2,3,4]" [value]="s">Semester {{ s }}</option>
-    </select>
-  </div>
+  <div class="container mt-4">
+    <div *ngFor="let semester of allSemestersData" class="mb-5">
+      <h4 class="text-primary">Semester {{ semester.semester }}</h4>
 
-  <h5 class="text-center mb-4">Department-wise Result for Semester {{ semester }}</h5>
+      <div *ngFor="let dept of semester.departments" class="mb-4 ps-3">
+        <h5 class="text-success">Department: {{ dept.department }}</h5>
 
-  <div *ngIf="isLoading" class="text-center">
-    <div class="spinner-border text-primary"></div>
-  </div>
+        <div class="row" *ngFor="let subject of dept.subjects">
+          <div class="col-md-6 mb-4">
+            <div class="card p-3 shadow-sm">
+              <h6>{{ subject.subject }}</h6>
+              <canvas baseChart
+                [data]="getBarData(subject, dept.department, semester.semester)"
+                [type]="'bar'">
+              </canvas>
+            </div>
+          </div>
 
-  <div class="row" *ngIf="!isLoading">
-    <div class="col-md-4 mb-4" *ngFor="let dept of departments">
-      <div class="card p-3 shadow-sm">
-        <h6 class="text-center">{{ dept }}</h6>
-        <canvas baseChart [data]="getPieData(dept)" [type]="'pie'"></canvas>
+          <div class="col-md-6 mb-4">
+            <div class="card p-3 shadow-sm">
+              <h6>{{ subject.subject }}</h6>
+              <canvas baseChart
+                [data]="getDonutData(subject)"
+                [type]="'doughnut'">
+              </canvas>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </div>
   </div>
   </div>
 <!-- Logout Confirmation Modal -->

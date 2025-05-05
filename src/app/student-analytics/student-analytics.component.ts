@@ -2,19 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-@Component({
-  standalone:false,
+@Component({standalone:false,
   selector: 'app-student-analytics',
   templateUrl: './student-analytics.component.html',
   styleUrls: ['./student-analytics.component.css']
 })
 export class StudentAnalyticsComponent implements OnInit {
-  registerNumber: string = '';
-  dob: string = '';
-  selectedSemester: number = 1;
-  semesters: number[] = [1, 2, 3, 4];
-  isLoading = false;
-  chartData: any;
+  registerNumber = '';
+  dob = '';
+  semesters = [1, 2, 3, 4];
+  isLoading = true;
+  chartData: { [key: number]: any } = {};
+
   chartOptions = {
     responsive: true,
     scales: {
@@ -22,82 +21,55 @@ export class StudentAnalyticsComponent implements OnInit {
     }
   };
 
-  constructor(private http: HttpClient,private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.registerNumber = localStorage.getItem('registerNumber') || '';
     this.dob = localStorage.getItem('dob') || '';
-    this.fetchChartData();
+    this.fetchAllSemesters();
   }
 
-  // fetchChartData() {
-  //   if (!this.registerNumber || !this.dob || !this.selectedSemester) return;
-    
-  //   this.isLoading = true;
-  //   // const url = 'http://localhost:8080/student/viewresult?registered=${this.registerNumber}&dob=${this.dob}&sem=${this.selectedSemester}';
-  //   const url = `http://localhost:8080/student/viewresult?registered=${this.registerNumber}&dob=${this.dob}&sem=${this.selectedSemester}`;
+  fetchAllSemesters(): void {
+    if (!this.registerNumber || !this.dob) return;
 
-  //   this.http.get<any>(url).subscribe({
-  //     next: (response) => {
-  //       const subjects = Object.keys(response);
-  //       const marks = subjects.map(sub => response[sub]);
-  //       this.chartData = {
-  //         labels: subjects,
-  //         datasets: [
-  //           {
-  //             label: 'Marks',
-  //             data: marks,
-  //             backgroundColor: '#007bff'
-  //           }
-  //         ]
-  //       };
-  //       this.isLoading = false;
-  //     },
-  //     error: () => {
-  //       this.chartData = null;
-  //       this.isLoading = false;
-  //     }
-  //   });
-  // }
-  fetchChartData(): void {
-    if (!this.registerNumber || !this.dob || !this.semesters) return;
+    let loaded = 0;
+    this.semesters.forEach(sem => {
+      const semesters = [1, 2, 3, 4];
+const semParam = semesters.join(',');
+const url = `http://localhost:8080/student/viewresult?registered=${this.registerNumber}&dob=${this.dob}&sem=${semParam}`;
 
-    this.isLoading = true;
-    const url = `http://localhost:8080/student/viewresult?registered=${this.registerNumber}&dob=${this.dob}&sem=${this.semesters}`;
 
-    this.http.get<any>(url).subscribe({
-      next: (response) => {
-        if (response.status === 'OK') {
-          // Map the response to create chart data
-          const subjects = response.response.subjects.map((sub: any) => sub.name);
-          const marks = response.response.subjects.map((sub: any) => parseInt(sub.marks, 10));
-
-          this.chartData = {
-            labels: subjects,
-            datasets: [{
-              label: 'Marks',
-              data: marks,
-              backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#FF5733'], // Custom colors
-            }]
+      this.http.get<any>(url).subscribe({
+        next: (response) => {
+          if (response.status === 'OK') {
+            const subjects = response.response.subjects.map((sub: any) => sub.name);
+            const marks = response.response.subjects.map((sub: any) => parseInt(sub.marks, 10));
+            this.chartData[sem] = {
+              labels: subjects,
+              datasets: [{
+                label: 'Marks',
+                data: marks,
+                backgroundColor: '#007bff'
+              }]
+            };
+          }
+          loaded++;
+          if (loaded === this.semesters.length) this.isLoading = false;
+        },
+        error: () => {
+          this.chartData[sem] = {
+            labels: [],
+            datasets: []
           };
-
-          this.isLoading = false;
+          loaded++;
+          if (loaded === this.semesters.length) this.isLoading = false;
         }
-      },
-      error: () => {
-        this.chartData = {
-          labels: [],
-          datasets: [{
-            data: [],
-            backgroundColor: [],
-          }]
-        };
-        this.isLoading = false;
-      }
+      });
     });
   }
-  confirmLogout() {
+
+  confirmLogout(): void {
     localStorage.clear();
-     this.router.navigate(['/home']);
-   }
+    this.router.navigate(['/home']);
+  }
 }

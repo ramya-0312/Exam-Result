@@ -6,46 +6,43 @@ import { Router } from '@angular/router';
   standalone:false,
   selector: 'app-admin-analytics',
   templateUrl: './admin-analytics.component.html',
-  styleUrls: ['./admin-analytics.component.css']
 })
-export class AdminAnalyticsComponent {
+export class AdminAnalyticsComponent implements OnInit {
   adminEmail: string = '';
-  semester: number = 1;
-departments: string[] = [];
-analyticsData: any = {};
-isLoading = false;
+  allSemestersData: any[] = [];
 
- constructor(
-    private router: Router,
-    private http:HttpClient
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-fetchAnalytics() {
-  this.isLoading = true;
-  this.http.get<any>('http://localhost:8080/api/results/department-pass-fail?semester=${this.semester}')
-    .subscribe({
-      next: (data) => {
-        this.analyticsData = data;
-        this.departments = Object.keys(data);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
+  ngOnInit() {
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
+    this.http.get<any[]>('/api/admin/analytics/all').subscribe(res => {
+      this.allSemestersData = res;
     });
-}
+  }
 
-getPieData(dept: string) {
-  const entry = this.analyticsData[dept];
-  return {
-    labels: ['Pass', 'Fail'],
-    datasets: [{
-      data: [entry.pass, entry.fail],
-      backgroundColor: ['#28a745', '#dc3545']
-    }]
-  };
-}
+  getBarData(subject: any, dept: string, sem: number) {
+    return {
+      labels: ['Pass', 'Fail'],
+      datasets: [{
+        label: `${subject.subject} - ${dept} - Sem ${sem}`,
+        data: [subject.pass, subject.fail],
+        backgroundColor: ['#4caf50', '#f44336']
+      }]
+    };
+  }
+
+  getDonutData(subject: any) {
+    return {
+      labels: ['Pass', 'Fail'],
+      datasets: [{
+        data: [subject.pass, subject.fail],
+        backgroundColor: ['#81c784', '#e57373']
+      }]
+    };
+  }
   confirmLogout() {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
