@@ -1,75 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ChartData } from 'chart.js';
 
-@Component({standalone:false,
+@Component({
+  standalone:false,
   selector: 'app-student-analytics',
   templateUrl: './student-analytics.component.html',
   styleUrls: ['./student-analytics.component.css']
 })
+
 export class StudentAnalyticsComponent implements OnInit {
+  marks: { [subject: string]: number}={};
   registerNumber = '';
   dob = '';
-  semesters = [1, 2, 3, 4];
-  isLoading = true;
-  chartData: { [key: number]: any } = {};
+  semester=[];
 
-  chartOptions = {
-    responsive: true,
-    scales: {
-      y: { beginAtZero: true }
-    }
-  };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  analyticsData: any[] = [];
 
-  ngOnInit(): void {
-    this.registerNumber = localStorage.getItem('registerNumber') || '';
-    this.dob = localStorage.getItem('dob') || '';
-    this.fetchAllSemesters();
+  barChartData: ChartData<'bar'> = { labels: [], datasets: [] };
+  donutChartData: ChartData<'doughnut'> = { labels: [], datasets: [] };
+
+  constructor(private http: HttpClient,private router: Router) {}
+
+  ngOnInit() {
+    this.fetchAnalytics();
   }
 
-  fetchAllSemesters(): void {
-    if (!this.registerNumber || !this.dob) return;
-
-    let loaded = 0;
-    this.semesters.forEach(sem => {
-      const semesters = [1, 2, 3, 4];
-const semParam = semesters.join(',');
-const url = `http://localhost:8080/student/viewresult?registered=${this.registerNumber}&dob=${this.dob}&sem=${semParam}`;
-
-
-      this.http.get<any>(url).subscribe({
-        next: (response) => {
-          if (response.status === 'OK') {
-            const subjects = response.response.subjects.map((sub: any) => sub.name);
-            const marks = response.response.subjects.map((sub: any) => parseInt(sub.marks, 10));
-            this.chartData[sem] = {
-              labels: subjects,
-              datasets: [{
-                label: 'Marks',
-                data: marks,
-                backgroundColor: '#007bff'
-              }]
-            };
-          }
-          loaded++;
-          if (loaded === this.semesters.length) this.isLoading = false;
-        },
-        error: () => {
-          this.chartData[sem] = {
-            labels: [],
-            datasets: []
-          };
-          loaded++;
-          if (loaded === this.semesters.length) this.isLoading = false;
-        }
-      });
+  fetchAnalytics() {
+    this.http.post<any[]>('http://localhost:8080/api/analytics', {
+      registerNumber: this.registerNumber,
+      dob: this.dob
+    }).subscribe(data => {
+      this.analyticsData = data;
+      this.prepareBarChart();
+      this.prepareDonutChart();
     });
   }
 
-  confirmLogout(): void {
-    localStorage.clear();
-    this.router.navigate(['/home']);
+  prepareBarChart() {
+    const subjects = ['Tamil', 'English', 'Mathematics', 'Science', 'Social Science'];
+
+    this.barChartData.labels = this.analyticsData.map(d => `Sem ${d.semester}`);
+    this.barChartData.datasets = subjects.map(subject => ({
+      label: subject,
+      data: this.analyticsData.map(d => d.subjectMarks[subject])
+    }));
   }
+
+  prepareDonutChart() {
+    this.donutChartData.labels = this.analyticsData.map(d => `Sem ${d.semester}`);
+    this.donutChartData.datasets = [{
+
+      label: 'Total Marks',
+      data: this.analyticsData.map(d => {
+        const sum = Object.values(this.marks).reduce((acc: number, val: unknown) => acc + Number(val), 0);
+        return Math.round((sum / 500) * 100); // Percentage
+      }),
+      backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0']
+    }];
+  }
+  confirmLogout() {
+    localStorage.clear();
+     this.router.navigate(['/home']);
+   }
 }

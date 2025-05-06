@@ -30,27 +30,28 @@
 </div>
 
 <!-- Main Content -->
+
+
 <div class="container mt-4">
-  <h3 class="text-center mb-4">Student Performance Analytics</h3>
+  <h2 class="text-center mb-4">Student Analytics</h2>
 
-  <div *ngIf="isLoading" class="text-center">
-    <div class="spinner-border text-primary" role="status"></div>
-    <p>Loading charts...</p>
-  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="text-center">Subject-wise Marks (Bar Chart)</h5>
+      <canvas baseChart
+              [data]="barChartData"
+              [type]="'bar'"
+              [options]="{ responsive: true }">
+      </canvas>
+    </div>
 
-  <div class="row" *ngIf="!isLoading">
-    <div class="col-md-6 mb-4" *ngFor="let sem of semesters">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title text-center">Semester {{ sem }}</h5>
-          <canvas baseChart
-            *ngIf="chartData[sem]"
-            [data]="chartData[sem]"
-            [type]="'bar'"
-            [options]="chartOptions">
-          </canvas>
-        </div>
-      </div>
+    <div class="col-md-6">
+      <h5 class="text-center">Semester Performance % (Donut)</h5>
+      <canvas baseChart
+              [data]="donutChartData"
+              [type]="'doughnut'"
+              [options]="{ responsive: true }">
+      </canvas>
     </div>
   </div>
 </div>
