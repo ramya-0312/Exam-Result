@@ -18,7 +18,7 @@ export class AdminAnalyticsComponent implements OnInit {
     if (storedEmail) {
       this.adminEmail = storedEmail;
     }
-    this.http.get<any[]>('/api/admin/analytics/all').subscribe(res => {
+    this.http.get<any[]>('http://localhost:8080/student/all-semesters').subscribe(res => {
       this.allSemestersData = res;
     });
   }
@@ -28,7 +28,7 @@ export class AdminAnalyticsComponent implements OnInit {
       labels: ['Pass', 'Fail'],
       datasets: [{
         label: `${subject.subject} - ${dept} - Sem ${sem}`,
-        data: [subject.pass, subject.fail],
+        data: [subject.passCount, subject.failCount],
         backgroundColor: ['#4caf50', '#f44336']
       }]
     };
@@ -38,7 +38,7 @@ export class AdminAnalyticsComponent implements OnInit {
     return {
       labels: ['Pass', 'Fail'],
       datasets: [{
-        data: [subject.pass, subject.fail],
+        data: [subject.passCount, subject.failCount],
         backgroundColor: ['#81c784', '#e57373']
       }]
     };
