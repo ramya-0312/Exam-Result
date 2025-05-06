@@ -43,58 +43,54 @@
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="container mt-4">
-    <h2 class="text-center mb-4">Graphical Analytics</h2>
+  <div class="container-fluid">
+    <!-- Dropdowns -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Select Semester</label>
+        <select class="form-select" [(ngModel)]="selectedSemester" (change)="updateCurrentData()">
+          <option *ngFor="let sem of semesters"[value]="sem">Semester{{ sem }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Select Department</label>
+        <select class="form-select" [(ngModel)]="selectedDepartment" (change)="updateCurrentData()">
+          <option *ngFor="let dept of departments"[value]="dept">{{ dept }}</option>
+        </select>
+      </div>
+    </div>
 
-
-
-    <!-- Looping Through Semesters -->
-    <div *ngFor="let semester of allSemestersData" class="mb-5">
-      <h4 class="text-primary">Semester {{ semester.semester }}</h4>
-
-      <!-- Looping Through Departments -->
-      <div *ngFor="let dept of semester.departments" class="mb-4 ps-3">
-        <h5 class="text-success">
-          Department: {{ dept.department }}
-          <small class="text-muted ms-2">(Total Students: {{ dept.studentCount }})</small>
-        </h5>  
-        <!-- Top 3 Students -->
-        <div class="row mb-4">
-          <div *ngFor="let student of dept.topStudents" class="col-md-4 mb-3">
-            <div class="card shadow-sm p-3 d-flex flex-row align-items-center">
-              <img [src]="student.avatarUrl" alt="Avatar" class="rounded-circle me-3" width="60" height="60" />
-              <div>
-                <h6 class="mb-1">{{ student.name }}</h6>
-                <p class="mb-0 text-muted" style="font-size: 0.9rem;">Reg No: {{ student.registerNumber }}</p>
-                <p class="mb-0 text-muted" style="font-size: 0.85rem;">Marks: {{ student.totalMarks }}</p>
-              </div>
-            </div>
+    <!-- Top Students -->
+    <div class="row mb-3">
+      <div *ngFor="let student of topStudents" class="col-md-4">
+        <div class="card p-2 d-flex flex-row align-items-center">
+          <img [src]="student.avatarUrl" class="rounded-circle me-2" width="50" height="50">
+          <div>
+            <h6 class="mb-0">{{ student.name }}</h6>
+            <small>Reg No: {{ student.registerNumber }}</small><br>
+            <small>Marks: {{ student.totalMarks }}</small>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Subject-wise Charts -->
-        <div class="row" *ngFor="let subject of dept.subjects">
-          <div class="col-md-6 mb-4">
-            <div class="card p-3 shadow-sm">
-              <h6>{{ subject.subject }}</h6>
-              <canvas baseChart
-                [data]="getBarData(subject, dept.department, semester.semester)"
-                [type]="'bar'">
-              </canvas>
-            </div>
-          </div>
-          <div class="col-md-6 mb-4">
-            <div class="card p-3 shadow-sm">
-              <h6>{{ subject.subject }}</h6>
-              <canvas baseChart
-                [data]="getDonutData(subject)"
-                [type]="'doughnut'">
-              </canvas>
-            </div>
-          </div>
-        </div>
-
+    <!-- Charts: Bar + Donut Side-by-Side -->
+    <div class="row">
+      <div class="col-md-8">
+        <canvas baseChart
+                [data]="barChartData"
+                [type]="barChartType"
+                [options]="chartOptions"
+                class="w-100"
+                style="height: 300px;"></canvas>
+      </div>
+      <div class="col-md-4">
+        <canvas baseChart
+                [data]="donutChartData"
+                [type]="donutChartType"
+                [options]="chartOptions"
+                class="w-100"
+                style="height: 300px;"></canvas>
       </div>
     </div>
   </div>

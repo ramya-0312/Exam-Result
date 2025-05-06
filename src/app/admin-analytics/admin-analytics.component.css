@@ -1,0 +1,18 @@
+.dropdowns-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+label {
+  margin-right: 0.5rem;
+}
+/* admin-analytics.component.css */
+
+:host {
+  display: block;
+  overflow-y: auto;
+  max-height: 100vh;
+  padding: 1rem;
+}
