@@ -27,6 +27,7 @@ export class ViewResultComponent implements OnInit {
   loadingResult = true;
   error = '';
   resultData = '';
+  cgpa:number=0
 
   constructor(private router: Router) {}
 
@@ -63,6 +64,9 @@ export class ViewResultComponent implements OnInit {
   //   };
   // }
   ngOnInit(): void {
+    const result = this.getGradeAndCGPA();
+console.log(result.grade);  // Output: Grade (e.g., 'A', 'B+', 'U')
+console.log(result.cgpa);   // Output: CGPA (e.g., 9, 8, 0 for fail)
     setTimeout(() => {
       this.loadingResult=false;
 
@@ -81,6 +85,7 @@ export class ViewResultComponent implements OnInit {
     const resultParsed = JSON.parse(resultRaw);
     const data = resultParsed.response;
 
+
     // Set the values properly
     this.semester = semester;
     this.student = {
@@ -88,7 +93,7 @@ export class ViewResultComponent implements OnInit {
       registered: data.registered,
       department: data.department,
       marks: data.subjects,
-      total: data.totalMarks,
+      total: (data.totalMarks),
       result: data.resultStatus
     };
 
@@ -129,11 +134,46 @@ applyRevaluation() {
 
 
 
-  //
-  getPercentage(): number {
-    const total = Number(this.student?.total);
-    return Math.round((total / 500) * 100);
-  }
+getPercentage(): number {
+  const totalMarksObtained = Number(this.student?.total);  // Ensure it's a number
+  console.log("Total Marks Obtained: ", totalMarksObtained);  // Debugging log
+  const totalPossibleMarks = 500;  // Total marks, assume it's out of 500
+  const percentage = Math.round((totalMarksObtained / totalPossibleMarks) * 100);
+  console.log("Calculated Percentage: ", percentage);  // Debugging log
+  return percentage;
+}
+
+  getGradeAndCGPA(): { grade: string, cgpa: number } {
+    const percentage = this.getPercentage();
+    let grade = '';
+    let cgpa = 0;
+
+    if (percentage >= 90) {
+        grade = 'A+';
+        cgpa = 10;
+    } else if (percentage >= 80) {
+        grade = 'A';
+        cgpa = 9;
+    } else if (percentage >= 70) {
+        grade = 'B+';
+        cgpa = 8;
+    } else if (percentage >= 60) {
+        grade = 'B';
+        cgpa = 7;
+    } else if (percentage >= 50) {
+        grade = 'C+';
+        cgpa = 6;
+    } else if (percentage >= 40) {
+        grade = 'C';
+        cgpa = 5;
+    } else {
+        grade = 'u ';
+        cgpa = 0;
+    }
+
+    return { grade, cgpa };
+}
+
 
   goHome() {
     this.router.navigate(['/select-semester']);

@@ -59,12 +59,16 @@
         </select>
       </div>
     </div>
+    <br>
+    
 
     <!-- Top Students -->
     <div class="row mb-3">
       <div *ngFor="let student of topStudents" class="col-md-4">
         <div class="card p-2 d-flex flex-row align-items-center">
-          <img [src]="student.avatarUrl" class="rounded-circle me-2" width="50" height="50">
+          <img [src]="getAvatarUrl(student.registerNumber)"
+     class="rounded-circle me-2"
+     width="50" height="50">
           <div>
             <h6 class="mb-0">{{ student.name }}</h6>
             <small>Reg No: {{ student.registerNumber }}</small><br>
@@ -73,6 +77,11 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <!-- Charts: Bar + Donut Side-by-Side -->
     <div class="row">
