@@ -64,15 +64,17 @@
         </thead>
         <tbody>
           <tr *ngFor="let request of revaluationRequests">
-            <td>{{ request.registerNumber }}</td>
+            <td>{{ request.registered }}</td>
             <td>
               <ul class="list-unstyled mb-0">
-                <li *ngFor="let subject of request.selectedSubjects">{{ subject }}</li>
+                <li *ngFor="let subject of request.subject">{{ subject }}</li>
               </ul>
             </td>
             <td>
-              <button class="btn btn-success btn-sm me-2" (click)="approveRequest(request)">Approve</button>
-              <button class="btn btn-danger btn-sm" (click)="rejectRequest(request)">Reject</button>
+             <button class="btn btn-success" (click)="approveRequest(request.id, request.registered, request.semester, 'Approved')"> Approve </button>&nbsp;&nbsp;
+             <button class="btn btn-danger" (click)="approveRequest(request.id, request.registered, request.semester, 'Rejected')"> Reject </button>
+
+
             </td>
           </tr>
         </tbody>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-
+import { RevaluationService } from '../services/revaluation.service';
 
 @Component({
   standalone:false,
@@ -13,16 +13,18 @@ import { Router } from '@angular/router';
 export class AdminRevaluationComponent implements OnInit {
   revaluationRequests: any[] = [];
   loading = true;
-  adminEmail:string='';
-
-  constructor(private http: HttpClient, private toastr: ToastrService,private router: Router) {}
+  adminEmail: string = '';
+constructor(
+  private revaluationService: RevaluationService,
+  private toastr: ToastrService,
+  private router: Router,
+  private http:HttpClient
+) {}
 
   ngOnInit(): void {
     this.fetchRevaluationRequests();
-    const storedEmail=localStorage.getItem('adminEmail');
-    if(storedEmail){
-      this.adminEmail=storedEmail;
-    }
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) this.adminEmail = storedEmail;
   }
 
   fetchRevaluationRequests(): void {
@@ -38,26 +40,39 @@ export class AdminRevaluationComponent implements OnInit {
     });
   }
 
-  approveRequest(request: any): void {
-    this.http.post('http://localhost:8080/api/revaluation/approve', request).subscribe({
-      next: () => {
-        this.toastr.success('Request approved');
-        this.fetchRevaluationRequests();
-      },
-      error: () => this.toastr.error('Failed to approve request')
-    });
-  }
+approveRequest(id: number, registered: number, semester: number, status: string): void {
+  this.http.put(`http://localhost:8080/api/revaluation/update-status/${id}?status=${status}`, {}, { responseType: 'text' as 'json' }).subscribe({
+    next: (res: any) => {
+      this.toastr.success(res); // This will now show "Status updated to Approved"
+      if (status === 'Approved') {
+      localStorage.setItem('approvedRegNo', registered.toString());
+      localStorage.setItem('approvedSemester', semester.toString());
+      this.router.navigate(['/post-result']);
+      }
 
-  rejectRequest(request: any): void {
-    this.http.post('http://localhost:8080/api/revaluation/reject', request).subscribe({
-      next: () => {
-        this.toastr.success('Request rejected');
-        this.fetchRevaluationRequests();
-      },
-      error: () => this.toastr.error('Failed to reject request')
-    });
-  }
-  confirmLogout() {
+      this.fetchRevaluationRequests();
+    },
+    error: (err) => {
+      console.error(err);
+      this.toastr.error('Failed to approve request');
+    }
+  });
+}
+
+rejectRequest(id: number, registered: number, semester: number, status: string): void {
+  this.http.put(`http://localhost:8080/api/revaluation/update-status/${id}?status=${status}`, {}, { responseType: 'text' as 'json' }).subscribe({
+    next: (res: any) => {
+      this.toastr.success(res); // e.g. "Status updated to Rejected"
+      this.fetchRevaluationRequests();
+    },
+    error: (err) => {
+      console.error(err);
+      this.toastr.error('Failed to reject request');
+    }
+  });
+}
+
+  confirmLogout(): void {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
   }

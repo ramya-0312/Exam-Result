@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone:false,
@@ -16,7 +18,7 @@ export class RevaluationComponent implements OnInit {
 
   subjects = ['Tamil', 'English', 'Mathematics', 'Science', 'Social Science'];
 
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient, private router: Router,private toastr: ToastrService,) {}
 
   ngOnInit(): void {
     // Get student details from local storage
@@ -40,7 +42,28 @@ export class RevaluationComponent implements OnInit {
       alert('Please select at least one subject to apply for revaluation.');
       return;
     }
-    alert('Revaluation request submitted for: ' + this.selectedSubjects.join(', '));
-    this.router.navigate(['/view-result']);
+
+    const payload = {
+      registered: parseInt(this.registerNumber),
+      semester: parseInt(this.semester),
+      subject: this.selectedSubjects
+    };
+
+    console.log('Payload:', payload);
+
+    this.http.post('http://localhost:8080/api/revaluation/apply', payload).subscribe({
+      next: (res: any) => {
+        console.log('Response:',res);
+        this.toastr.success(res.message || 'Revaluation request submitted');
+
+        this.router.navigate(['/view-result']);
+      },
+      error: (err) => {
+        console.error('API Error:', err);
+        this.toastr.error('Failed to submit revaluation.');
+  }
+
+    });
   }
 }
+
