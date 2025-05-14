@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // import { ChartConfiguration,ChartType,ChartData, ChartOptions } from 'chart.js';
 import { Router } from '@angular/router';
-import { ChartData, ChartType, ChartOptions } from 'chart.js';
+import { ChartData, ChartType, ChartOptions, ChartConfiguration } from 'chart.js';
 
 interface SubjectData {
   subject: string;
@@ -31,6 +31,7 @@ interface DepartmentData {
 })
 export class AdminAnalyticsComponent implements OnInit {
   adminEmail: string = '';
+  allBarCharts: { subject: string, chartData: ChartConfiguration<'bar'>['data'] }[] = [];
 
   allSemestersData: DepartmentData[] = [];
   selectedSemester: number = 1;
@@ -44,9 +45,22 @@ export class AdminAnalyticsComponent implements OnInit {
   barChartType: ChartType = 'bar';
   donutChartType: ChartType = 'doughnut';
 
-  barChartData: ChartData = {
+  barChartData: ChartData<'bar'> = {
     labels: [],
-    datasets: []
+    datasets: [ {
+      label: 'Pass Percentage',
+      data: [], // Update dynamically from backend
+      backgroundColor: [
+        '#007bff',
+        '#28a745',
+        '#ffc107',
+        '#17a2b8',
+        '#dc3545'
+      ],
+      borderRadius: 5,
+      barThickness: 40
+    }
+]
   };
 
   donutChartData: ChartData  = {
@@ -71,105 +85,85 @@ export class AdminAnalyticsComponent implements OnInit {
   constructor(private http: HttpClient,private router: Router) {}
 
   ngOnInit(): void {
+    this.semesters = [1, 2, 3, 4];
+    this.departments = ['CSE', 'ECE', 'MECH','CIVIL','EEE'];
+    this.selectedSemester = this.semesters[0];
+    this.selectedDepartment = this.departments[0];
+
     this.fetchAnalyticsData();
   }
 
-//   fetchAnalyticsData(): void {
-//     this.http.get<DepartmentData[][]>(`http://localhost:8080/api/analytics/top-students?semester=2&department=${this.selectedDepartment}`).subscribe({
-//       next: (data) => {
-//         this.allSemestersData = data;
-//         this.semesters = data.map((_, i) => i + 1);
-//         this.selectedSemester = this.semesters[0];
+  fetchAnalyticsData(): void {
+   // const storedReg = localStorage.getItem('registerNumber');
+   // const storedDob = localStorage.getItem('dob');
 
-//         const firstSemesterDepartments = data[0];
-//         this.departments = firstSemesterDepartments.map(d => d.department);
-//         this.selectedDepartment = this.departments[0];
+    if (!this.selectedSemester || !this.selectedDepartment) {
+      console.error('Register number or DOB not found in localStorage');
+      return;
+    }
 
-//         this.updateCurrentData();
-//         console.log("Semesters:", this.semesters);
-// console.log("Departments:", this.departments);
-//       },
-//       error: (err) => console.error('Error fetching analytics:', err)
-//     });
-//   }
-fetchAnalyticsData(): void {
-  if (!this.selectedSemester || !this.selectedDepartment) {
-    console.warn('Semester or department not selected yet.');
-    return;
+   //const url = `http://localhost:8080/student/all-semesters?registerNumber=${storedReg}&dob=${storedDob}&semester=${this.selectedSemester}&department=${this.selectedDepartment}`;
+ const url = `http://localhost:8080/api/analytics/api/analytics/top-students?semester=${this.selectedSemester}&department=${this.selectedDepartment}`;
+
+
+ this.http.get<DepartmentData[]>(url).subscribe({
+  next: (data) => {
+    this.currentData = data[0];
+
+    console.log('Top Students:', this.currentData.topStudents);
+    if (this.currentData && this.currentData.subjects.length > 0) {
+      const subjects = this.currentData.subjects;
+      const labels = subjects.map(sub => sub.subject);
+      const passPercentages = subjects.map(sub => {
+        const total = sub.passCount + sub.failCount;
+        return total > 0 ? Math.round((sub.passCount / total) * 100) : 0;
+      });
+      const failPercentages = subjects.map(sub => {
+        const total = sub.passCount + sub.failCount;
+        return total > 0 ? Math.round((sub.failCount / total) * 100) : 0;
+      });
+
+      this.barChartData = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Pass Percentage',
+            data: passPercentages,
+            backgroundColor: [
+              '#007bff',
+              '#28a745',
+              '#ffc107',
+              '#17a2b8',
+              '#dc3545'
+            ],
+            borderRadius: 5,
+            barThickness: 40
+          },
+          {
+            label: 'Fail %',
+            data: failPercentages,
+            backgroundColor: '#dc3545',
+            barThickness: 30
+          }
+
+        ]
+      };
+
+      this.donutChartData = this.getDonutData();
+    }
+    this.topStudents = this.currentData.topStudents.slice(0,3);
+  },
+  error: (err) => console.error('Error fetching analytics:', err)
+});
+  }
+  getAvatarUrl(registerNumber: string): string {
+    // Generate a unique number for each student based on their register number
+    const avatarId = Math.floor(parseInt(registerNumber, 10) % 70) + 1; // Random number based on register number
+    return `https://i.pravatar.cc/100?img=${avatarId}`;
   }
 
-  this.http.get<DepartmentData[]>(`http://localhost:8080/api/analytics/top-students?semester=${this.selectedSemester}&department=${this.selectedDepartment}`).subscribe({
-    next: (data) => {
-      if (!data || data.length === 0) {
-        console.warn('No analytics data found.');
-        this.allSemestersData = [];
-        this.currentData = null;
-        return;
-      }
-
-      this.allSemestersData = data;
-      this.updateCurrentData();
-    },
-    error: (err) => {
-      console.error('Error fetching analytics:', err);
-    }
-  });
-}
-
-
-
-  // updateCurrentData(): void {
-  //   const semesterIndex = this.selectedSemester - 1;
-  //   const departmentData = this.allSemestersData[semesterIndex].find(
-  //     dept => dept.department === this.selectedDepartment
-  //   );
-  //   this.currentData = departmentData || null;
-
-  //   if (this.currentData) {
-  //     // Bar chart: show first subject as default
-  //     const firstSubject = this.currentData.subjects[0];
-  //     this.barChartData = this.getBarData(firstSubject);
-
-  //     // Donut chart: total pass/fail across all subjects
-  //     this.donutChartData = this.getDonutData();
-  //   }
-
-  // }
   updateCurrentData(): void {
-    const departmentData = this.allSemestersData.find(
-      dept => dept.department === this.selectedDepartment
-    );
-  
-    if (!departmentData) {
-      console.warn('No data found for selected department.');
-      this.currentData = null;
-      return;
-    }
-  
-    this.currentData = departmentData;
-    this.topStudents = departmentData.topStudents;
-  
-    if (departmentData.subjects && departmentData.subjects.length > 0) {
-      const firstSubject = departmentData.subjects[0];
-      this.barChartData = this.getBarData(firstSubject);
-      this.donutChartData = this.getDonutData();
-    }
-  }
-  
-  
-    if (!departmentData) {
-      console.warn('Department data not found for:', this.selectedDepartment);
-      return;
-    }
-  
-    this.currentData = departmentData;
-    this.topStudents = departmentData.topStudents;
-  
-    if (departmentData.subjects && departmentData.subjects.length > 0) {
-      const firstSubject = departmentData.subjects[0];
-      this.barChartData = this.getBarData(firstSubject);
-      this.donutChartData = this.getDonutData();
-    }
+    this.fetchAnalyticsData();
   }
   
 
@@ -206,18 +200,12 @@ getDonutData(): ChartData {
   };
 }
 
-    return {
-      labels: ['Pass', 'Fail'],
-      datasets: [
-        {
-          data: [totalPass, totalFail],
-          backgroundColor: ['#198754', '#dc3545']
-        }
-      ]
-    };
-  }
+ 
+  
   confirmLogout() {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
+
 }
+

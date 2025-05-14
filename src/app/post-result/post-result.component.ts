@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { ResultService } from '../services/result.service';
 
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
 @Component({
-  standalone: false,
+  standalone:false,
   selector: 'app-post-result',
   templateUrl: './post-result.component.html',
   styleUrls: ['./post-result.component.css']
@@ -16,7 +17,7 @@ export class PostResultComponent implements OnInit {
   adminEmail: string = '';
   registerNumber: number | null = null;
   semester: number | null = null;
-
+  revaluationSubjects: SubjectName[] = [];
 
   marks: Record<SubjectName, number | null> = {
     tamil: null,
@@ -25,7 +26,8 @@ export class PostResultComponent implements OnInit {
     science: null,
     social: null
   };
-grade:String ="";
+
+  grade: string = '';
   totalMarks: number = 0;
   result: string = '';
   calculated: boolean = false;
@@ -34,7 +36,9 @@ grade:String ="";
   constructor(
     private toastr: ToastrService,
     private router: Router,
-    private http: HttpClient
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private resultService: ResultService
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +46,54 @@ grade:String ="";
     if (storedEmail) {
       this.adminEmail = storedEmail;
     }
+
+     const regNo = localStorage.getItem('approvedRegNo');
+  const sem = localStorage.getItem('approvedSemester');
+  if (regNo && sem) {
+    this.registerNumber = Number(regNo);
+    this.semester = Number(sem);
+
+    // Clear after use (optional)
+    localStorage.removeItem('approvedRegNo');
+    localStorage.removeItem('approvedSemester');
   }
 
+
+    // Get query params
+    this.route.queryParams.subscribe(params => {
+      this.registerNumber = +params['registerNumber'];
+      this.semester = +params['semester'];
+      this.revaluationSubjects = params['subjects']
+        ? params['subjects'].split(',') as SubjectName[]
+        : [];
+
+      if (this.registerNumber && this.semester) {
+        this.fetchPreviousResult();
+      }
+    });
+  }
+
+  fetchPreviousResult() {
+    this.http.get<any>(`http://localhost:8080/student/result`, {
+      params: {
+        registerNumber: this.registerNumber?.toString() || '',
+        semester: this.semester?.toString() || ''
+      }
+    }).subscribe({
+      next: (res) => {
+        // Prefill non-revaluation subjects
+        const subjectKeys: SubjectName[] = ['tamil', 'english', 'maths', 'science', 'social'];
+        for (let subject of subjectKeys) {
+          if (!this.revaluationSubjects.includes(subject)) {
+            this.marks[subject] = res[subject];  // use old mark
+          }
+        }
+      },
+      error: (err) => {
+        this.toastr.error('Failed to fetch previous result');
+      }
+    });
+  }
 
   blockInvalidMarks(event: KeyboardEvent, subject: SubjectName) {
     const inputChar = String.fromCharCode(event.keyCode);
@@ -53,7 +103,6 @@ grade:String ="";
       event.preventDefault();
     }
 
-    // Check if after adding the new digit, value crosses 100
     const currentVal = this.marks[subject]?.toString() || '';
     const newVal = currentVal + inputChar;
     const numericVal = parseInt(newVal, 10);
@@ -81,7 +130,6 @@ grade:String ="";
     for (const subject in this.marks) {
       const mark = this.marks[subject as SubjectName];
       const numericMark = Number(mark);
-      console.log(`Subject: ${subject}, Mark: ${numericMark}`);
 
       if (!isNaN(numericMark)) {
         sum += numericMark;
@@ -106,7 +154,7 @@ grade:String ="";
     }
   }
 
-  onSubmit(form:NgForm): void {
+  onSubmit(form: NgForm): void {
     if (!this.calculated) {
       this.toastr.warning('Please click "Calculate" before submitting.');
       return;
@@ -118,13 +166,13 @@ grade:String ="";
     }
 
     const payload = {
-     registered: this.registerNumber,
+      registered: this.registerNumber,
       semester: this.semester,
-      tamil:this.marks.tamil,
-      english:this.marks.english,
-      maths:this.marks.maths,
-      science:this.marks.science,
-      social:this.marks.social,
+      tamil: this.marks.tamil,
+      english: this.marks.english,
+      maths: this.marks.maths,
+      science: this.marks.science,
+      social: this.marks.social,
       grade: this.totalMarks,
       result: this.result
     };
@@ -133,15 +181,12 @@ grade:String ="";
       next: (res) => {
         this.toastr.success(res.response);
         form.resetForm();
+        this.router.navigate(['/admin-dashboard']);
       },
       error: (err) => {
-        this.toastr.error(err.error.message);
+        this.toastr.error(err.error.message || 'Failed to post result');
       }
     });
-  }
-
-  logout() {
-
   }
 
   confirmLogout() {
@@ -151,5 +196,5 @@ grade:String ="";
 
   postResult() {
     this.router.navigate(['/post.service']);
-  }
+  }
 }
