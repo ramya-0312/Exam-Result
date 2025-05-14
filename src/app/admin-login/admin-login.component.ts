@@ -20,7 +20,7 @@ export class AdminLoginComponent implements OnInit{
   passwordTouched=false;
   emailValid=false;
   passwordValid=false;
-  // socialAuthService: any;
+  //socialAuthService: any;
 
   constructor(
     private authService: AuthService,
