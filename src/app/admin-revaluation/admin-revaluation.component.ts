@@ -42,8 +42,9 @@ constructor(
   fetchRevaluationRequests(): void {
   this.http.get<any>('http://localhost:8080/api/revaluation/revaluations').subscribe({
     next: (data) => {
-      this.revaluationRequests = data.response; 
-      console.log(this.revaluationRequests)// <-- Fix here
+      console.log('API Response:',data)
+      this.revaluationRequests = data.response;
+      console.log(this.revaluationRequests)
       this.loading = false;
     },
     error: () => {

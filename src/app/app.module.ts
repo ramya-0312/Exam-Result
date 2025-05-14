@@ -36,6 +36,7 @@ import { AdminAnalyticsComponent } from './admin-analytics/admin-analytics.compo
 import { RevaluationComponent } from './revaluation/revaluation.component';
 import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
+import { RevaluationStatusComponent } from './revaluation-status/revaluation-status.component';
 
 
 
@@ -61,6 +62,7 @@ import { StudentAnalyticsComponent } from './student-analytics/student-analytics
       RevaluationComponent,
       AdminRevaluationComponent,
       StudentAnalyticsComponent,
+      RevaluationStatusComponent,
 
 
 

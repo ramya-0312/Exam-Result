@@ -74,5 +74,9 @@ export class RevaluationComponent implements OnInit {
 
     });
   }
+  confirmLogout() {
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
 }
 

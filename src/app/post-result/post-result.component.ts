@@ -15,7 +15,7 @@ type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 })
 export class PostResultComponent implements OnInit {
   adminEmail: string = '';
-  registerNumber: number | null = null;
+  registered: number|null=null;
   semester: number | null = null;
   revaluationSubjects: SubjectName[] = [];
 
@@ -50,7 +50,7 @@ export class PostResultComponent implements OnInit {
      const regNo = localStorage.getItem('approvedRegNo');
   const sem = localStorage.getItem('approvedSemester');
   if (regNo && sem) {
-    this.registerNumber = Number(regNo);
+    this.registered = Number(regNo);
     this.semester = Number(sem);
 
     // Clear after use (optional)
@@ -61,13 +61,13 @@ export class PostResultComponent implements OnInit {
 
     // Get query params
     this.route.queryParams.subscribe(params => {
-      this.registerNumber = +params['registerNumber'];
+      this.registered = +params['registered'];
       this.semester = +params['semester'];
       this.revaluationSubjects = params['subjects']
         ? params['subjects'].split(',') as SubjectName[]
         : [];
 
-      if (this.registerNumber && this.semester) {
+      if (this.registered && this.semester) {
         this.fetchPreviousResult();
       }
     });
@@ -76,7 +76,7 @@ export class PostResultComponent implements OnInit {
   fetchPreviousResult() {
     this.http.get<any>(`http://localhost:8080/student/result`, {
       params: {
-        registerNumber: this.registerNumber?.toString() || '',
+        registerNumber: this.registered?.toString() || '',
         semester: this.semester?.toString() || ''
       }
     }).subscribe({
@@ -166,7 +166,7 @@ export class PostResultComponent implements OnInit {
     }
 
     const payload = {
-      registered: this.registerNumber,
+      registered: this.registered,
       semester: this.semester,
       tamil: this.marks.tamil,
       english: this.marks.english,

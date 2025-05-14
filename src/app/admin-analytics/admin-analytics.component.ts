@@ -85,6 +85,10 @@ export class AdminAnalyticsComponent implements OnInit {
   constructor(private http: HttpClient,private router: Router) {}
 
   ngOnInit(): void {
+     const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
     this.semesters = [1, 2, 3, 4];
     this.departments = ['CSE', 'ECE', 'MECH','CIVIL','EEE'];
     this.selectedSemester = this.semesters[0];
@@ -165,7 +169,7 @@ export class AdminAnalyticsComponent implements OnInit {
   updateCurrentData(): void {
     this.fetchAnalyticsData();
   }
-  
+
 
   getBarData(subject: SubjectData): ChartData {
   return {
@@ -200,8 +204,8 @@ getDonutData(): ChartData {
   };
 }
 
- 
-  
+
+
   confirmLogout() {
     localStorage.clear();
     this.router.navigate(['/admin-login']);

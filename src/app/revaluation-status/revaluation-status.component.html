@@ -1,3 +1,4 @@
+<!-- Navbar -->
 <nav class="navbar navbar-brand bg-dark px-3">
   <div class="container-fluid justify-content-between w-100">
     <div class="d-flex align-items-center">
@@ -30,39 +31,45 @@
     </div>
   </div>
 </div>
-<div class="container vh-100 d-flex justify-content-center align-items-center">
-  <div style="width: 100%; max-width: 400px;">
-    <h4 class="text-center mb-5 fw-bold">Select Semester to View Result</h4>
 
-    <div class="card shadow rounded-4">
-      <div class="card-body p-3">
-        <div
-          class="d-flex justify-content-between align-items-center mb-2 p-2 rounded"
-          *ngFor="let sem of semesters"
-          [ngClass]="{
-            'bg-primary text-white': sem.value === selectedSemester,
-            'bg-light': sem.value !== selectedSemester
-          }"
-        >
-          <div class="fw-semibold">{{ sem.name }}</div>
-          <button
-            class="btn btn-success btn-sm" type="button"
-            (click)="viewResult(sem.value)"
-            [disabled]="loading"
-          >
-            View
-          </button>
-        </div>
+<div class="container mt-4 text-white">
+
+  <h3 class="mb-3">Revaluation Status</h3>
+
+  <!-- Approved -->
+  <div *ngIf="revaluationData?.status === 'updated'" class="alert alert-success rounded-3 shadow d-flex justify-content-between align-items-center">
+    <div>
+      {{ revaluationData.note }}
+      <div *ngIf="revaluationData.updatedSubjects?.length">
+        <h5 class="mt-3">Updated Subjects:</h5>
+        <ul>
+          <li *ngFor="let subject of revaluationData.updatedSubjects">{{ subject }}</li>
+        </ul>
       </div>
     </div>
-    <div *ngIf="loading" class="text-center mt-3">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <div class="mt-2">Fetching result...</div>
-    </div>
+    <button class="btn btn-primary" (click)="viewResult()">View Result</button>
+  </div>
 
-  </div>
+  <!-- Rejected -->
+  <div *ngIf="revaluationData?.status === 'rejected'" class="alert alert-danger rounded-3 shadow">
+    {{ revaluationData.note }}
+  </div>
+
+  <!-- Pending -->
+  <div *ngIf="revaluationData?.status === 'pending'" class="alert alert-warning rounded-3 shadow">
+    {{ revaluationData.note }}
+  </div>
+
+  <!-- No Request Found -->
+  <div *ngIf="revaluationData?.status === 'not_found'" class="alert alert-info rounded-3 shadow">
+    You haven't submitted any revaluation request.
+  </div>
+
+</div>
+
+
+
+
 <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;"> <!-- smaller width -->
@@ -82,6 +89,4 @@
       </div>
     </div>
   </div>
-</div>
-
 </div>
