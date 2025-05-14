@@ -27,21 +27,35 @@ constructor(
     if (storedEmail) this.adminEmail = storedEmail;
   }
 
+  // fetchRevaluationRequests(): void {
+  //   this.http.get<any[]>('http://localhost:8080/api/revaluation/revaluations').subscribe({
+  //     next: (data) => {
+  //       this.revaluationRequests = data;
+  //       this.loading = false;
+  //     },
+  //     error: () => {
+  //       this.toastr.error('Failed to load revaluation requests.');
+  //       this.loading = false;
+  //     }
+  //   });
+  // }
   fetchRevaluationRequests(): void {
-    this.http.get<any[]>('http://localhost:8080/api/revaluation/pending').subscribe({
-      next: (data) => {
-        this.revaluationRequests = data;
-        this.loading = false;
-      },
-      error: () => {
-        this.toastr.error('Failed to load revaluation requests.');
-        this.loading = false;
-      }
-    });
-  }
+  this.http.get<any>('http://localhost:8080/api/revaluation/revaluations').subscribe({
+    next: (data) => {
+      this.revaluationRequests = data.response; 
+      console.log(this.revaluationRequests)// <-- Fix here
+      this.loading = false;
+    },
+    error: () => {
+      this.toastr.error('Failed to load revaluation requests.');
+      this.loading = false;
+    }
+  });
+}
+
 
 approveRequest(id: number, registered: number, semester: number, status: string): void {
-  this.http.put(`http://localhost:8080/api/revaluation/update-status/${id}?status=${status}`, {}, { responseType: 'text' as 'json' }).subscribe({
+  this.http.get(`http://localhost:8080/api/revaluation/approvegetpost?registered=${registered}&semester=${semester}`, {}, ).subscribe({
     next: (res: any) => {
       this.toastr.success(res); // This will now show "Status updated to Approved"
       if (status === 'Approved') {
@@ -60,9 +74,9 @@ approveRequest(id: number, registered: number, semester: number, status: string)
 }
 
 rejectRequest(id: number, registered: number, semester: number, status: string): void {
-  this.http.put(`http://localhost:8080/api/revaluation/update-status/${id}?status=${status}`, {}, { responseType: 'text' as 'json' }).subscribe({
+  this.http.post(`http://localhost:8080/api/revaluation/reject?registered=${registered}&semester=${semester}`, {}, ).subscribe({
     next: (res: any) => {
-      this.toastr.success(res); // e.g. "Status updated to Rejected"
+      this.toastr.success(res.response); // e.g. "Status updated to Rejected"
       this.fetchRevaluationRequests();
     },
     error: (err) => {

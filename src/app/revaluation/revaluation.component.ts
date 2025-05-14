@@ -46,8 +46,17 @@ export class RevaluationComponent implements OnInit {
     const payload = {
       registered: parseInt(this.registerNumber),
       semester: parseInt(this.semester),
-      subject: this.selectedSubjects
+       date: new Date().toISOString(),
+      subject: this.selectedSubjects,
+      status:"pending"
     };
+//     const backendPayload = {
+//   id: 0,
+//   registered: String(rawPayload.registered),
+//   semester: String(rawPayload.semester),
+//   date: new Date().toISOString(),
+//   subject: rawPayload.subject
+// };
 
     console.log('Payload:', payload);
 

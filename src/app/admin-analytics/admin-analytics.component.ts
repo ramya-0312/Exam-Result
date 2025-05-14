@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ChartConfiguration,ChartType,ChartData, ChartOptions } from 'chart.js';
+// import { ChartConfiguration,ChartType,ChartData, ChartOptions } from 'chart.js';
 import { Router } from '@angular/router';
-//import { ChartData, ChartType, ChartOptions } from 'chart.js';
+import { ChartData, ChartType, ChartOptions, ChartConfiguration } from 'chart.js';
 
 interface SubjectData {
   subject: string;
@@ -33,11 +33,11 @@ export class AdminAnalyticsComponent implements OnInit {
   adminEmail: string = '';
   allBarCharts: { subject: string, chartData: ChartConfiguration<'bar'>['data'] }[] = [];
 
-  allSemestersData: DepartmentData[][] = [];
+  allSemestersData: DepartmentData[] = [];
   selectedSemester: number = 1;
   selectedDepartment: string = '';
-  semesters: number[] = [];
-  departments: string[] = [];
+  semesters: number[] = [1,2,3,4];
+  departments: string[] = ['EEE','CIVIL','CSE','MECH'];
   currentData: DepartmentData | null = null;
   topStudents:any;
   //chartOptions:any
@@ -165,41 +165,47 @@ export class AdminAnalyticsComponent implements OnInit {
   updateCurrentData(): void {
     this.fetchAnalyticsData();
   }
+  
 
-  getBarData(subject: SubjectData): ChartConfiguration<'bar'>['data'] {
-    return {
-      labels: ['Pass', 'Fail'],
-      datasets: [
-        {
-          label: subject.subject,
-          data: [subject.passCount, subject.failCount],
-          backgroundColor: ['#28a745', '#dc3545']
-        }
-      ]
-    };
-  }
+  getBarData(subject: SubjectData): ChartData {
+  return {
+    labels: ['Pass', 'Fail'],
+    datasets: [
+      {
+        label: subject.subject,
+        data: [subject.passCount, subject.failCount],
+        backgroundColor: ['#28a745', '#dc3545'],
+      },
+    ],
+  };
+}
 
-  getDonutData(): ChartConfiguration<'doughnut'>['data'] {
-    if (!this.currentData) return { labels: [], datasets: [] };
+getDonutData(): ChartData {
+  if (!this.currentData) return { labels: [], datasets: [] };
 
-    let totalPass = 0, totalFail = 0;
-    this.currentData.subjects.forEach(sub => {
-      totalPass += sub.passCount;
-      totalFail += sub.failCount;
-    });
+  let totalPass = 0, totalFail = 0;
+  this.currentData.subjects.forEach((sub: SubjectData) => {
+    totalPass += sub.passCount;
+    totalFail += sub.failCount;
+  });
 
-    return {
-      labels: ['Pass', 'Fail'],
-      datasets: [
-        {
-          data: [totalPass, totalFail],
-          backgroundColor: ['#198754', '#dc3545']
-        }
-      ]
-    };
-  }
+  return {
+    labels: ['Pass', 'Fail'],
+    datasets: [
+      {
+        data: [totalPass, totalFail],
+        backgroundColor: ['#198754', '#dc3545'],
+      },
+    ],
+  };
+}
+
+ 
+  
   confirmLogout() {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
   }
+
 }
+
