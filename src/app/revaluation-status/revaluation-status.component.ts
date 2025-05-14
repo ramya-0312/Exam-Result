@@ -21,21 +21,24 @@ export class RevaluationStatusComponent implements OnInit {
 
 
   ngOnInit(): void {
+     this.fetchRevaluationStatus();
     this.route.queryParams.subscribe(params => {
       this.registerNumber = params['regno'];
       this.dob = params['dob'];
       this.semester = params['semester'];
-      if (this.registerNumber && this.dob && this.semester) {
+      if (this.registerNumber ) {
         this.fetchRevaluationStatus();
       }
     });
   }
 
   fetchRevaluationStatus(): void {
-    this.http.get<any>(`http://localhost:8080/api/revaluation/status?regno=${this.registerNumber}&dob=${this.dob}&semester=${this.semester}`)
+    this.http.get<any>(`http://localhost:8080/studentrevalution/gettall?registered=${localStorage.getItem("registerNumber")}`)
       .subscribe(
         (response) => {
           this.revaluationData = response;
+          console.log(response)
+          console.log(this.revaluationData);
         },
         (error) => {
           console.error('Error fetching revaluation status', error);
@@ -43,6 +46,20 @@ export class RevaluationStatusComponent implements OnInit {
         }
       );
   }
+  // fetchRevaluationRequests(): void {
+//   this.http.get<any>('http://localhost:8080/api/revaluation/revaluations').subscribe({
+//     next: (data) => {
+//       console.log('API Response:',data)
+//       this.revaluationRequests = data.response;
+//       console.log(this.revaluationRequests)
+//       this.loading = false;
+//     },
+//     error: () => {
+//       this.toastr.error('Failed to load revaluation requests.');
+//       this.loading = false;
+//     }
+//   });
+// }
   viewResult(): void {
   this.router.navigate(['/view-result'], {
     queryParams: {
