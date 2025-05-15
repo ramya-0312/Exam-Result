@@ -41,7 +41,7 @@
 
     <div class="mb-3">
 
-      <strong>Register Number:</strong> {{ registerNumber }}<br>
+      <strong>Register Number:</strong> {{ registered }}<br>
       <strong>Semester:</strong> {{ semester }}
     </div>
     <div>
@@ -50,7 +50,7 @@
 
     <div class="mb-3">
       <label class="form-label">Select Subjects for Revaluation:</label>
-      <div *ngFor="let subject of subjects" class="form-check">
+      <div *ngFor="let subject of subject" class="form-check">
         <input
           class="form-check-input"
           type="checkbox"

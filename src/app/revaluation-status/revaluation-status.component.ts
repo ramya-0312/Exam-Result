@@ -35,11 +35,23 @@ export class RevaluationStatusComponent implements OnInit {
   fetchRevaluationStatus(): void {
     this.http.get<any>(`http://localhost:8080/studentrevalution/gettall?registered=${localStorage.getItem("registerNumber")}`)
       .subscribe(
-        (response) => {
-          this.revaluationData = response;
-          console.log(response)
-          console.log(this.revaluationData);
-        },
+        (res) => {
+          const list = res.response;
+      if (list.length > 0) {
+        this.revaluationData = {
+          ...list[0],
+          note: list[0].status === 'pending'
+            ? 'Your revaluation request is still pending.'
+            : list[0].status === 'updated'
+              ? 'Your marks have been updated.'
+              : 'Your revaluation request was rejected.'
+        };
+          } else {
+        this.revaluationData = { status: 'not_found' };
+      }
+    },
+
+
         (error) => {
           console.error('Error fetching revaluation status', error);
           this.revaluationData = { status: 'not_found' };

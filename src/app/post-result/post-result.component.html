@@ -43,17 +43,17 @@
   <div class="container mt-4">
     <h2 class="mb-4 text-center fw-bold text-success">STUDENT RESULT</h2>
 
-    <form #resultForm="ngForm" (ngSubmit)="onSubmit(resultForm)">
 
       <!-- ...keep all previous code above -->
+ <form #resultForm="ngForm" (ngSubmit)="onSubmit(resultForm)">
 
 <div class="row mb-3">
   <div class="col-md-4">
     <label for="registerNumber" class="form-label fw-bold">
       Register Number <span class="text-danger">*</span>
     </label>
-    <input type="number" class="form-control" id="registered" required
-           [(ngModel)]="registered" name="registered">
+    <input type="number" class="form-control" id="registerNumber" required
+           [(ngModel)]="registered" name="registerNumber"[readOnly]>
     <div *ngIf="resultForm.submitted && !registered" class="text-danger small">
       Register Number is required
     </div>
@@ -75,54 +75,57 @@
 </div>
 
 <!-- ...keep rest of the form as-is below -->
-      <div class="row mb-3">
-  <div class="col-md-2">
-    <label for="tamil" class="form-label fw-bold">Tamil</label>
-    <input type="text" class="form-control" id="tamil" [(ngModel)]="marks['tamil']" name="tamil"
-           (input)="validateMarks('tamil')" (keypress)="blockInvalidMarks($event, 'tamil')" required
-           [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('tamil')">
-  </div>
-  <div class="col-md-2">
-    <label for="english" class="form-label fw-bold">English</label>
-    <input type="text" class="form-control" id="english" [(ngModel)]="marks['english']" name="english"
-           (input)="validateMarks('english')" (keypress)="blockInvalidMarks($event, 'english')" required
-           [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('english')">
-  </div>
-  <div class="col-md-2">
-    <label for="maths" class="form-label fw-bold">Mathematics</label>
-    <input type="text" class="form-control" id="maths" [(ngModel)]="marks['maths']" name="maths"
-           (input)="validateMarks('maths')" (keypress)="blockInvalidMarks($event, 'maths')" required
-           [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('maths')">
-  </div>
-  <div class="col-md-2">
-    <label for="science" class="form-label fw-bold">Science</label>
-    <input type="text" class="form-control" id="science" [(ngModel)]="marks['science']" name="science"
-           (input)="validateMarks('science')" (keypress)="blockInvalidMarks($event, 'science')" required
-           [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('science')">
-  </div>
-  <div class="col-md-2">
-    <label for="social" class="form-label fw-bold">Social Science</label>
-    <input type="text" class="form-control" id="social" [(ngModel)]="marks['social']" name="social"
-           (input)="validateMarks('social')" (keypress)="blockInvalidMarks($event, 'social')" required
-           [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('social')">
-  </div>
-</div>
 
-      <div class="card mt-4 mx-auto" style="max-width: 400px;" *ngIf="totalMarks >= 0">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-bold">Total Marks: {{ totalMarks }}</h5>
-          <p class="card-text fw-bold"
-             [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
-            Result: {{ result }}
-          </p>
-          <button class="btn btn-primary" (click)="calculateResult()">Calculate</button>
-        </div>
-      </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <label for="tamil" class="form-label fw-bold">Tamil</label>
+      <input type="text" class="form-control" id="tamil" [(ngModel)]="marks.tamil" name="tamil"
+             (input)="validateMarks('tamil')" (keypress)="blockInvalidMarks($event, 'tamil')" required
+             [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('tamil')">
+    </div>
+    <div class="col-md-2">
+      <label for="english" class="form-label fw-bold">English</label>
+      <input type="text" class="form-control" id="english" [(ngModel)]="marks.english" name="english"
+             (input)="validateMarks('english')" (keypress)="blockInvalidMarks($event, 'english')" required
+             [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('english')">
+    </div>
+    <div class="col-md-2">
+      <label for="maths" class="form-label fw-bold">Mathematics</label>
+      <input type="text" class="form-control" id="maths" [(ngModel)]="marks.maths" name="maths"
+             (input)="validateMarks('maths')" (keypress)="blockInvalidMarks($event, 'maths')" required
+             [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('maths')">
+    </div>
+    <div class="col-md-2">
+      <label for="science" class="form-label fw-bold">Science</label>
+      <input type="text" class="form-control" id="science" [(ngModel)]="marks.science" name="science"
+             (input)="validateMarks('science')" (keypress)="blockInvalidMarks($event, 'science')" required
+             [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('science')">
+    </div>
+    <div class="col-md-2">
+      <label for="social" class="form-label fw-bold">Social Science</label>
+      <input type="text" class="form-control" id="social" [(ngModel)]="marks.social" name="social"
+             (input)="validateMarks('social')" (keypress)="blockInvalidMarks($event, 'social')" required
+             [readonly]="revaluationSubjects.length > 0 && !revaluationSubjects.includes('social')">
+    </div>
+  </div>
 
-      <div class="text-center mt-4">
-        <button class="btn btn-success mt-2" [disabled]="!calculated" (click)="onSubmit(resultForm)">Post Result</button>
-      </div>
-    </form>
+  <div class="card mt-4 mx-auto" style="max-width: 400px;" *ngIf="totalMarks >= 0">
+    <div class="card-body text-center">
+      <h5 class="card-title fw-bold">Total Marks: {{ totalMarks }}</h5>
+      <p class="card-text fw-bold"
+         [ngClass]="{'text-success': result === 'Pass', 'text-danger': result === 'Fail'}">
+        Result: {{ result }}
+      </p>
+      <button type="button" class="btn btn-primary" (click)="calculateResult()">Calculate</button>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <button type="submit" class="btn btn-success mt-2" [disabled]="!calculated">Post Result</button>
+  </div>
+
+</form>
+
 
     <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -145,6 +148,4 @@
         </div>
       </div>
     </div>
-
-  </div>
 

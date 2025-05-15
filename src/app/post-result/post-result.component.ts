@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { ResultService } from '../services/result.service';
+import { ApiService } from '../services/api.service';
+
 
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
@@ -18,8 +20,10 @@ export class PostResultComponent implements OnInit {
   registered: number|null=null;
   semester: number | null = null;
   revaluationSubjects: SubjectName[] = [];
+  resultData:any=null;
+  marksForm:any=null;
 
-  marks: Record<SubjectName, number | null> = {
+  marks: Record<SubjectName, string | null> = {
     tamil: null,
     english: null,
     maths: null,
@@ -38,62 +42,67 @@ export class PostResultComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private apiService: ApiService
   ) {}
 
-  ngOnInit(): void {
-    const storedEmail = localStorage.getItem('adminEmail');
-    if (storedEmail) {
-      this.adminEmail = storedEmail;
-    }
+ngOnInit(): void {
+  const storedEmail = localStorage.getItem('adminEmail');
+  if (storedEmail) {
+    this.adminEmail = storedEmail;
+  }
 
-     const regNo = localStorage.getItem('approvedRegNo');
+  const regNo = localStorage.getItem('approvedRegNo');
   const sem = localStorage.getItem('approvedSemester');
   if (regNo && sem) {
     this.registered = Number(regNo);
     this.semester = Number(sem);
 
-    // Clear after use (optional)
     localStorage.removeItem('approvedRegNo');
     localStorage.removeItem('approvedSemester');
   }
 
+  this.route.queryParams.subscribe(params => {
+    const paramReg = params['registered'];
+    const paramSem = params['semester'];
 
-    // Get query params
-    this.route.queryParams.subscribe(params => {
-      this.registered = +params['registered'];
-      this.semester = +params['semester'];
-      this.revaluationSubjects = params['subjects']
-        ? params['subjects'].split(',') as SubjectName[]
-        : [];
+    if (paramReg && paramSem) {
+      this.registered = +paramReg;
+      this.semester = +paramSem;
+    }
 
-      if (this.registered && this.semester) {
-        this.fetchPreviousResult();
-      }
-    });
-  }
+    this.revaluationSubjects = params['subjects']
+      ? params['subjects'].split(',') as SubjectName[]
+      : [];
 
-  fetchPreviousResult() {
-    this.http.get<any>(`http://localhost:8080/student/result`, {
-      params: {
-        registerNumber: this.registered?.toString() || '',
-        semester: this.semester?.toString() || ''
+    if (this.registered && this.semester) {
+      this.fetchPreviousResult();  // Only one fetch call here
+    }
+  });
+}
+
+ fetchPreviousResult() {
+  this.http.get<any>(`http://localhost:8080/studentrevalution/gettall`, {
+    params: {
+      registered: this.registered?.toString() || '',
+      semester: this.semester?.toString() || ''
+    }
+  }).subscribe({
+    next: (res) => {
+      const data = res.response;
+      if (data) {
+        this.marks.tamil = data.tamil || null;
+        this.marks.english = data.english || null;
+        this.marks.maths = data.maths || null;
+        this.marks.science = data.science || null;
+        this.marks.social = data.social || null;
       }
-    }).subscribe({
-      next: (res) => {
-        // Prefill non-revaluation subjects
-        const subjectKeys: SubjectName[] = ['tamil', 'english', 'maths', 'science', 'social'];
-        for (let subject of subjectKeys) {
-          if (!this.revaluationSubjects.includes(subject)) {
-            this.marks[subject] = res[subject];  // use old mark
-          }
-        }
-      },
-      error: (err) => {
-        this.toastr.error('Failed to fetch previous result');
-      }
-    });
-  }
+    },
+    error: (err) => {
+      this.toastr.error('Failed to fetch previous result');
+    }
+  });
+}
 
   blockInvalidMarks(event: KeyboardEvent, subject: SubjectName) {
     const inputChar = String.fromCharCode(event.keyCode);
@@ -113,14 +122,18 @@ export class PostResultComponent implements OnInit {
   }
 
   validateMarks(subject: SubjectName) {
-    let value = this.marks[subject];
-    if (value === null || isNaN(value)) return;
+  let value = this.marks[subject];
 
-    if (value > 100) this.marks[subject] = 100;
-    else if (value < 0) this.marks[subject] = 0;
+  if (value === null) return;
 
-    this.calculated = false;
-  }
+  const numericValue = Number(value);
+  if (isNaN(numericValue)) return;
+
+  if (numericValue > 100) this.marks[subject] = '100';
+  else if (numericValue < 0) this.marks[subject] = '0';
+
+  this.calculated = false;
+}
 
   calculateResult() {
     let sum = 0;

@@ -11,19 +11,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RevaluationComponent implements OnInit {
   studentName = '';
-  registerNumber = '';
+  registered = '';
   department = '';
   semester = '';
   selectedSubjects: string[] = [];
 
-  subjects = ['Tamil', 'English', 'Mathematics', 'Science', 'Social Science'];
+  subject = ['Tamil', 'English', 'Mathematics', 'Science', 'Social Science'];
 
   constructor(private http: HttpClient, private router: Router,private toastr: ToastrService,) {}
 
   ngOnInit(): void {
     // Get student details from local storage
     this.studentName = localStorage.getItem('studentName') || '';
-    this.registerNumber = localStorage.getItem('registerNumber') || '';
+    this.registered = localStorage.getItem('registerNumber') || '';
     this.department = localStorage.getItem('department') || '';
     this.semester = localStorage.getItem('selectedSemester') || '';
   }
@@ -44,7 +44,7 @@ export class RevaluationComponent implements OnInit {
     }
 
     const payload = {
-      registered: parseInt(this.registerNumber),
+      registered: parseInt(this.registered),
       semester: parseInt(this.semester),
        date: new Date().toISOString(),
       subject: this.selectedSubjects,

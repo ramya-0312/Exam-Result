@@ -4,16 +4,24 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ChartData, ChartType, ChartOptions, ChartConfiguration } from 'chart.js';
 
+interface GradeDistribution {
+  A:number;
+  B:number;
+  c:number;
+  D:number;
+  U:number;
+}
 interface SubjectData {
   subject: string;
   passCount: number;
   failCount: number;
+  grades: GradeDistribution;
 }
 
 interface StudentData {
   name: string;
   registerNumber: string;
-  totalMarks: number;
+  totalMarks: string;
   avatarUrl: string;
 }
 
@@ -118,6 +126,8 @@ export class AdminAnalyticsComponent implements OnInit {
     if (this.currentData && this.currentData.subjects.length > 0) {
       const subjects = this.currentData.subjects;
       const labels = subjects.map(sub => sub.subject);
+
+
       const passPercentages = subjects.map(sub => {
         const total = sub.passCount + sub.failCount;
         return total > 0 ? Math.round((sub.passCount / total) * 100) : 0;
