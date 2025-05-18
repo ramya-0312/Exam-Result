@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { NgChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -37,6 +38,7 @@ import { RevaluationComponent } from './revaluation/revaluation.component';
 import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 import { RevaluationStatusComponent } from './revaluation-status/revaluation-status.component';
+import { AdminUpdateResultComponent } from './admin-update-result/admin-update-result.component';
 
 
 
@@ -57,12 +59,14 @@ import { RevaluationStatusComponent } from './revaluation-status/revaluation-sta
     PostResultComponent,
     SelectSemesterComponent,
 
+
     StudentProfileComponent,
       AdminAnalyticsComponent,
       RevaluationComponent,
       AdminRevaluationComponent,
       StudentAnalyticsComponent,
       RevaluationStatusComponent,
+      AdminUpdateResultComponent,
 
 
 
@@ -74,6 +78,7 @@ import { RevaluationStatusComponent } from './revaluation-status/revaluation-sta
     FormsModule ,
     SocialLoginModule,
     GoogleSigninButtonModule,
+    ReactiveFormsModule,
 
 
     //AdminRegistrationComponent,

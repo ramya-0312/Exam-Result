@@ -19,17 +19,26 @@ export class PostResultComponent implements OnInit {
   adminEmail: string = '';
   registered: number|null=null;
   semester: number | null = null;
-  revaluationSubjects: SubjectName[] = [];
+  revaluationApplied: SubjectName[] = [];
   resultData:any=null;
   marksForm:any=null;
 
   marks: Record<SubjectName, string | null> = {
-    tamil: null,
-    english: null,
-    maths: null,
-    science: null,
-    social: null
+    tamil: '',
+    english: '',
+    maths: '',
+    science: '',
+    social: ''
   };
+
+  revalStatus = {
+  tamil: false,
+  english: false,
+  maths: false,
+  science: false,
+  social: false
+};
+
 
   grade: string = '';
   totalMarks: number = 0;
@@ -71,7 +80,7 @@ ngOnInit(): void {
       this.semester = +paramSem;
     }
 
-    this.revaluationSubjects = params['subjects']
+    this.revaluationApplied = params['subjects']
       ? params['subjects'].split(',') as SubjectName[]
       : [];
 
@@ -89,21 +98,53 @@ ngOnInit(): void {
     }
   }).subscribe({
     next: (res) => {
-      const data = res.response;
-      if (data) {
-        this.marks.tamil = data.tamil || null;
-        this.marks.english = data.english || null;
-        this.marks.maths = data.maths || null;
-        this.marks.science = data.science || null;
-        this.marks.social = data.social || null;
+      console.log('Full response:', res);
+      console.log('res.response:', res.response);
+
+      const subjects = res.response[0]?.subject;
+      console.log('Fetched subjects:', subjects);
+
+      if (subjects && Array.isArray(subjects)) {
+        subjects.forEach((subject: any) => {
+          console.log('Subject:', subject.name, 'Mark:', subject.mark, 'Reval:', subject.revaluationApplied);
+
+          const name = subject.name?.toLowerCase().trim();
+          const mark = subject.mark;
+          const isReval = subject.revaluationApplied;
+
+          switch (name) {
+            case 'tamil':
+              this.marks.tamil = mark;
+              this.revalStatus.tamil = isReval;
+              break;
+            case 'english':
+              this.marks.english = mark;
+              this.revalStatus.english = isReval;
+              break;
+            case 'mathematics':
+            case 'maths':
+              this.marks.maths = mark;
+              this.revalStatus.maths = isReval;
+              break;
+            case 'science':
+              this.marks.science = mark;
+              this.revalStatus.science = isReval;
+              break;
+            case 'social science':
+              this.marks.social = mark;
+              this.revalStatus.social = isReval;
+              break;
+            default:
+              console.warn('Unknown subject:', name);
+          }
+        });
       }
     },
-    error: (err) => {
+    error: () => {
       this.toastr.error('Failed to fetch previous result');
     }
   });
 }
-
   blockInvalidMarks(event: KeyboardEvent, subject: SubjectName) {
     const inputChar = String.fromCharCode(event.keyCode);
     const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];

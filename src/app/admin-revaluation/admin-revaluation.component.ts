@@ -57,12 +57,13 @@ constructor(
 
 approveRequest(id: number, registered: number, semester: number, status: string): void {
   this.http.get(`http://localhost:8080/api/revaluation/approvegetpost?registered=${registered}&semester=${semester}`, {}, ).subscribe({
-    next: (res: any) => {
-      this.toastr.success(res); // This will now show "Status updated to Approved"
+    next: (response: any) => {
+      //this.toastr.success(response.message.note); // This will now show "Status updated to Approved"
+     // this.toastr.success(JSON.stringify(response.message));
       if (status === 'Approved') {
       localStorage.setItem('approvedRegNo', registered.toString());
       localStorage.setItem('approvedSemester', semester.toString());
-      this.router.navigate(['/post-result']);
+      this.router.navigate(['/admin-update-result']);
       }
 
       this.fetchRevaluationRequests();

@@ -25,6 +25,7 @@ import { RevaluationComponent } from './revaluation/revaluation.component';
 import { AdminRevaluationComponent } from './admin-revaluation/admin-revaluation.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 import { RevaluationStatusComponent } from './revaluation-status/revaluation-status.component';
+import { AdminUpdateResultComponent } from './admin-update-result/admin-update-result.component';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/admin-login', pathMatch: 'full' },
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
   {path:'revaluation',component:RevaluationComponent},
+  {path:'admin-update-result',component:AdminUpdateResultComponent},
   //{path:'admin-revaluation',component:AdminRevaluationComponent},
   {
     path: 'post-result',

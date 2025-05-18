@@ -1,73 +1,94 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
 <!-- Navbar -->
-<nav class="navbar navbar-brand bg-dark px-3">
+<nav class="navbar navbar-light bg-dark px-3">
   <div class="container-fluid justify-content-between w-100">
     <div class="d-flex align-items-center">
-      <button class="btn btn-outline-dark me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#studentSidebar" aria-controls="studentSidebar">
+      <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#studentSidebar" aria-controls="studentSidebar">
         <i class="bi bi-list"></i>
       </button>
     </div>
-    <h5 class="text-dark text-center text-uppercase flex-grow-1 mb-0">Welcome to Office of the Controller of Examination</h5>
-  </div>
+    <h3 class="text-white text-center text-uppercase  flex-grow-1 mb-0">Welcome to Office of the Controller of Examination</h3>
+  </div>
 </nav>
-<h6 class="text-center text-muted">Student Result Portal</h6>
-<div>
-  <hr>
-</div>
 
 <!-- Offcanvas Sidebar -->
-<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="studentSidebar" aria-labelledby="studentSidebarLabel">
+<div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="studentSidebar" aria-labelledby="studentSidebarLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="studentSidebarLabel">Student Panel</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body d-flex flex-column">
-    <a routerLink="/student-profile" class="btn btn-outline-light mb-2 text-start">Student Profile</a>
-    <a routerLink="/select-semester" class="btn btn-outline-light mb-2 text-start">Select Semester</a>
-    <a routerLink="/revaluation-status" class="btn btn-outline-light mb-2 text-start">Revaluation Status</a>
-
-
-    <div class="mt-auto">
-      <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
-    </div>
-  </div>
-</div>
-
-<div class="container mt-4 text-white">
-
-  <h3 class="mb-3">Revaluation Status</h3>
-
-  <!-- Approved -->
-  <div *ngIf="revaluationData?.status === 'updated'" class="alert alert-success rounded-3 shadow d-flex justify-content-between align-items-center">
+  <div class="offcanvas-body d-flex flex-column justify-content-between">
     <div>
-      {{ revaluationData.note }}
-      <div *ngIf="revaluationData.updatedSubjects?.length">
-        <h5 class="mt-3">Updated Subjects:</h5>
-        <ul>
-          <li *ngFor="let subject of revaluationData.updatedSubjects">{{ subject }}</li>
-        </ul>
-      </div>
+      <a routerLink="/student-profile" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-speedometer2 me-2"></i>Student Profile</a>
+      <a routerLink="/select-semester" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-person-plus-fill me-2"></i>Semesters</a>
+      <a routerLink="/revaluation-status" class="btn btn-dark w-100 text-start mb-2"><i class="bi bi-journal-check me-2"></i>Revaluations</a>
     </div>
-    <button class="btn btn-primary" (click)="viewResult()">View Result</button>
+    <div>
+      <div class="mt-auto">
+      <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
+    </div>
+    </div>
   </div>
-
-  <!-- Rejected -->
-  <div *ngIf="revaluationData?.status === 'rejected'" class="alert alert-danger rounded-3 shadow">
-    {{ revaluationData.note }}
-  </div>
-
-  <!-- Pending -->
-  <div *ngIf="revaluationData?.status === 'pending'" class="alert alert-warning rounded-3 shadow">
-    {{ revaluationData.note }}
-  </div>
-
-  <!-- No Request Found -->
-  <div *ngIf="revaluationData?.status === 'not_found'" class="alert alert-info rounded-3 shadow">
-    You haven't submitted any revaluation request.
-  </div>
-
 </div>
+<div class="background "style="background-color:#c7eceb;vh-100%">
+  <div class="container vh-100 " style="background-color: #c7eceb">
+    <div style="width: 100%; max-width: 400px;border-radius: 20px;">
+     <br>
+     <br>
+    </div>
 
 
+
+ <div class="container mt-5">
+  <h3 class="text-dark mb-4">Revaluation Status</h3>
+
+  <!-- Spinner while loading -->
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="!isLoading && revaluationList.length" class="table table-light table-bordered table-hover rounded">
+  <thead class="table-secondary text-dark">
+    <tr>
+      <th>Register Number</th>
+      <th>Applied Subjects</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let record of revaluationList">
+      <td>{{ record.registered }}</td>
+      <td>
+        <ul class="mb-0">
+          <li *ngFor="let sub of record.subject">{{ sub }}</li>
+        </ul>
+      </td>
+      <td>
+        <ng-container [ngSwitch]="record.status">
+          <span *ngSwitchCase="'pending'" class="badge bg-warning text-dark px-3 py-2">Pending</span>
+          <span *ngSwitchCase="'reject'" class="badge bg-danger px-3 py-2">Rejected</span>
+          <button *ngSwitchCase="'updated'" class="btn btn-sm btn-primary" (click)="viewResult(record)">View Result</button>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+  <!-- No Data Message -->
+  <div *ngIf="!isLoading && !revaluationList.length" class="alert alert-info text-center">
+    You haven't submitted any revaluation requests.
+  </div>
+</div>
 
 
 <!-- Logout Confirmation Modal -->
@@ -90,3 +111,4 @@
     </div>
   </div>
 </div>
+

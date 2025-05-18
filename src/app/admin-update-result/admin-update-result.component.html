@@ -1,4 +1,3 @@
-
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +5,7 @@
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<div class="full">
+
 <!-- Updated Navbar with Offcanvas -->
 <nav class="navbar navbar-dark bg-dark px-2">
   <div class="container-fluid">
@@ -16,7 +15,7 @@
     <span class="navbar-brand mb-0 h6">Revaluations</span>
   </div>
 </nav>
-
+<div class="full">
 <!-- Offcanvas Sidebar -->
 <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="adminSidebar" aria-labelledby="adminSidebarLabel">
   <div class="offcanvas-header">
@@ -40,55 +39,83 @@
     </div>
   </div>
 </div>
-<div class="background" style="background-color:#c7eceb ">
-<div></div>
-<div class="container mt-0">
-  <h4 class="text-center mb-4 fw-bold">Revaluation Requests</h4>
-
-  <!-- Spinner while loading -->
-  <div *ngIf="loading" class="text-center mt-5">
-    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-      <span class="visually-hidden">Loading...</span>
+<div class="background mt-0" style="background-color:#c7eceb ">
+<div class="container mt-0" style="background-color:#c7eceb">
+  <div class="card shadow p-5 rounded-4 bg-light">
+    <h2 class="text-center  mb-4">Update Revaluation Marks</h2>
+<!-- ▶ 1) Inputs for Reg & Sem -->
+    <div class="row g-1 mb-4">
+      <div class="col-md-5">
+        <label for="email" class="form-label">Register</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="registered"
+          name="registered"
+          [readOnly]="true"
+          placeholder="Register Number"
+        />&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="col-md-5">
+        <label for="email" class="form-label">Semester</label>
+        <input
+          type="text"
+          class="form-select"
+          [(ngModel)]="semester"
+          name="semester"
+          [readOnly]="true"
+          placeholder="Semester"
+        >
+      </div>
+      <div class="col-md-2 text-end">
+      </div>
     </div>
-    <p class="fw-semibold mt-2">Fetching revaluation requests...</p>
-  </div>
 
-  <!-- Table showing requests -->
-  <div *ngIf="!loading && revaluationRequests.length > 0">
-    <div class="table-responsive ">
-      <table class="table table-bordered align-middle text-center shadow-sm">
-        <thead class="table-dark">
-          <tr>
-            <th>Register Number</th>
-            <th>Subjects</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let request of revaluationRequests">
-            <td>{{ request.registered }}</td>
-            <td>
-              <ul class="list-unstyled mb-0">
-                <li *ngFor="let subject of request.subject">{{ subject }}</li>
-              </ul>
-            </td>
-            <td>
-             <button class="btn btn-success" (click)="approveRequest(request.id, request.registered, request.semester, 'Approved')"> Approve </button>&nbsp;&nbsp;
-             <button class="btn btn-danger" (click)="rejectRequest(request.id, request.registered, request.semester, 'Rejected')"> Reject </button>&nbsp;&nbsp;
+    <!-- ▶ 2) Only show table after fetch -->
+    <div *ngIf="studentData">
+      <form (ngSubmit)="submitUpdatedResult()">
+        <table class="table table-bordered text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Subject</th>
+              <th>Previous Mark</th>
+              <th>Updated Mark</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of studentData.subjects">
+              <td>{{ s.name }}</td>
+              <td>{{ s.mark }}</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control text-center"
+                  [disabled]="!s.revaluationApplied"
+                  [(ngModel)]="s.updatedMark"
+                  min="0"
+                  max="100"
+                  [name]="s.name"
+                  placeholder="Enter new mark"
+                  (ngModelChange)="validateUpdatedMark(s)"
+                  (input)="restrictMarkInput($event, s)"
+                  (keypress)="preventInvalidInput($event,s)"
 
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4">
+            Post Updated Result
+          </button>
+        </div>
+      </form>
     </div>
-  </div>
-
-  <!-- No requests -->
-  <div *ngIf="!loading && revaluationRequests.length === 0" class="text-center mt-5">
-    <p class="text-muted">No revaluation requests available.</p>
   </div>
 </div>
+</div>
+
 <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;"> <!-- smaller width -->
@@ -108,6 +135,5 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 </div>

@@ -1,17 +1,27 @@
 
-<div class = "background">
-<div class="container mt-5">
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<div class="full vh-100">
+<div class = "background" style="background-color:#c7eceb">
+<div class="container mt-0">
   <div class="text-center mb-4">
     <h3 class="fw-bold text-uppercase">Welcome to Office of the Controller of Examination</h3>
     <h5 class="text-center text-muted">Pre-Examination Monitoring System</h5>
   </div>
 <!-- Spinner Section -->
 <!-- Spinner Section -->
+ <div class="rolling "style="background-color:#c7eceb">
 <div *ngIf="loadingResult" class="text-center mt-5">
-  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;background-color: #c7eceb;" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
   <p class="mt-2 fw-semibold">Fetching Result...</p>
+</div>
 </div>
 
 
@@ -55,7 +65,6 @@
         <!--<h5>CGPA: {{ cgpa }}</h5>-->
         <h5>Result: {{ student?.result }}</h5>
       </div>
-
       <div class="text-center mt-4">
         <button class="btn btn-secondary me-2" (click)="goHome()">Back</button>
         <button class="btn btn-primary" (click)="printPage()">Print</button>
@@ -85,5 +94,6 @@
   </div>
 </div>
 
+</div>
 </div>
 

@@ -65,7 +65,7 @@ export class RevaluationComponent implements OnInit {
         console.log('Response:',res);
         this.toastr.success(res.message || 'Revaluation request submitted');
 
-        this.router.navigate(['/view-result']);
+        this.router.navigate(['/revaluation-status'], );
       },
       error: (err) => {
         console.error('API Error:', err);
