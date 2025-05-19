@@ -112,23 +112,41 @@ restrictMarkInput(event: any, s: any) {
 }
 
   submitUpdatedResult() {
-     const payload = {
-      registered: this.registered,
-      semester: this.semester,
-      tamil: this.marks.tamil,
-      english: this.marks.english,
-      maths: this.marks.maths,
-      science: this.marks.science,
-      social: this.marks.social,
-      grade: this.totalMarks,
-      result: this.result
-    };
+  if (!this.studentData || !this.studentData.subjects) return;
 
-    this.http.post('http://localhost:8080/student/postresult', payload)
-      .subscribe(() => {
-        alert('Updated result posted successfully!');
-      });
-  }
+  const marksMap: Record<SubjectName, number> = {
+    tamil: 0,
+    english: 0,
+    maths: 0,
+    science: 0,
+    social: 0
+  };
+
+  this.studentData.subjects.forEach((s: any) => {
+    const name = s.subject.toLowerCase();
+    if (name in marksMap) {
+      marksMap[name as SubjectName] = s.updatedMark;
+    }
+  });
+
+  const sum = Object.values(marksMap).reduce((a, b) => a + Number(b), 0);
+  const percentage = (sum / 500) * 100;
+  const hasFail = Object.values(marksMap).some(m => Number(m) < 35);
+  const result = hasFail ? 'Fail' : (percentage >= 35 ? 'Pass' : 'Fail');
+
+  const payload = {
+    registered: this.registered,
+    semester: this.semester,
+    ...marksMap,
+    grade: sum,
+    result: result
+  };
+
+  this.http.post('http://localhost:8080/student/update', payload)
+    .subscribe(() => {
+      alert('Updated result posted successfully!');
+    });
+}
 
   calculateResult() {
     let sum = 0;
