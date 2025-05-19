@@ -109,7 +109,7 @@ restrictMarkInput(event: any, s: any) {
       }))
     };
 
-    this.http.post('http://localhost:8080/student/postresult', payload)
+    this.http.post('http://localhost:8080/student/update', payload)
       .subscribe(() => {
         alert('Updated result posted successfully!');
       });
