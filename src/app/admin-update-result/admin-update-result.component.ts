@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
 @Component({
@@ -11,6 +12,7 @@ type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 export class AdminUpdateResultComponent implements OnInit {
   adminEmail:string=''
   studentData: any = null;
+  one: any = null;
   registered = '';
   semester = '';
    grade: string = '';
@@ -111,24 +113,82 @@ restrictMarkInput(event: any, s: any) {
   }
 }
 
-  submitUpdatedResult() {
-     const payload = {
-      registered: this.registered,
-      semester: this.semester,
-      tamil: this.marks.tamil,
-      english: this.marks.english,
-      maths: this.marks.maths,
-      science: this.marks.science,
-      social: this.marks.social,
-      grade: this.totalMarks,
-      result: this.result
-    };
+//   submitUpdatedResult() {
+//   if (!this.studentData || !this.studentData.subjects) return;
 
-    this.http.post('http://localhost:8080/student/update', payload)
-      .subscribe(() => {
-        alert('Updated result posted successfully!');
-      });
-  }
+//   const marksMap: Record<SubjectName, number> = {
+//     tamil: 0,
+//     english: 0,
+//     maths: 0,
+//     science: 0,
+//     social: 0
+//   };
+
+//   this.studentData.subjects.forEach((s: any) => {
+//     const name = s.mar.toLowerCase();
+//     if (name in marksMap) {
+//       marksMap[name as SubjectName] = s.updatedMark;
+//     }
+//   });
+
+//   const sum = Object.values(marksMap).reduce((a, b) => a + Number(b), 0);
+//   const percentage = (sum / 500) * 100;
+//   const hasFail = Object.values(marksMap).some(m => Number(m) < 35);
+//   const result = hasFail ? 'Fail' : (percentage >= 35 ? 'Pass' : 'Fail');
+
+//   const payload = {
+//     registered: this.registered,
+//     semester: this.semester,
+//     ...marksMap,
+//     grade: sum,
+//     result: result
+//   };
+
+//   this.http.post('http://localhost:8080/student/update', payload)
+//     .subscribe(() => {
+//       alert('Updated result posted successfully!');
+//     });
+// }
+submitUpdatedResult() {
+  if (!this.studentData || !this.studentData.subjects) return;
+
+  const marksMap: Record<SubjectName, number> = {
+    tamil: 0,
+    english: 0,
+    maths: 0,
+    science: 0,
+    social: 0
+  };
+
+  this.studentData.subjects.forEach((s: any) => {
+    const name = (s.name || '').toLowerCase(); // ✅ Fixed this line
+    if (name === 'tamil') marksMap.tamil = Number(s.updatedMark) || 0;
+    else if (name === 'english') marksMap.english = Number(s.updatedMark) || 0;
+    else if (name === 'mathematics') marksMap.maths = Number(s.updatedMark) || 0;
+    else if (name === 'science') marksMap.science = Number(s.updatedMark) || 0;
+    else if (name === 'social science') marksMap.social = Number(s.updatedMark) || 0;
+  });
+
+  const sum = Object.values(marksMap).reduce((a, b) => a + b, 0);
+  const percentage = (sum / 500) * 100;
+  const hasFail = Object.values(marksMap).some(m => m < 35);
+  const result = hasFail ? 'Fail' : (percentage >= 35 ? 'Pass' : 'Fail');
+
+  const payload = {
+    registered: this.registered,
+    semester: this.semester,
+    ...marksMap,
+    grade: sum.toString(),
+    result: result
+  };
+
+  console.log('Payload:', payload);
+
+  this.http.post('http://localhost:8080/student/update', payload)
+    .subscribe(() => {
+      alert('Updated result posted successfully!');
+    });
+}
 
   calculateResult() {
     let sum = 0;
