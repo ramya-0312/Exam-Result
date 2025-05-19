@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
 @Component({
   standalone:false,
@@ -12,6 +13,18 @@ export class AdminUpdateResultComponent implements OnInit {
   studentData: any = null;
   registered = '';
   semester = '';
+   grade: string = '';
+  totalMarks: number = 0;
+  result: string = '';
+  calculated: boolean = false;
+  semesters = [1, 2, 3, 4];
+   marks: Record<SubjectName, string | null> = {
+    tamil: '',
+    english: '',
+    maths: '',
+    science: '',
+    social: ''
+  };
 
   //s.updatedMark: number = 0;
 
@@ -99,14 +112,16 @@ restrictMarkInput(event: any, s: any) {
 }
 
   submitUpdatedResult() {
-    const payload = {
-      registerNumber: this.studentData.registered,
-      semester: this.studentData.semester,
-      updatedSubjects: this.studentData.subjects.map((subject: any) => ({
-        name: subject.name,
-        newMark: subject.updatedMark,
-        revaluationApplied: subject.revaluationApplied
-      }))
+     const payload = {
+      registered: this.registered,
+      semester: this.semester,
+      tamil: this.marks.tamil,
+      english: this.marks.english,
+      maths: this.marks.maths,
+      science: this.marks.science,
+      social: this.marks.social,
+      grade: this.totalMarks,
+      result: this.result
     };
 
     this.http.post('http://localhost:8080/student/update', payload)
@@ -114,6 +129,39 @@ restrictMarkInput(event: any, s: any) {
         alert('Updated result posted successfully!');
       });
   }
+
+  calculateResult() {
+    let sum = 0;
+    let count = 0;
+    let hasFailedSubject = false;
+
+    for (const subject in this.marks) {
+      const mark = this.marks[subject as SubjectName];
+      const numericMark = Number(mark);
+
+      if (!isNaN(numericMark)) {
+        sum += numericMark;
+        count++;
+
+        if (numericMark < 35) {
+          hasFailedSubject = true;
+        }
+      }
+    }
+
+    this.totalMarks = sum;
+    this.grade = sum.toString();
+
+    if (count === Object.keys(this.marks).length) {
+      const percentage = (sum / 500) * 100;
+      this.result = hasFailedSubject ? 'Fail' : (percentage >= 35 ? 'Pass' : 'Fail');
+      this.calculated = true;
+    } else {
+      this.result = '';
+      this.calculated = false;
+    }
+  }
+
   confirmLogout(): void {
     localStorage.clear();
     this.router.navigate(['/admin-login']);
