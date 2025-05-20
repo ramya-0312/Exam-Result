@@ -31,38 +31,7 @@ export class ViewResultComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  // ngOnInit(): void {
-  //   this.resultData = JSON.parse(localStorage.getItem('resultData') || '{}');
-  //   const resultRaw = localStorage.getItem('resultData');
-  //   const semester = localStorage.getItem('selectedSemester');
-  //   const registered = localStorage.getItem('registerNumber');
-  //   const dob = localStorage.getItem('dob');
-
-  //   if (!resultRaw || !semester || !registered || !dob) {
-  //     alert('Incomplete data. Please start again.');
-  //     this.router.navigate(['/student-result']);
-  //     return;
-  //   }
-
-  //   const resultParsed = JSON.parse(resultRaw);
-
-  //   this.semester = semester;
-  //   const data = resultParsed.response[0];
-
-  //   this.resultData = {
-  //     name: resultParsed.studentName,
-  //     registerNumber: registered,
-  //     department: 'N/A', // You can update if you get this from backend
-  //     marks: [
-  //       { subject: 'English', mark: data.english },
-  //       { subject: 'Mathematics', mark: data.maths },
-  //       { subject: 'Science', mark: data.science },
-  //       { subject: 'Social', mark: data.social }
-  //     ],
-  //     total: data.grade,
-  //     result: data.result
-  //   };
-  // }
+ 
   ngOnInit(): void {
     const result = this.getGradeAndCGPA();
 console.log(result.grade);  // Output: Grade (e.g., 'A', 'B+', 'U')
@@ -75,8 +44,9 @@ console.log(result.cgpa);   // Output: CGPA (e.g., 9, 8, 0 for fail)
     const semester = localStorage.getItem('selectedSemester');
     const registered = localStorage.getItem('registerNumber');
     const dob = localStorage.getItem('dob');
+console.log(resultRaw)
 
-    if (!resultRaw || !semester || !registered || !dob) {
+    if (!resultRaw|| !semester || !registered || !dob) {
       alert('Incomplete data. Please start again.');
       this.router.navigate(['/student-result']);
       return;

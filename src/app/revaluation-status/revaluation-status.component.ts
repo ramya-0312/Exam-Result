@@ -21,6 +21,8 @@ export class RevaluationStatusComponent implements OnInit {
 
   fetchRevaluationStatus(): void {
     const regNo = localStorage.getItem('registerNumber');
+    const dob = localStorage.getItem('dob');
+    const sem = localStorage.getItem('viewSemester');
     if (!regNo) return;
 
     this.isLoading = true;
@@ -39,9 +41,11 @@ export class RevaluationStatusComponent implements OnInit {
       );
   }
   viewResult(record: any): void {
-
+    console.log(record)
+ const regNo = localStorage.getItem('registerNumber');
+    const dob = localStorage.getItem('dob');
   localStorage.setItem('viewSemester', record.semester);
-  this.router.navigate(['/view-result']);
+  this.router.navigate(['/select-semester']);
 }
   confirmLogout() {
     localStorage.clear();

@@ -48,7 +48,7 @@ export class AdminLoginComponent implements OnInit{
           this.authService.setAdminCredentials(this.email, this.password);
           localStorage.setItem('adminEmail',this.email)
           this.toastr.success(res.response);
-          this.router.navigate(['/admin-dashboard'],{replaceUrl:true});
+          this.router.navigate(['/admin-analytics'],{replaceUrl:true});
         } else {
           this.toastr.error('Invalid login response');
         }

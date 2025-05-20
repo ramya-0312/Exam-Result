@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { AdminLoginBlockGuard } from './guards/admin-login-block.guard';
 //import { AdminRegistrationComponent } from './admin-registration/admin-registration.component';
 //import { ViewResultComponent } from './view-result/view-result.component';
 //import { StudentResultComponent } from './student-result/student-result.component';
@@ -32,24 +33,21 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo:'home',pathMatch:'full'},
   {path:'student-profile',component:StudentProfileComponent},
- //{ path: 'view-result', component: ViewResultComponent},
-  //{ path: 'student-result', component: StudentResultComponent},
-  //{ path: 'student-result/:regNumber', component: StudentResultComponent},
+
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent},
-  //{ path: 'admin-dashboard',component:AdminDashboardComponent},
-  //{ path: 'add-student',component:AddStudentComponent},
-  //{ path: 'post-result',component:PostResultComponent},
+ 
   { path: 'admin-register',component:AdminRegisterComponent},
   { path: 'registration-success',component:RegistrationSuccessComponent},
   { path: 'student-result',component:StudentResultComponent},
-  //{ path: 'reset-password',component:ResetPasswordComponent},
-  //{ path: 'admin-login', component: AdminLoginComponent },
+ 
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] }, // Protect the dashboard route with the guard
-  { path: '', redirectTo: '/admin-login', pathMatch: 'full' },
+  // { path: '', redirectTo: '/admin-login', pathMatch: 'full' },
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
   {path:'revaluation',component:RevaluationComponent},
   {path:'admin-update-result',component:AdminUpdateResultComponent},
+  // import { AdminAuthGuard } from './guards/admin-auth.guard';
+
   //{path:'admin-revaluation',component:AdminRevaluationComponent},
   {
     path: 'post-result',
@@ -92,7 +90,29 @@ const routes: Routes = [
     path: 'revaluation-status',
     component: RevaluationStatusComponent,
     canActivate: [StudentAuthGuard]
+  },{
+    path:'student-result',
+    component:StudentResultComponent,
+    canActivate:[StudentAuthGuard]
+  },
+  // {
+  //   path:'revalution-status',
+  //   component:StudentResultComponent,
+  //   canActivate:[StudentAuthGuard]
+  // }
+  
+  {
+    path:'admin-update-result',
+    component:AdminUpdateResultComponent,
+    canActivate:[AuthGuard]
+  }, {
+    path: 'admin-login',
+    component: AdminLoginComponent,
+    canActivate: [AdminLoginBlockGuard]
   }
+ 
+  // 
+
 
 
 ];

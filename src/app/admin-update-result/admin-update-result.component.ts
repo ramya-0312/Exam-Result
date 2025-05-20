@@ -40,7 +40,21 @@ export class AdminUpdateResultComponent implements OnInit {
     this.registered = localStorage.getItem('approvedRegNo') || '';
     this.semester = localStorage.getItem('approvedSemester') || '';
      const storedEmail = localStorage.getItem('adminEmail');
-    if (storedEmail) this.adminEmail = storedEmail;
+    //  const storedEmail = localStorage.getItem('adminEmail');
+
+  if (!storedEmail) {
+    alert('Unauthorized access. Please log in as admin.');
+    this.router.navigate(['/admin-login']);
+    return;
+  }
+
+  this.adminEmail = storedEmail;
+
+  if (this.registered && this.semester) {
+    this.loadApprovedRevaluationData();
+  } else {
+    alert("Registered number and semester are missing.");
+  }
 
     // Automatically load data if both are available
     if (this.registered && this.semester) {
@@ -186,7 +200,9 @@ submitUpdatedResult() {
 
   this.http.post('http://localhost:8080/student/update', payload)
     .subscribe(() => {
+      this.router.navigate(['admin-revalution']);
       alert('Updated result posted successfully!');
+      
     });
 }
 
