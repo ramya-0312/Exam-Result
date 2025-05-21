@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from '../services/student.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   standalone: false,
@@ -22,10 +24,18 @@ export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
   constructor(
     private studentService: StudentService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
+    history.pushState(null, '', location.href);
+    window.onpopstate = () => {
+      if (!this.authService.isAdminLoggedIn()) {
+        this.router.navigate(['/admin-login'], { replaceUrl: true });
+      }
+    };
     const storedEmail = localStorage.getItem('adminEmail');
     if (storedEmail) {
       this.adminEmail = storedEmail;
@@ -68,12 +78,13 @@ export class AddStudentComponent implements OnInit {   // <<< OnInit use panrom
     });
   }
 
-  logout() {
 
-  }
 
   confirmLogout() {
-    localStorage.clear();
-    this.router.navigate(['/admin-login']);
+      this.authService.clearAdminCredentials();
+  localStorage.removeItem('adminEmail');
+  localStorage.removeItem('adminPassword');
+  this.router.navigate(['/admin-login'], { replaceUrl: true });
+
   }
 }

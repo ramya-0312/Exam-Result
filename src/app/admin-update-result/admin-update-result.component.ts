@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import{ ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
+
+
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
 
 @Component({
@@ -32,11 +35,14 @@ export class AdminUpdateResultComponent implements OnInit {
 
 
 
-  constructor(private http: HttpClient,private router: Router,) {}
-
+  constructor(private http: HttpClient,private router: Router,private toastr: ToastrService,private location:Location) {}
   ngOnInit(): void {
-    // Prefill from localStorage
-
+    history.pushState(null, '', location.href);
+    window.onpopstate = () => {
+      if (!localStorage.getItem('adminEmail')) {
+        this.router.navigate(['/admin-login'], { replaceUrl: true });
+      }
+    };
     this.registered = localStorage.getItem('approvedRegNo') || '';
     this.semester = localStorage.getItem('approvedSemester') || '';
      const storedEmail = localStorage.getItem('adminEmail');
@@ -185,8 +191,9 @@ submitUpdatedResult() {
   console.log('Payload:', payload);
 
   this.http.post('http://localhost:8080/student/update', payload)
-    .subscribe(() => {
-      alert('Updated result posted successfully!');
+    .subscribe((res:any) => {
+      this.toastr.success('Updated result posted successfully!');
+      this.router.navigate(['/admin-revaluation']);
     });
 }
 

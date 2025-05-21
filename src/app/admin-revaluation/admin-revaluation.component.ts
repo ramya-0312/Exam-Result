@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { RevaluationService } from '../services/revaluation.service';
+import { Location } from '@angular/common';
 
 @Component({
   standalone:false,
@@ -18,10 +19,18 @@ constructor(
   private revaluationService: RevaluationService,
   private toastr: ToastrService,
   private router: Router,
-  private http:HttpClient
+  private http:HttpClient,
+  private location: Location
 ) {}
 
   ngOnInit(): void {
+    history.pushState(null, '', location.href);
+    window.onpopstate = () => {
+     // if (!this.revaluationService.isAdminLoggedIn()) {
+        this.router.navigate(['/admin-login'], { replaceUrl: true });
+      
+    };
+
     this.fetchRevaluationRequests();
     const storedEmail = localStorage.getItem('adminEmail');
     if (storedEmail) this.adminEmail = storedEmail;

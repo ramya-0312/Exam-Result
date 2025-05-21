@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { ResultService } from '../services/result.service';
 import { ApiService } from '../services/api.service';
+import { Location } from '@angular/common';
 
 
 type SubjectName = 'tamil' | 'english' | 'maths' | 'science' | 'social';
@@ -56,6 +57,12 @@ export class PostResultComponent implements OnInit {
   ) {}
 
 ngOnInit(): void {
+  history.pushState(null, '', location.href);
+  window.onpopstate = () => {
+    if (!localStorage.getItem('adminEmail')) {
+      this.router.navigate(['/admin-login'], { replaceUrl: true });
+    }
+  };
   const storedEmail = localStorage.getItem('adminEmail');
   if (storedEmail) {
     this.adminEmail = storedEmail;

@@ -8,6 +8,11 @@ import { AuthService } from '../services/auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
+  setAdminCredentials(email: string, password: string) {
+    localStorage.setItem('adminEmail', email);
+    localStorage.setItem('adminPassword', password);
+  }
+
   canActivate(): boolean {
     const isLoggedIn = !!localStorage.getItem('adminEmail');
     if (!isLoggedIn) {

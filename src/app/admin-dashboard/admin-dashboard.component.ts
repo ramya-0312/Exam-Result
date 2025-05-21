@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   standalone: false,
@@ -10,19 +11,21 @@ import { AuthService } from '../services/auth.service';
 })
 export class AdminDashboardComponent implements OnInit {
   adminEmail:string='';
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService,private location:Location) {}
 
   ngOnInit(): void {
-    // If admin credentials are not in localStorage, navigate to login page
-    if (!this.authService.isAdminLoggedIn()) {
-      this.router.navigate(['/admin-login']);
-    }
     const storedEmail=localStorage.getItem('adminEmail');
     if(storedEmail){
       this.adminEmail=storedEmail;
     }
+   history.pushState(null, '', location.href);
+   window.onpopstate = () => {
+    if (!this.authService.isAdminLoggedIn()) {
+      this.router.navigate(['/admin-login'],{replaceUrl:true});
+    }
 
-  }
+
+  }}
 
   logout() {
     // Clear admin credentials and navigate to the login page

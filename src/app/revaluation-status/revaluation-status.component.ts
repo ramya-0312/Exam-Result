@@ -38,10 +38,30 @@ export class RevaluationStatusComponent implements OnInit {
         }
       );
   }
-  viewResult(record: any): void {
+ viewResult(record: any): void {
+  const regNo = record.registered;
+  const semester = record.semester;
 
-  localStorage.setItem('viewSemester', record.semester);
-  this.router.navigate(['/view-result']);
+  // Call result API
+  this.http.get<any>(`http://localhost:8080/studentrevalution/gettall?registered=${regNo}&semester=${semester}`)
+    .subscribe(
+      (res) => {
+        if (res && res.response) {
+          localStorage.setItem('resultData', JSON.stringify(res));
+          localStorage.setItem('selectedSemester', semester);
+          localStorage.setItem('registerNumber', regNo);
+          localStorage.setItem('dob', record.dob || '');
+
+          this.router.navigate(['/view-result']);
+        } else {
+          this.toastr.error('Invalid result data. Please try again.');
+        }
+      },
+      (err) => {
+        console.error('Error fetching result:', err);
+        this.toastr.error('Error fetching result.');
+      }
+    );
 }
   confirmLogout() {
     localStorage.clear();

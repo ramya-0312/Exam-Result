@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import{ HttpClient } from '@angular/common/http';
 
 @Component({
   standalone:false,
@@ -9,13 +10,13 @@ import { Router } from '@angular/router';
 })
 export class ViewResultComponent implements OnInit {
 
-  // registered = '';
-  // dob = '';
+   registered = '';
+   dob = '';
   semester = '';
-  // selectedSemester = '';
-  // errorMessage = '';
-  // totalMarks = '';
-  // resultStatus = '';
+   selectedSemester = '';
+   errorMessage = '';
+   totalMarks = '';
+   resultStatus = '';
   student: {
     name: string;
     registered: string;
@@ -29,7 +30,7 @@ export class ViewResultComponent implements OnInit {
   resultData = '';
   cgpa:number=0
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private http:HttpClient) {}
 
   // ngOnInit(): void {
   //   this.resultData = JSON.parse(localStorage.getItem('resultData') || '{}');
@@ -81,6 +82,7 @@ console.log(result.cgpa);   // Output: CGPA (e.g., 9, 8, 0 for fail)
       this.router.navigate(['/student-result']);
       return;
     }
+    this.fetchResult(registered, semester);
 
     const resultParsed = JSON.parse(resultRaw);
     const data = resultParsed.response;
@@ -103,6 +105,17 @@ selectedSubjects: string[] = [];
 
 toggleRevaluation() {
   this.showRevaluation = !this.showRevaluation;
+}
+fetchResult(registered: string, semester: string): void {
+  this.http.get<any>(`http://localhost:8080/api/result?regNo=${registered}&semester=${semester}`)
+    .subscribe(
+      (res) => {
+        // Handle result data
+      },
+      (err) => {
+        console.error("Error fetching result:", err);
+      }
+    );
 }
 
 onSubjectToggle(event: any) {
