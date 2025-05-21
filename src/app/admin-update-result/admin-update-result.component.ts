@@ -206,8 +206,14 @@ submitUpdatedResult() {
 
   this.http.post('http://localhost:8080/student/update', payload)
     .subscribe(() => {
-      this.router.navigate(['admin-revalution']);
-      alert('Updated result posted successfully!');
+
+     this.router.navigate(['admin-revalution'], { replaceUrl: true });
+      this.toastr.success('Updated result posted successfully!', 'Success', {
+        timeOut: 3000,
+        progressBar: true,
+        closeButton: true
+      });
+      this.router.navigate(['admin-revaluation']);
 
     });
 }
