@@ -21,6 +21,8 @@ export class RevaluationStatusComponent implements OnInit {
 
   fetchRevaluationStatus(): void {
     const regNo = localStorage.getItem('registerNumber');
+    const dob = localStorage.getItem('dob');
+    const sem = localStorage.getItem('viewSemester');
     if (!regNo) return;
 
     this.isLoading = true;
@@ -38,30 +40,12 @@ export class RevaluationStatusComponent implements OnInit {
         }
       );
   }
- viewResult(record: any): void {
-  const regNo = record.registered;
-  const semester = record.semester;
-
-  // Call result API
-  this.http.get<any>(`http://localhost:8080/studentrevalution/gettall?registered=${regNo}&semester=${semester}`)
-    .subscribe(
-      (res) => {
-        if (res && res.response) {
-          localStorage.setItem('resultData', JSON.stringify(res));
-          localStorage.setItem('selectedSemester', semester);
-          localStorage.setItem('registerNumber', regNo);
-          localStorage.setItem('dob', record.dob || '');
-
-          this.router.navigate(['/view-result']);
-        } else {
-          this.toastr.error('Invalid result data. Please try again.');
-        }
-      },
-      (err) => {
-        console.error('Error fetching result:', err);
-        this.toastr.error('Error fetching result.');
-      }
-    );
+  viewResult(record: any): void {
+    console.log(record)
+ const regNo = localStorage.getItem('registerNumber');
+    const dob = localStorage.getItem('dob');
+  localStorage.setItem('viewSemester', record.semester);
+  this.router.navigate(['/select-semester']);
 }
   confirmLogout() {
     localStorage.clear();

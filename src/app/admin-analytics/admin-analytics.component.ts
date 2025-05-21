@@ -94,15 +94,16 @@ export class AdminAnalyticsComponent implements OnInit {
   constructor(private http: HttpClient,private router: Router,private location:Location) {}
 
   ngOnInit(): void {
+    const storedEmail = localStorage.getItem('adminEmail');
+    if (storedEmail) {
+      this.adminEmail = storedEmail;
+    }
     history.pushState(null, '', location.href);
     window.onpopstate = () => {
       if (!localStorage.getItem('adminEmail')) {
         this.router.navigate(['/admin-login'], { replaceUrl: true });
       }
-     const storedEmail = localStorage.getItem('adminEmail');
-    if (storedEmail) {
-      this.adminEmail = storedEmail;
-    }}
+     }
     this.semesters = [1, 2, 3, 4];
     this.departments = ['CSE', 'ECE', 'MECH','CIVIL','EEE'];
     this.selectedSemester = this.semesters[0];

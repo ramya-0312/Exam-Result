@@ -36,18 +36,6 @@ constructor(
     if (storedEmail) this.adminEmail = storedEmail;
   }
 
-  // fetchRevaluationRequests(): void {
-  //   this.http.get<any[]>('http://localhost:8080/api/revaluation/revaluations').subscribe({
-  //     next: (data) => {
-  //       this.revaluationRequests = data;
-  //       this.loading = false;
-  //     },
-  //     error: () => {
-  //       this.toastr.error('Failed to load revaluation requests.');
-  //       this.loading = false;
-  //     }
-  //   });
-  // }
   fetchRevaluationRequests(): void {
   this.http.get<any>('http://localhost:8080/api/revaluation/revaluations').subscribe({
     next: (data) => {
@@ -56,6 +44,7 @@ constructor(
       console.log(this.revaluationRequests)
       this.loading = false;
     },
+    
     error: () => {
       this.toastr.error('Failed to load revaluation requests.');
       this.loading = false;
